@@ -1,39 +1,93 @@
-{{! Edvorya primary layout. }}
+{{!
+    @template theme_edvorya/layout/drawers
+
+    Primary Edvorya application shell. Moodle Core owns navigation data and functional output;
+    Edvorya owns the visual composition.
+}}
 {{{ output.doctype }}}
 <html {{{ output.htmlattributes }}}>
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{{ output.page_title }}}</title>
     {{{ output.standard_head_html }}}
 </head>
 <body {{{ bodyattributes }}}>
 {{{ output.standard_top_of_body_html }}}
+{{> core/local/toast/wrapper}}
 
 <div id="page-wrapper" class="edv-shell">
     <header class="edv-topbar" role="banner">
         <div class="edv-topbar__inner">
-            <a class="edv-brand" href="{{{ config.wwwroot }}}/" aria-label="{{sitename}}">
+            <a class="edv-brand" href="{{{ homeurl }}}" aria-label="{{sitename}}">
                 <span class="edv-brand__mark" aria-hidden="true">E</span>
                 <span class="edv-brand__name">{{sitename}}</span>
             </a>
+
             <div class="edv-topbar__actions">
-                {{{ output.user_menu }}}
+                {{{ navbarpluginoutput }}}
+                {{{ pageheadingmenu }}}
+                {{{ editswitch }}}
+                {{#langmenu}}
+                    {{> core/language_menu }}
+                {{/langmenu}}
+                {{{ usermenu }}}
             </div>
         </div>
     </header>
 
     <div class="edv-page">
-        {{#hasblocks}}
-            <aside class="edv-sidebar" aria-label="{{#str}}blocks{{/str}}">
-                {{{ sidepreblocks }}}
-            </aside>
-        {{/hasblocks}}
+        <aside class="edv-sidebar" aria-label="{{#str}}navigation{{/str}}">
+            {{#primarymoremenu}}
+                <nav class="edv-primary-nav" aria-label="{{#str}}primarynavigation, core{{/str}}">
+                    {{> core/moremenu }}
+                </nav>
+            {{/primarymoremenu}}
 
-        <main id="page" class="edv-main" role="main">
-            <div id="page-content" class="edv-content">
-                {{{ fullheader }}}
-                {{{ maincontent }}}
+            {{#hasblocks}}
+                <div class="edv-block-region" data-region="blocks-column">
+                    {{{ addblockbutton }}}
+                    {{{ sidepreblocks }}}
+                </div>
+            {{/hasblocks}}
+        </aside>
+
+        <main id="page" data-region="mainpage" data-usertour="scroller" class="edv-main drag-container">
+            <div id="topofscroll" class="edv-main__inner">
+                <div class="edv-content-header">
+                    {{{ fullheader }}}
+                </div>
+
+                {{#secondarymoremenu}}
+                    <nav class="edv-secondary-nav" aria-label="{{#str}}secondarynavigation, core{{/str}}">
+                        {{> core/moremenu }}
+                    </nav>
+                {{/secondarymoremenu}}
+
+                <div id="page-content" class="edv-content">
+                    <div id="region-main-box">
+                        {{#hasregionmainsettingsmenu}}
+                            <div id="region-main-settings-menu">
+                                {{{ regionmainsettingsmenu }}}
+                            </div>
+                        {{/hasregionmainsettingsmenu}}
+
+                        <section id="region-main">
+                            {{#hasregionmainsettingsmenu}}
+                                <div class="region_main_settings_menu_proxy"></div>
+                            {{/hasregionmainsettingsmenu}}
+
+                            {{{ output.course_content_header }}}
+
+                            {{#headercontent}}
+                                {{> core/activity_header }}
+                            {{/headercontent}}
+
+                            {{{ maincontent }}}
+                            {{{ output.activity_navigation }}}
+                            {{{ output.course_content_footer }}}
+                        </section>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
