@@ -1,0 +1,76 @@
+@layer components {
+    .action-menu {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        min-width: 0;
+    }
+
+    .action-menu .action-menu-item,
+    .action-menu .action-menu-trigger {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .action-menu .dropdown-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--edv-space-1);
+        min-width: 2.25rem;
+        min-height: 2.25rem;
+        padding: 0.375rem;
+        border-radius: var(--edv-radius-sm);
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .action-menu .dropdown-toggle:hover,
+    .action-menu .dropdown-toggle:focus-visible,
+    .action-menu .dropdown.show > .dropdown-toggle {
+        background: var(--edv-hover-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .action-menu .dropdown-toggle::after {
+        content: none;
+    }
+
+    .action-menu .caret {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-inline-start: 0.2rem;
+        border-top: 0.3rem solid currentColor;
+        border-inline: 0.25rem solid transparent;
+        vertical-align: middle;
+    }
+
+    .action-menu .dropdown-menu {
+        min-width: 13rem;
+        max-width: min(22rem, calc(100vw - 2rem));
+    }
+
+    .action-menu .dropdown-item,
+    .action-menu .menu-action {
+        overflow-wrap: anywhere;
+    }
+
+    .action-menu .dropdown-item .icon,
+    .action-menu .menu-action .icon {
+        flex: 0 0 auto;
+        margin-inline-end: var(--edv-space-2);
+    }
+
+    .block-controls.header {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+    }
+
+    @media (max-width: 47.999rem) {
+        .action-menu .dropdown-menu {
+            max-width: calc(100vw - 1rem);
+        }
+    }
+}
