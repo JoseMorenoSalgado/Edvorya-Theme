@@ -22,6 +22,7 @@ $templatecontext = [
     'output' => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes(['edv-context-login', 'edv-context-public']),
     'branding' => $branding,
+    'hasloginimage' => !empty($branding['loginimageurl']),
     'maincontent' => $OUTPUT->main_content(),
 ];
 
