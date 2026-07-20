@@ -1,0 +1,49 @@
+{{! Edvorya primary layout. }}
+{{{ output.doctype }}}
+<html {{{ output.htmlattributes }}}>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{{ output.page_title }}}</title>
+    {{{ output.standard_head_html }}}
+</head>
+<body {{{ bodyattributes }}}>
+{{{ output.standard_top_of_body_html }}}
+
+<div id="page-wrapper" class="edv-shell">
+    <header class="edv-topbar" role="banner">
+        <div class="edv-topbar__inner">
+            <a class="edv-brand" href="{{{ config.wwwroot }}}/" aria-label="{{sitename}}">
+                <span class="edv-brand__mark" aria-hidden="true">E</span>
+                <span class="edv-brand__name">{{sitename}}</span>
+            </a>
+            <div class="edv-topbar__actions">
+                {{{ output.user_menu }}}
+            </div>
+        </div>
+    </header>
+
+    <div class="edv-page">
+        {{#hasblocks}}
+            <aside class="edv-sidebar" aria-label="{{#str}}blocks{{/str}}">
+                {{{ sidepreblocks }}}
+            </aside>
+        {{/hasblocks}}
+
+        <main id="page" class="edv-main" role="main">
+            <div id="page-content" class="edv-content">
+                {{{ fullheader }}}
+                {{{ maincontent }}}
+            </div>
+        </main>
+    </div>
+
+    <footer class="edv-footer" role="contentinfo">
+        {{{ output.standard_footer_html }}}
+    </footer>
+</div>
+
+{{{ output.standard_after_main_region_html }}}
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>
