@@ -22,6 +22,8 @@ $string['configtitle'] = 'Edvorya';
 $string['generalsettings'] = 'General settings';
 $string['generalsettings_desc'] = 'Configure the institutional identity and visual tokens used by the Edvorya theme.';
 $string['openmainnavigation'] = 'Open main navigation';
+$string['primarynavigationlabel'] = 'Primary navigation';
+$string['secondarynavigationlabel'] = 'Secondary navigation';
 
 $string['brandingheading'] = 'Institutional branding';
 $string['brandingheading_desc'] = 'Configure the primary institutional identity. Uploaded files are stored and served by the Moodle File API.';
