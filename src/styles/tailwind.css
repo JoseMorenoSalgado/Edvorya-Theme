@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+@source "../../templates/**/*.mustache";
+@source "../../layout/**/*.php";
+@source "../../classes/**/*.php";
+@source "../../amd/src/**/*.js";
+
+@theme {
+    --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --color-edv-primary-50: #eff6ff;
+    --color-edv-primary-100: #dbeafe;
+    --color-edv-primary-500: #3b82f6;
+    --color-edv-primary-600: #2563eb;
+    --color-edv-primary-700: #1d4ed8;
+
+    --color-edv-success-500: #16a34a;
+    --color-edv-accent-500: #06b6d4;
+
+    --color-edv-surface: #ffffff;
+    --color-edv-surface-muted: #f8fafc;
+    --color-edv-border: #e2e8f0;
+    --color-edv-text: #0f172a;
+    --color-edv-text-muted: #64748b;
+
+    --radius-edv-sm: 0.5rem;
+    --radius-edv-md: 0.75rem;
+    --radius-edv-lg: 1rem;
+    --radius-edv-xl: 1.5rem;
+
+    --shadow-edv-sm: 0 1px 2px rgb(15 23 42 / 0.06);
+    --shadow-edv-md: 0 8px 24px rgb(15 23 42 / 0.08);
+}
+
+@layer base {
+    :root {
+        color-scheme: light;
+        --edv-topbar-height: 4rem;
+        --edv-sidebar-width: 17rem;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html {
+        font-family: var(--font-sans);
+        background: var(--color-edv-surface-muted);
+        color: var(--color-edv-text);
+    }
+
+    body {
+        margin: 0;
+        min-width: 20rem;
+        background: var(--color-edv-surface-muted);
+        color: var(--color-edv-text);
+    }
+
+    a {
+        color: var(--color-edv-primary-600);
+        text-underline-offset: 0.18em;
+    }
+
+    :focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--color-edv-primary-500) 70%, white);
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    .edv-shell {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .edv-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        min-height: var(--edv-topbar-height);
+        border-bottom: 1px solid var(--color-edv-border);
+        background: color-mix(in srgb, var(--color-edv-surface) 94%, transparent);
+        backdrop-filter: blur(12px);
+    }
+
+    .edv-topbar__inner {
+        min-height: var(--edv-topbar-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-inline: clamp(1rem, 3vw, 2rem);
+    }
+
+    .edv-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--color-edv-text);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .edv-brand__mark,
+    .edv-login__brand {
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: var(--radius-edv-md);
+        background: var(--color-edv-primary-600);
+        color: white;
+        font-weight: 800;
+        box-shadow: var(--shadow-edv-sm);
+    }
+
+    .edv-page {
+        width: 100%;
+        flex: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .edv-sidebar {
+        border-right: 1px solid var(--color-edv-border);
+        background: var(--color-edv-surface);
+        padding: 1rem;
+    }
+
+    .edv-main {
+        min-width: 0;
+        padding: clamp(1rem, 3vw, 2rem);
+    }
+
+    .edv-content {
+        width: min(100%, 90rem);
+        margin-inline: auto;
+    }
+
+    .edv-footer {
+        border-top: 1px solid var(--color-edv-border);
+        background: var(--color-edv-surface);
+        padding: 1.5rem clamp(1rem, 3vw, 2rem);
+    }
+
+    .edv-login,
+    .edv-maintenance {
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 1.25rem;
+        background: var(--color-edv-surface-muted);
+    }
+
+    .edv-login__panel,
+    .edv-maintenance__panel {
+        width: min(100%, 30rem);
+        border: 1px solid var(--color-edv-border);
+        border-radius: var(--radius-edv-xl);
+        background: var(--color-edv-surface);
+        box-shadow: var(--shadow-edv-md);
+        padding: clamp(1.25rem, 4vw, 2rem);
+    }
+
+    .edv-login__brand {
+        margin-bottom: 1.25rem;
+    }
+
+    .edv-embedded {
+        min-height: 100dvh;
+        padding: 1rem;
+        background: var(--color-edv-surface);
+    }
+
+    @media (min-width: 64rem) {
+        .edv-page:has(.edv-sidebar) {
+            grid-template-columns: var(--edv-sidebar-width) minmax(0, 1fr);
+        }
+
+        .edv-sidebar {
+            min-height: calc(100dvh - var(--edv-topbar-height));
+        }
+    }
+}
