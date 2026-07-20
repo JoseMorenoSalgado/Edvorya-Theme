@@ -19,9 +19,14 @@ defined('MOODLE_INTERNAL') || die();
 $THEME->name = 'edvorya';
 $THEME->parents = [];
 $THEME->sheets = ['edvorya'];
-$THEME->editorsheets = [];
+$THEME->editor_sheets = [];
 $THEME->doctype = 'html5';
+$THEME->usefallback = true;
 $THEME->hidefromselector = false;
+$THEME->yuicssmodules = [];
+$THEME->rendererfactory = 'theme_overridden_renderer_factory';
+$THEME->requiredblocks = '';
+$THEME->haseditswitch = true;
 
 $THEME->layouts = [
     'base' => [
@@ -37,6 +42,7 @@ $THEME->layouts = [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
+        'options' => ['langmenu' => true],
     ],
     'coursecategory' => [
         'file' => 'drawers.php',
@@ -52,6 +58,7 @@ $THEME->layouts = [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
+        'options' => ['nonavbar' => true],
     ],
     'admin' => [
         'file' => 'drawers.php',
@@ -62,11 +69,13 @@ $THEME->layouts = [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
+        'options' => ['nonavbar' => true],
     ],
     'mydashboard' => [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
+        'options' => ['nonavbar' => true, 'langmenu' => true],
     ],
     'mypublic' => [
         'file' => 'drawers.php',
@@ -76,32 +85,48 @@ $THEME->layouts = [
     'login' => [
         'file' => 'login.php',
         'regions' => [],
-        'options' => ['langmenu' => true, 'nonavbar' => true],
+        'options' => ['langmenu' => true],
     ],
     'popup' => [
         'file' => 'embedded.php',
         'regions' => [],
-        'options' => ['nofooter' => true, 'nonavbar' => true],
-    ],
-    'embedded' => [
-        'file' => 'embedded.php',
-        'regions' => [],
-        'options' => ['nofooter' => true, 'nonavbar' => true],
+        'options' => [
+            'nofooter' => true,
+            'nonavbar' => true,
+            'activityheader' => [
+                'notitle' => true,
+                'nocompletion' => true,
+                'nodescription' => true,
+            ],
+        ],
     ],
     'frametop' => [
         'file' => 'embedded.php',
         'regions' => [],
-        'options' => ['nofooter' => true, 'nonavbar' => true],
+        'options' => [
+            'nofooter' => true,
+            'nocoursefooter' => true,
+            'activityheader' => [
+                'nocompletion' => true,
+            ],
+        ],
+    ],
+    'embedded' => [
+        'file' => 'embedded.php',
+        'regions' => [],
+    ],
+    'maintenance' => [
+        'file' => 'maintenance.php',
+        'regions' => [],
     ],
     'print' => [
         'file' => 'embedded.php',
         'regions' => [],
-        'options' => ['nofooter' => true, 'nonavbar' => false],
+        'options' => ['nofooter' => true, 'nonavbar' => false, 'noactivityheader' => true],
     ],
     'redirect' => [
         'file' => 'embedded.php',
         'regions' => [],
-        'options' => ['nofooter' => true, 'nonavbar' => true],
     ],
     'report' => [
         'file' => 'drawers.php',
@@ -109,12 +134,13 @@ $THEME->layouts = [
         'defaultregion' => 'side-pre',
     ],
     'secure' => [
-        'file' => 'drawers.php',
+        'file' => 'secure.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
-    ],
-    'maintenance' => [
-        'file' => 'maintenance.php',
-        'regions' => [],
+        'options' => [
+            'activityheader' => [
+                'notitle' => false,
+            ],
+        ],
     ],
 ];
