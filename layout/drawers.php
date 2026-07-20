@@ -35,11 +35,7 @@ $buildregionmainsettings = !$PAGE->include_region_main_settings_in_header_action
     && !$PAGE->has_secondary_navigation();
 $regionmainsettingsmenu = $buildregionmainsettings ? $OUTPUT->region_main_settings_menu() : false;
 $headercontent = $PAGE->activityheader->export_for_template($corerenderer);
-
-$institutionname = get_config('theme_edvorya', 'institutionname');
-if (empty($institutionname)) {
-    $institutionname = $SITE->shortname;
-}
+$branding = (new \theme_edvorya\output\branding())->export_for_template($OUTPUT);
 
 $authenticated = isloggedin() && !isguestuser();
 $bodyclasses = [$authenticated ? 'edv-context-authenticated' : 'edv-context-public'];
@@ -47,8 +43,7 @@ $bodyclasses = [$authenticated ? 'edv-context-authenticated' : 'edv-context-publ
 $templatecontext = [
     'output' => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes($bodyclasses),
-    'sitename' => format_string($institutionname, true, ['context' => context_course::instance(SITEID)]),
-    'homeurl' => (new \moodle_url('/'))->out(false),
+    'branding' => $branding,
     'fullheader' => $OUTPUT->full_header(),
     'maincontent' => $OUTPUT->main_content(),
     'sidepreblocks' => $blockshtml,
