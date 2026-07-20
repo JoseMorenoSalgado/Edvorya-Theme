@@ -23,6 +23,7 @@ $hasblocks = strpos($blockshtml, 'data-block=') !== false || !empty($addblockbut
 $corerenderer = $PAGE->get_renderer('core');
 $primary = new \core\navigation\output\primary($PAGE);
 $primarymenu = $primary->export_for_template($corerenderer);
+$mobileprimarynav = $primarymenu['mobileprimarynav'] ?? false;
 
 $secondarynavigation = false;
 if ($PAGE->has_secondary_navigation()) {
@@ -50,7 +51,8 @@ $templatecontext = [
     'hasblocks' => $hasblocks,
     'addblockbutton' => $addblockbutton,
     'primarymoremenu' => $primarymenu['moremenu'] ?? false,
-    'mobileprimarynav' => $primarymenu['mobileprimarynav'] ?? false,
+    'mobileprimarynav' => $mobileprimarynav,
+    'hasmobileprimarynav' => !empty($mobileprimarynav),
     'langmenu' => $primarymenu['lang'] ?? false,
     'usermenu' => $OUTPUT->user_menu(),
     'navbarpluginoutput' => $OUTPUT->navbar_plugin_output(),
