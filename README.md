@@ -5,11 +5,11 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.3`
+- Release: `0.1.0-alpha.4`
 - Target baseline: Moodle 5.2
 - Minimum Moodle version: `2026042000`
 - Parent themes: none (`$THEME->parents = []`)
-- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed; alpha.3 activity compatibility has passed representative Chrome/Selenium Behat flows for Assignment, Quiz, Forum, and H5P; shared Core interaction, responsive, accessibility, editor, and representative plugin acceptance work remains
+- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed; representative Chrome/Selenium Behat acceptance passes for Assignment, Quiz, Forum, H5P, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, and Edvorya phone/tablet/desktop navigation; automated accessibility, true Safari/iPhone, representative third-party plugin, CSP, and SVG-upload hardening remain before production acceptance
 
 ## Runtime dependencies
 
@@ -47,7 +47,7 @@ The production CSS is committed at `style/edvorya.css`.
 
 5. Select **Edvorya** from the Moodle theme selector.
 
-6. Execute the remaining browser-level acceptance matrix documented in `docs/ARCHITECTURE.md` before using this alpha on a production site.
+6. Execute the remaining acceptance matrix documented in `docs/ARCHITECTURE.md` before using this alpha on a production site.
 
 ## Development CSS build
 
@@ -98,18 +98,18 @@ Static checks are recorded in:
 docs/QUALITY_STATUS.md
 ```
 
-The isolated Moodle runtime smoke-validation result for the alpha.1 foundation is recorded in:
+The isolated Moodle runtime smoke-validation result is recorded in:
 
 ```text
 docs/MOODLE52_RUNTIME_STATUS.md
 ```
 
-Representative browser activity acceptance for alpha.3 is recorded in:
+Representative browser and responsive acceptance is recorded in:
 
 ```text
 docs/MOODLE52_BROWSER_ACCEPTANCE.md
 ```
 
-The alpha.3 browser gate uses a GitHub-hosted runner with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. Representative Assignment, Quiz, Forum, and H5P scenarios pass with `theme_edvorya` active.
+The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. The tested activity/Core/communication flows pass with `theme_edvorya` active. Theme-specific responsive scenarios also pass at 390x844, 820x1180, and 1366x768, including keyboard opening and closing of the native mobile navigation.
 
-Passing static, runtime smoke, and representative activity acceptance does not mean the theme has completed full Moodle 5.2 production acceptance. The foundation PR remains unmerged until the remaining shared Core interaction, responsive, accessibility, editor, and representative plugin regression testing is completed.
+Passing static, runtime smoke, representative browser, and Chrome/Selenium responsive acceptance does not mean the theme has completed full Moodle 5.2 production acceptance. Automated Axe accessibility, true Safari/iPhone validation, representative third-party plugin testing, strict-CSP review, and SVG branding upload hardening remain before the foundation is considered production-ready.
