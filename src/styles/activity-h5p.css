@@ -1,0 +1,23 @@
+@layer components {
+    .h5p-iframe-wrapper,
+    .h5p-player,
+    .h5p-iframe {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .h5p-player,
+    .h5p-iframe {
+        display: block;
+        border: 0;
+    }
+
+    .h5p-iframe-wrapper {
+        min-width: 0;
+    }
+
+    .h5p-iframe-wrapper > iframe,
+    iframe.h5p-player {
+        min-width: 100%;
+    }
+}
