@@ -1,0 +1,52 @@
+{{!
+    @template theme_edvorya/layout/secure
+
+    Minimal layout for secure and safe-browser contexts.
+}}
+{{{ output.doctype }}}
+<html {{{ output.htmlattributes }}}>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{{ output.page_title }}}</title>
+    {{{ output.standard_head_html }}}
+</head>
+<body {{{ bodyattributes }}}>
+{{{ output.standard_top_of_body_html }}}
+{{> core/local/toast/wrapper}}
+
+<div id="page-wrapper" class="edv-shell edv-shell--secure">
+    <main id="page" data-region="mainpage" data-usertour="scroller" class="edv-secure-main">
+        <div id="topofscroll" class="edv-main__inner">
+            <div class="edv-content-header">
+                {{{ fullheader }}}
+            </div>
+
+            <div id="page-content" class="edv-content">
+                <div id="region-main-box">
+                    <section id="region-main">
+                        {{{ output.course_content_header }}}
+
+                        {{#headercontent}}
+                            {{> core/activity_header }}
+                        {{/headercontent}}
+
+                        {{{ maincontent }}}
+                        {{{ output.activity_navigation }}}
+                        {{{ output.course_content_footer }}}
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{#hasblocks}}
+        <aside class="edv-secure-blocks" data-region="blocks-column">
+            {{{ sidepreblocks }}}
+        </aside>
+    {{/hasblocks}}
+</div>
+
+{{{ output.standard_after_main_region_html }}}
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>
