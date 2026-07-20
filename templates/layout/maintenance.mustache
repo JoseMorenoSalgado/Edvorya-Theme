@@ -1,20 +1,36 @@
-{{! Edvorya maintenance layout. }}
+{{!
+    @template theme_edvorya/layout/maintenance
+
+    Minimal installation-safe maintenance layout. Do not add theme settings,
+    blocks, navigation data, or custom database-backed content here.
+}}
 {{{ output.doctype }}}
 <html {{{ output.htmlattributes }}}>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{{ output.page_title }}}</title>
+    <link rel="shortcut icon" href="{{{ output.favicon }}}">
     {{{ output.standard_head_html }}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body {{{ bodyattributes }}}>
-{{{ output.standard_top_of_body_html }}}
-<main id="page" class="edv-maintenance" role="main">
-    <div class="edv-maintenance__panel">
-        {{{ maincontent }}}
-    </div>
-</main>
-{{{ output.standard_after_main_region_html }}}
-{{{ output.standard_end_of_body_html }}}
+<body {{{ output.body_attributes }}}>
+{{> core/local/toast/wrapper}}
+
+<div id="page-wrapper">
+    {{{ output.standard_top_of_body_html }}}
+
+    <main id="page" class="edv-maintenance">
+        <div class="edv-maintenance__panel">
+            <header class="page-header-headings">
+                {{{ output.page_heading }}}
+            </header>
+            <div id="page-content">
+                <div id="region-main">
+                    {{{ output.main_content }}}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
 </body>
 </html>
