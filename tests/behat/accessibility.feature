@@ -12,8 +12,9 @@ Feature: Edvorya automated accessibility smoke testing
 
   Scenario: Dashboard meets accessibility standards on desktop
     Given I log in as "admin"
-    And I am on dashboard
+    And I am on site homepage
     And I set the Edvorya viewport to "1366x768"
+    When I follow "Dashboard"
     Then the page should meet accessibility standards
 
   Scenario: Phone navigation meets accessibility standards while closed and open
