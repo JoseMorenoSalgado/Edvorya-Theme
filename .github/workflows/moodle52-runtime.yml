@@ -1,0 +1,362 @@
+name: Moodle 5.2 MariaDB runtime validation
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/moodle52-runtime.yml'
+      - 'classes/**'
+      - 'config.php'
+      - 'lang/**'
+      - 'layout/**'
+      - 'lib.php'
+      - 'pix/**'
+      - 'settings.php'
+      - 'style/**'
+      - 'templates/**'
+      - 'version.php'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: edvorya-theme-moodle52-runtime
+  cancel-in-progress: false
+
+jobs:
+  runtime:
+    name: Moodle 5.2 + MariaDB 10.11
+    runs-on: [self-hosted, Linux, X64, edvorya-ci]
+    timeout-minutes: 45
+
+    env:
+      MOODLE_DOCKER_DB: mariadb
+      MOODLE_DOCKER_DB_VERSION: '10.11'
+      MOODLE_DOCKER_PHP_VERSION: '8.3'
+      MOODLE_DOCKER_WEB_HOST: localhost
+      MOODLE_DOCKER_WEB_PORT: '127.0.0.1:18052'
+      RUNTIME_BASE_URL: 'http://localhost:18052'
+      RUNTIME_ADMIN_USER: admin
+      RUNTIME_ADMIN_PASS: 'EdvoryaRuntime!2026'
+
+    steps:
+      - name: Checkout Edvorya Theme
+        uses: actions/checkout@v4
+        with:
+          path: theme-source
+
+      - name: Checkout Moodle 5.2
+        uses: actions/checkout@v4
+        with:
+          repository: moodle/moodle
+          ref: MOODLE_502_STABLE
+          path: moodle
+
+      - name: Checkout Moodle Docker
+        uses: actions/checkout@v4
+        with:
+          repository: moodlehq/moodle-docker
+          path: moodle-docker
+
+      - name: Configure isolated runtime environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "MOODLE_DOCKER_WWWROOT=${GITHUB_WORKSPACE}/moodle" >> "$GITHUB_ENV"
+          echo "COMPOSE_PROJECT_NAME=edvorya-theme52-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
+
+          docker version
+          if docker compose version >/dev/null 2>&1; then
+            docker compose version
+          elif command -v docker-compose >/dev/null 2>&1; then
+            docker-compose version
+          else
+            echo 'Docker Compose is required on the self-hosted runner.' >&2
+            exit 1
+          fi
+
+      - name: Install theme into Moodle codebase
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf moodle/public/theme/edvorya
+          mkdir -p moodle/public/theme/edvorya
+          rsync -a --delete --exclude='.git' theme-source/ moodle/public/theme/edvorya/
+          test -f moodle/public/theme/edvorya/version.php
+          test -f moodle/public/theme/edvorya/config.php
+          test -f moodle/public/theme/edvorya/style/edvorya.css
+
+      - name: Prepare Moodle Docker configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp moodle-docker/config.docker-template.php moodle/config.php
+
+          cat > moodle/public/theme_runtime_probe.php <<'PHP'
+          <?php
+          // Runtime-only probe created by CI. It is never shipped with theme_edvorya.
+          require_once(__DIR__ . '/../config.php');
+
+          require_login();
+
+          $layout = optional_param('layout', 'standard', PARAM_ALPHANUMEXT);
+          $allowed = [
+              'base', 'standard', 'course', 'coursecategory', 'incourse', 'frontpage',
+              'admin', 'mycourses', 'mydashboard', 'mypublic', 'login', 'popup',
+              'frametop', 'embedded', 'maintenance', 'print', 'redirect', 'report', 'secure',
+          ];
+
+          if (!in_array($layout, $allowed, true)) {
+              throw new moodle_exception('invalidparameter');
+          }
+
+          $PAGE->set_url(new moodle_url('/theme_runtime_probe.php', ['layout' => $layout]));
+          $PAGE->set_context(context_system::instance());
+          $PAGE->set_pagelayout($layout);
+          $PAGE->set_title('Edvorya runtime probe: ' . $layout);
+          $PAGE->set_heading('Edvorya runtime probe');
+
+          echo $OUTPUT->header();
+          echo html_writer::tag('div', 'EDVORYA_RUNTIME_PROBE_' . $layout, ['data-runtime-layout' => $layout]);
+          echo $OUTPUT->footer();
+          PHP
+
+          cat > moodle/admin/cli/edvorya_runtime_course.php <<'PHP'
+          <?php
+          define('CLI_SCRIPT', true);
+          require(__DIR__ . '/../../config.php');
+          require_once($CFG->dirroot . '/course/lib.php');
+
+          $course = new stdClass();
+          $course->fullname = 'Edvorya Runtime Course';
+          $course->shortname = 'EDV-RUNTIME-' . time();
+          $course->category = 1;
+          $course->visible = 1;
+          $course->format = 'topics';
+
+          $created = create_course($course);
+          echo $created->id . PHP_EOL;
+          PHP
+
+      - name: Start Moodle and MariaDB containers
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose up -d
+          bin/moodle-docker-wait-for-db
+
+      - name: Verify runtime versions
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver php -r 'echo "PHP=" . PHP_VERSION . PHP_EOL;'
+          bin/moodle-docker-compose exec -T db mariadb --version
+          bin/moodle-docker-compose exec -T webserver php -r 'if ((int) ini_get("max_input_vars") < 5000) {fwrite(STDERR, "max_input_vars must be >= 5000\n"); exit(1);} echo "max_input_vars=" . ini_get("max_input_vars") . PHP_EOL;'
+
+      - name: Install Moodle 5.2 with Edvorya present
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver php admin/cli/install_database.php \
+            --agree-license \
+            --fullname='Edvorya Theme Runtime' \
+            --shortname='EdvoryaRuntime' \
+            --adminuser="${RUNTIME_ADMIN_USER}" \
+            --adminpass="${RUNTIME_ADMIN_PASS}" \
+            --adminemail='runtime@example.invalid'
+
+      - name: Activate Edvorya standalone theme
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver php admin/cli/cfg.php --name=theme --set=edvorya
+          bin/moodle-docker-compose exec -T webserver php admin/cli/purge_caches.php
+          ACTIVE_THEME="$(bin/moodle-docker-compose exec -T webserver php admin/cli/cfg.php --name=theme | tr -d '\r')"
+          echo "Active theme: ${ACTIVE_THEME}"
+          echo "${ACTIVE_THEME}" | grep -q 'edvorya'
+
+      - name: Create runtime course
+        id: course
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          COURSE_ID="$(bin/moodle-docker-compose exec -T webserver php admin/cli/edvorya_runtime_course.php | tr -dc '0-9\n' | tail -n1)"
+          test -n "$COURSE_ID"
+          echo "course_id=${COURSE_ID}" >> "$GITHUB_OUTPUT"
+          echo "Created course ID: ${COURSE_ID}"
+
+      - name: Smoke test login page and authenticate
+        shell: bash
+        run: |
+          set -euo pipefail
+          COOKIE_JAR="${RUNNER_TEMP}/edvorya-runtime-cookies.txt"
+          LOGIN_HTML="${RUNNER_TEMP}/edvorya-login.html"
+
+          curl --fail --silent --show-error --location \
+            --cookie-jar "$COOKIE_JAR" \
+            "${RUNTIME_BASE_URL}/login/index.php" \
+            --output "$LOGIN_HTML"
+
+          grep -qi 'edvorya' "$LOGIN_HTML"
+          LOGINTOKEN="$(sed -n 's/.*name="logintoken" value="\([^"]*\)".*/\1/p' "$LOGIN_HTML" | head -n1)"
+          test -n "$LOGINTOKEN"
+
+          curl --fail --silent --show-error --location \
+            --cookie "$COOKIE_JAR" \
+            --cookie-jar "$COOKIE_JAR" \
+            --data-urlencode "username=${RUNTIME_ADMIN_USER}" \
+            --data-urlencode "password=${RUNTIME_ADMIN_PASS}" \
+            --data-urlencode "logintoken=${LOGINTOKEN}" \
+            "${RUNTIME_BASE_URL}/login/index.php" \
+            --output "${RUNNER_TEMP}/edvorya-after-login.html"
+
+          FINAL_URL="$(curl --silent --show-error --location \
+            --cookie "$COOKIE_JAR" \
+            --output "${RUNNER_TEMP}/edvorya-dashboard.html" \
+            --write-out '%{url_effective}' \
+            "${RUNTIME_BASE_URL}/my/")"
+
+          if [[ "$FINAL_URL" == *'/login/index.php'* ]]; then
+            echo 'Authenticated session was redirected back to login.' >&2
+            exit 1
+          fi
+
+          echo "COOKIE_JAR=${COOKIE_JAR}" >> "$GITHUB_ENV"
+
+      - name: Smoke test authenticated Moodle pages
+        shell: bash
+        env:
+          COURSE_ID: ${{ steps.course.outputs.course_id }}
+        run: |
+          set -euo pipefail
+          REPORT="${RUNNER_TEMP}/moodle52-runtime-report.txt"
+          : > "$REPORT"
+
+          check_page() {
+            local name="$1"
+            local path="$2"
+            local output="${RUNNER_TEMP}/edvorya-${name}.html"
+            local code
+            code="$(curl --silent --show-error --location \
+              --cookie "$COOKIE_JAR" \
+              --output "$output" \
+              --write-out '%{http_code}' \
+              "${RUNTIME_BASE_URL}${path}")"
+
+            if [[ "$code" != '200' ]]; then
+              echo "FAIL ${name}: HTTP ${code}" | tee -a "$REPORT"
+              return 1
+            fi
+
+            if grep -Eqi 'Fatal error|Exception - |Error code:|Debug info:' "$output"; then
+              echo "FAIL ${name}: Moodle/PHP error marker detected" | tee -a "$REPORT"
+              return 1
+            fi
+
+            echo "PASS ${name}: HTTP ${code}" | tee -a "$REPORT"
+          }
+
+          check_page frontpage '/'
+          check_page dashboard '/my/'
+          check_page mycourses '/my/courses.php'
+          check_page courseindex '/course/index.php'
+          check_page course "/course/view.php?id=${COURSE_ID}"
+          check_page profile '/user/profile.php?id=2'
+          check_page calendar '/calendar/view.php'
+          check_page grades '/grade/report/overview/index.php'
+          check_page administration '/admin/search.php'
+          check_page messaging '/message/index.php'
+
+          cp "$REPORT" theme-source/docs/MOODLE52_RUNTIME_REPORT.txt
+
+      - name: Render all Edvorya layout contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPORT="${RUNNER_TEMP}/moodle52-layout-report.txt"
+          : > "$REPORT"
+
+          layouts=(
+            base standard course coursecategory incourse frontpage admin mycourses mydashboard
+            mypublic login popup frametop embedded maintenance print redirect report secure
+          )
+
+          for layout in "${layouts[@]}"; do
+            output="${RUNNER_TEMP}/layout-${layout}.html"
+            code="$(curl --silent --show-error --location \
+              --cookie "$COOKIE_JAR" \
+              --output "$output" \
+              --write-out '%{http_code}' \
+              "${RUNTIME_BASE_URL}/theme_runtime_probe.php?layout=${layout}")"
+
+            if [[ "$code" != '200' ]]; then
+              echo "FAIL ${layout}: HTTP ${code}" | tee -a "$REPORT"
+              exit 1
+            fi
+
+            if ! grep -q "EDVORYA_RUNTIME_PROBE_${layout}" "$output"; then
+              echo "FAIL ${layout}: probe marker missing" | tee -a "$REPORT"
+              exit 1
+            fi
+
+            if grep -Eqi 'Fatal error|Exception - |Error code:|Debug info:' "$output"; then
+              echo "FAIL ${layout}: Moodle/PHP error marker detected" | tee -a "$REPORT"
+              exit 1
+            fi
+
+            echo "PASS ${layout}: HTTP ${code}" | tee -a "$REPORT"
+          done
+
+          cp "$REPORT" theme-source/docs/MOODLE52_LAYOUT_REPORT.txt
+
+      - name: Record environment summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '# Moodle 5.2 runtime validation'
+            echo
+            echo '- Database: MariaDB 10.11'
+            echo '- PHP: 8.3'
+            echo '- Moodle branch: MOODLE_502_STABLE'
+            echo '- Theme: theme_edvorya 0.1.0-alpha.1'
+            echo '- Runner: self-hosted edvorya-ci'
+            echo '- Web binding: 127.0.0.1:18052'
+            echo '- Database port published to host: no'
+            echo
+            echo 'This environment is ephemeral and isolated from Edvorya-LMS application databases.'
+          } > theme-source/docs/MOODLE52_RUNTIME_ENVIRONMENT.md
+
+      - name: Upload runtime validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moodle52-mariadb-runtime-reports
+          path: |
+            theme-source/docs/MOODLE52_RUNTIME_ENVIRONMENT.md
+            theme-source/docs/MOODLE52_RUNTIME_REPORT.txt
+            theme-source/docs/MOODLE52_LAYOUT_REPORT.txt
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Collect container logs on failure
+        if: failure()
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          bin/moodle-docker-compose ps || true
+          bin/moodle-docker-compose logs --no-color --tail=300 || true
+
+      - name: Destroy isolated runtime environment
+        if: always()
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          bin/moodle-docker-compose down --volumes --remove-orphans || true
