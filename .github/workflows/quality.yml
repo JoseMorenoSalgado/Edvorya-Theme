@@ -59,7 +59,7 @@ jobs:
           These static checks do not replace installation and runtime regression testing on Moodle 5.2.
           EOF
 
-          if git diff --quiet -- docs/QUALITY_STATUS.md; then
+          if [ -z "$(git status --porcelain -- docs/QUALITY_STATUS.md)" ]; then
             exit 0
           fi
 
