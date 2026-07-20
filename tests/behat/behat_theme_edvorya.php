@@ -35,7 +35,7 @@ class behat_theme_edvorya extends behat_base {
             throw new DriverException('Exact viewport sizing requires a JavaScript-capable browser session.');
         }
 
-        $this->getSession()->resizeWindow($width, $height, 'current');
+        $this->getSession()->resizeWindow($width, $height);
         $this->getSession()->wait(250);
     }
 
