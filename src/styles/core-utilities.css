@@ -1,4 +1,8 @@
 @layer components {
+    .hidden {
+        display: none !important;
+    }
+
     .visually-hidden-focusable:not(:focus):not(:focus-within) {
         position: absolute !important;
         width: 1px !important;
