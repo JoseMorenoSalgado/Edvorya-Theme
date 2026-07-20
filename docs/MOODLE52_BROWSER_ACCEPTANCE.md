@@ -2,7 +2,7 @@
 
 ## Environment
 
-The activity acceptance gate runs independently from Edvorya-LMS and its Vercel deployment workflow.
+The browser acceptance gate runs independently from Edvorya-LMS and its Vercel deployment workflow.
 
 - Moodle branch: `MOODLE_502_STABLE`
 - Theme: `theme_edvorya`
@@ -16,84 +16,98 @@ The activity acceptance gate runs independently from Edvorya-LMS and its Vercel 
 - Edvorya-LMS repository used: no
 - Vercel deployment triggered by this test: no
 
-The environment is ephemeral and destroyed after the workflow run.
+The environment is ephemeral and destroyed after every workflow run.
 
-## Activity acceptance result
+## Activity acceptance
 
-Workflow run `29785856670` completed successfully after the Behat harness was corrected and the faildump volume was made writable.
+Workflow run `29785856670` completed successfully.
 
 Representative Moodle 5.2 scenarios executed with `theme_edvorya` forced as the active theme:
 
 ### Assignment
 
-Scenario:
+Scenario: `Submit a file and update the submission with another file`
 
-`Submit a file and update the submission with another file`
-
-Coverage includes:
-
-- opening an Assignment as a student;
-- adding a submission;
-- using the Moodle File Manager to upload a file;
-- saving the submission;
-- editing an existing submission;
-- uploading an additional file;
-- renaming an uploaded file through a Moodle dialogue;
-- deleting an uploaded file;
-- verifying submission and grading status output.
+Coverage includes opening an Assignment as a student, adding/editing a submission, uploading/renaming/deleting files through Moodle File Manager, saving changes, and rendering submission/grading status.
 
 Result: **PASS**.
 
 ### Quiz
 
-Scenario:
+Scenario: `Review the quiz attempt`
 
-`Review the quiz attempt`
-
-Coverage includes:
-
-- opening a Quiz as a teacher;
-- navigating to an existing attempt review;
-- rendering the attempt summary table;
-- rendering question review output;
-- finishing the review and returning to the attempt list.
+Coverage includes opening a Quiz as a teacher, navigating to an existing attempt review, rendering the attempt summary and question review output, and returning to the attempt list.
 
 Result: **PASS**.
 
 ### Forum
 
-Scenario:
+Scenario: `Confirm inpage replies work`
 
-`Confirm inpage replies work`
-
-Coverage includes:
-
-- loading a course containing a Forum;
-- using the JavaScript in-page reply flow;
-- submitting a reply;
-- rendering the new post;
-- reloading the page and confirming persistence.
+Coverage includes loading a Forum, using the JavaScript in-page reply flow, submitting a reply, rendering the new post, reloading, and confirming persistence.
 
 Result: **PASS**.
 
 ### H5P
 
-Scenario:
+Scenario: `Add an h5pactivity to a course`
 
-`Add an h5pactivity to a course`
-
-Coverage includes:
-
-- creating/loading an H5P activity;
-- rendering the activity description;
-- entering the H5P player iframe;
-- entering the nested H5P content iframe;
-- confirming H5P content is visible and interactive enough for Behat to traverse the iframe stack;
-- validating configured H5P action visibility.
+Coverage includes loading an H5P activity, rendering its description, entering the H5P player/content iframe stack, and validating configured H5P action visibility.
 
 Result: **PASS**.
 
-## Gate result
+## Shared Core interaction acceptance
+
+Workflow run `29786269521` completed successfully and re-ran the activity scenarios above together with the following shared interaction surfaces.
+
+### Blocks and editing mode
+
+Scenario: `Configuring the Text block with Javascript on`
+
+Coverage includes:
+
+- logging in as administrator;
+- enabling editing mode;
+- adding a Text block through the Moodle block interface;
+- configuring the block;
+- saving changes;
+- rendering the configured block and content.
+
+Result: **PASS**.
+
+### TinyMCE and File Picker dialogue
+
+Scenario: `Browsing repositories in the TinyMCE editor opens the image dialog and shows the FilePicker`
+
+Coverage includes opening the TinyMCE image dialogue and launching the nested Moodle File Picker.
+
+Result: **PASS**.
+
+### Nested File Picker focus management
+
+Scenario: `Focus returns to the correct location after closing a nested FilePicker`
+
+Coverage includes opening TinyMCE, opening the nested File Picker, closing it with Escape, and verifying that keyboard focus returns to the Browse repositories control.
+
+Result: **PASS**.
+
+### TinyMCE file upload
+
+Scenario: `Browsing repositories in the TinyMCE editor shows the FilePicker and upload url image`
+
+Coverage includes opening TinyMCE, launching File Picker, uploading an image fixture, and rendering the image preview.
+
+Result: **PASS**.
+
+### Form autocomplete
+
+Scenario: `Use autocomplete element which accepts a single value`
+
+Coverage includes opening the autocomplete suggestions list, selecting a value, replacing the value, removing the selection, and rendering the empty selection state.
+
+Result: **PASS**.
+
+## Current gate result
 
 - Moodle/MariaDB/Selenium startup: PASS
 - PHP 8.3 verification: PASS
@@ -104,25 +118,36 @@ Result: **PASS**.
 - Quiz representative flow: PASS
 - Forum representative flow: PASS
 - H5P representative flow: PASS
+- Blocks/editing mode representative flow: PASS
+- TinyMCE/File Picker dialogue: PASS
+- Nested File Picker focus return: PASS
+- TinyMCE File Picker upload: PASS
+- Form autocomplete selection lifecycle: PASS
 - Ephemeral environment cleanup: PASS
 
 Overall result: **PASS**.
 
 ## What this validates
 
-This gate demonstrates that the current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity flows without requiring Boost or another parent theme.
+The current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity and shared Core interaction flows without requiring Boost or another parent theme.
 
-It specifically validates the tested paths only. It is not evidence that every feature of Assignment, Quiz, Forum, H5P, or every third-party plugin has been exhaustively tested.
+The tested paths now provide representative browser evidence for:
+
+- activity rendering/interactions;
+- editing mode and block configuration;
+- File Picker/File Manager upload flows;
+- TinyMCE dialogues;
+- nested modal focus restoration;
+- autocomplete selection interaction.
+
+These are representative acceptance tests, not exhaustive proof for every Moodle feature or third-party plugin.
 
 ## Remaining acceptance areas
 
-The next browser-level acceptance block covers shared Moodle interaction surfaces that are broader than the four activity scenarios above:
+The remaining pre-merge acceptance work is now concentrated on:
 
-- blocks with editing mode enabled;
-- File Picker/File Manager outside the Assignment scenario;
-- TinyMCE/editor interaction;
-- autocomplete/tags keyboard interaction;
-- Core modal/dropdown focus and placement;
-- notifications and messaging;
-- responsive/mobile and accessibility-specific testing;
+- notifications and messaging interaction details;
+- broader keyboard-only navigation beyond the tested nested File Picker focus path;
+- screen-reader/accessibility smoke testing;
+- responsive/mobile testing, especially iPhone Safari, Android Chrome, and tablet widths;
 - representative third-party plugins.
