@@ -60,4 +60,35 @@
     .flex-grow-1 {
         flex-grow: 1 !important;
     }
+
+    @media print {
+        .d-print-none {
+            display: none !important;
+        }
+
+        .d-print-block {
+            display: block !important;
+        }
+
+        .edv-topbar,
+        .edv-sidebar,
+        .edv-footer {
+            display: none !important;
+        }
+
+        .edv-page,
+        .edv-main,
+        .edv-main__inner,
+        .edv-content {
+            display: block !important;
+            width: 100% !important;
+            max-width: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        body {
+            background: #ffffff !important;
+        }
+    }
 }
