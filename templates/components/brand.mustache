@@ -1,0 +1,14 @@
+{{!
+    @template theme_edvorya/components/brand
+
+    Reusable institutional brand. Expected context is theme_edvorya\output\branding.
+}}
+<a class="edv-brand" href="{{{ homeurl }}}" aria-label="{{institutionname}}">
+    {{#logourl}}
+        <img class="edv-brand__logo" src="{{{ logourl }}}" alt="" decoding="async">
+    {{/logourl}}
+    {{^logourl}}
+        <span class="edv-brand__mark" aria-hidden="true">E</span>
+    {{/logourl}}
+    <span class="edv-brand__name">{{institutionname}}</span>
+</a>
