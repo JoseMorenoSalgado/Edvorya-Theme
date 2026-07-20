@@ -1,0 +1,62 @@
+@layer components {
+    .path-mod-forum .forumpost {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-md);
+        background: #ffffff;
+        overflow: hidden;
+    }
+
+    .path-mod-forum .forumpost .content .posting,
+    .path-mod-forum .forumpost .content .attachments,
+    .path-mod-forum .forumpost .content .attachedimages {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .path-mod-forum .discussioncontrols .controlscontainer {
+        max-width: 100%;
+    }
+
+    .path-mod-forum .forumheaderlist {
+        max-width: 100%;
+    }
+
+    @media (max-width: 47.999rem) {
+        .path-mod-forum .forumpost .row .left {
+            float: none;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .path-mod-forum .forumpost .row .topic,
+        .path-mod-forum .forumpost .row .content-mask,
+        .path-mod-forum .forumpost .row .options {
+            margin-left: 0;
+            margin-inline-start: 0;
+        }
+
+        .path-mod-forum .forumpost .picture img {
+            margin: var(--edv-space-2);
+        }
+
+        #page-mod-forum-discuss .discussioncontrols .controlscontainer {
+            float: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--edv-space-2);
+        }
+
+        #page-mod-forum-discuss .discussioncontrols .discussioncontrol {
+            float: none;
+            max-width: 100%;
+        }
+
+        .path-mod-forum .forumheaderlist .discussion .lastpost,
+        .path-mod-forum .forumheaderlist .replies,
+        #page-mod-forum-view .groupmenu,
+        #page-mod-forum-index .subscription,
+        #page-mod-forum-view .subscription {
+            white-space: normal;
+        }
+    }
+}
