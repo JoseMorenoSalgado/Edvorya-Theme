@@ -2,11 +2,11 @@
 
 ## Environment
 
-The browser acceptance gate runs independently from Edvorya-LMS and its Vercel deployment workflow.
+The browser acceptance gates run independently from Edvorya-LMS and its Vercel deployment workflow.
 
 - Moodle branch: `MOODLE_502_STABLE`
 - Theme: `theme_edvorya`
-- Theme release under test: `0.1.0-alpha.3`
+- Current theme release: `0.1.0-alpha.4`
 - Database: MariaDB 10.11
 - PHP: 8.3
 - Browser: Chrome through Moodle Docker Selenium
@@ -14,9 +14,9 @@ The browser acceptance gate runs independently from Edvorya-LMS and its Vercel d
 - Moodle test framework: official Moodle Behat infrastructure
 - VPS used: no
 - Edvorya-LMS repository used: no
-- Vercel deployment triggered by this test: no
+- Vercel deployment triggered by these tests: no
 
-The environment is ephemeral and destroyed after every workflow run.
+The environments are ephemeral and destroyed after every workflow run.
 
 ## Activity acceptance
 
@@ -120,6 +120,59 @@ Coverage includes generating Assignment submission notifications, validating unr
 
 Result: **PASS**.
 
+## Responsive and keyboard acceptance
+
+Dedicated responsive workflow run `29787985130` completed successfully after two harness corrections and one production accessibility fix.
+
+The production issue discovered by the first responsive run was the use of non-existent Moodle Core language identifiers `primarynavigation` and `secondarynavigation` for navigation landmark labels. The theme now owns valid localized strings:
+
+- `primarynavigationlabel`;
+- `secondarynavigationlabel`.
+
+This fix is included in `0.1.0-alpha.4`.
+
+Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure.
+
+### Phone viewport
+
+Viewport: `390x844`
+
+Coverage includes:
+
+- mobile navigation control visible;
+- desktop primary navigation hidden;
+- localized accessible name present on the mobile navigation control;
+- primary navigation landmark has an accessible label;
+- pressing Enter opens the native `<details>` mobile menu;
+- mobile menu panel becomes visible;
+- pressing Enter again closes the menu.
+
+Result: **PASS**.
+
+### Tablet portrait viewport
+
+Viewport: `820x1180`
+
+Coverage includes:
+
+- compact/mobile navigation contract remains active below `64rem`;
+- desktop primary navigation remains hidden;
+- pressing Enter opens the mobile navigation;
+- mobile navigation panel is visible.
+
+Result: **PASS**.
+
+### Desktop viewport
+
+Viewport: `1366x768`
+
+Coverage includes:
+
+- mobile navigation control hidden;
+- sidebar primary navigation restored.
+
+Result: **PASS**.
+
 ## Current gate result
 
 - Moodle/MariaDB/Selenium startup: PASS
@@ -138,14 +191,20 @@ Result: **PASS**.
 - Form autocomplete selection lifecycle: PASS
 - Private messaging conversation: PASS
 - Notification popover/preferences: PASS
+- Phone responsive navigation: PASS
+- Tablet responsive navigation: PASS
+- Desktop sidebar navigation: PASS
+- Keyboard Enter open/close of mobile navigation: PASS
+- Localized navigation landmark labels: PASS
 - Aggregate browser gate: PASS
+- Responsive gate: PASS
 - Ephemeral environment cleanup: PASS
 
-Overall result: **PASS**.
+Overall result for the tested Chrome/Selenium surfaces: **PASS**.
 
 ## What this validates
 
-The current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity, Core interaction, messaging, and notification flows without requiring Boost or another parent theme.
+The current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity, Core interaction, messaging, notification, and responsive navigation flows without requiring Boost or another parent theme.
 
 The tested paths now provide representative browser evidence for:
 
@@ -156,16 +215,19 @@ The tested paths now provide representative browser evidence for:
 - nested modal focus restoration;
 - autocomplete selection interaction;
 - Moodle messaging conversation interaction;
-- notification popover rendering and preference-sensitive notification visibility.
+- notification popover rendering and preference-sensitive notification visibility;
+- phone/tablet/desktop responsive navigation behavior in Chrome/Selenium;
+- keyboard activation of the Edvorya mobile navigation;
+- accessible navigation landmark naming.
 
 These are representative acceptance tests, not exhaustive proof for every Moodle feature or third-party plugin.
 
 ## Remaining acceptance areas
 
-The remaining pre-merge acceptance work is now concentrated on:
+The remaining pre-merge acceptance work is concentrated on:
 
-- broader keyboard-only navigation beyond the tested nested File Picker focus path;
-- automated accessibility smoke testing where supported by Moodle's Behat accessibility tooling;
-- responsive viewport testing for phone and tablet layouts in Chrome/Selenium;
-- true Safari/iPhone validation, which cannot be honestly represented by Linux Chrome emulation alone;
-- representative third-party plugins.
+- automated Axe accessibility smoke testing on representative Edvorya pages;
+- true Safari/iPhone validation, which cannot be honestly represented by Linux Chrome viewport testing alone;
+- representative third-party plugins;
+- production hardening review for strict CSP handling of the inline branding token style block;
+- production hardening review for administrator-uploaded SVG branding assets.
