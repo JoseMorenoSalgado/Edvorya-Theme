@@ -90,7 +90,7 @@ jobs:
           set -euo pipefail
           cp moodle-docker/config.docker-template.php moodle/config.php
 
-          # Force the test site, including Behat, to render theme_edvorya.
+          # Force the ephemeral test site, including Behat, to render theme_edvorya.
           sed -i "/require_once(__DIR__ . '\/lib\/setup.php');/i\\\$CFG->theme = 'edvorya';" moodle/config.php
 
           cat > moodle-docker/moodle52-runtime.ini <<'INI'
@@ -126,7 +126,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php
+          bin/moodle-docker-compose exec -T webserver \
+            php admin/tool/behat/cli/init.php --disable-composer --no-axe \
+            2>&1 | tee "${GITHUB_WORKSPACE}/behat-init.log"
 
       - name: Assignment file submission acceptance
         working-directory: moodle-docker
@@ -164,12 +166,14 @@ jobs:
             --name='Add an h5pactivity to a course' \
             --format=progress
 
-      - name: Upload Behat faildumps
+      - name: Upload Behat diagnostics
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: moodle52-edvorya-behat-faildumps
-          path: behat-faildumps
+          name: moodle52-edvorya-behat-diagnostics
+          path: |
+            behat-init.log
+            behat-faildumps
           if-no-files-found: ignore
           retention-days: 14
 
