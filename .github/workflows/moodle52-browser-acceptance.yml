@@ -127,7 +127,7 @@ jobs:
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T webserver \
-            php admin/tool/behat/cli/init.php --disable-composer --no-axe \
+            php public/admin/tool/behat/cli/init.php --disable-composer --no-axe \
             2>&1 | tee "${GITHUB_WORKSPACE}/behat-init.log"
 
       - name: Assignment file submission acceptance
@@ -135,7 +135,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bin/moodle-docker-compose exec -T -u www-data webserver php admin/tool/behat/cli/run.php \
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Submit a file and update the submission with another file' \
             --format=progress
 
@@ -144,7 +144,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bin/moodle-docker-compose exec -T -u www-data webserver php admin/tool/behat/cli/run.php \
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Review the quiz attempt' \
             --format=progress
 
@@ -153,7 +153,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bin/moodle-docker-compose exec -T -u www-data webserver php admin/tool/behat/cli/run.php \
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Confirm inpage replies work' \
             --format=progress
 
@@ -162,7 +162,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bin/moodle-docker-compose exec -T -u www-data webserver php admin/tool/behat/cli/run.php \
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Add an h5pactivity to a course' \
             --format=progress
 
