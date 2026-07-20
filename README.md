@@ -9,7 +9,7 @@
 - Target baseline: Moodle 5.2
 - Minimum Moodle version: `2026042000`
 - Parent themes: none (`$THEME->parents = []`)
-- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed for the alpha.1 foundation; alpha.2 added responsive navigation and selective Moodle Core compatibility hardening; alpha.3 adds scoped Assignment, Quiz, Forum, and H5P compatibility hardening; browser-level acceptance work remains
+- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed; alpha.3 activity compatibility has passed representative Chrome/Selenium Behat flows for Assignment, Quiz, Forum, and H5P; shared Core interaction, responsive, accessibility, editor, and representative plugin acceptance work remains
 
 ## Runtime dependencies
 
@@ -76,13 +76,14 @@ Tailwind Preflight is intentionally not imported.
 
 ## Architecture
 
-The architectural contract, layout strategy, Design System boundaries, public experience plan, security rules, performance rules, responsive navigation strategy, Core compatibility policy, activity compatibility policy, and future `local_edvorya` integration are documented in:
+The architectural contract, layout strategy, Design System boundaries, public experience plan, security rules, performance rules, responsive navigation strategy, Core compatibility policy, activity compatibility policy, browser acceptance status, and future `local_edvorya` integration are documented in:
 
 ```text
 docs/ARCHITECTURE.md
 docs/MOBILE_NAVIGATION.md
 docs/CORE_COMPATIBILITY.md
 docs/ACTIVITY_COMPATIBILITY.md
+docs/MOODLE52_BROWSER_ACCEPTANCE.md
 ```
 
 `theme_edvorya` owns presentation, layouts, visual identity, navigation composition, and branding.
@@ -103,6 +104,12 @@ The isolated Moodle runtime smoke-validation result for the alpha.1 foundation i
 docs/MOODLE52_RUNTIME_STATUS.md
 ```
 
-Alpha.2 and alpha.3 include additional Core, responsive, and activity compatibility changes made after that runtime smoke test. These changes must receive browser-level regression testing before the foundation is merged.
+Representative browser activity acceptance for alpha.3 is recorded in:
 
-Passing static and HTTP/runtime smoke validation does not mean the theme has completed full Moodle 5.2 production acceptance. The foundation PR remains unmerged until browser-level functional, responsive, accessibility, editor, File Picker, activity, and representative plugin regression testing is completed.
+```text
+docs/MOODLE52_BROWSER_ACCEPTANCE.md
+```
+
+The alpha.3 browser gate uses a GitHub-hosted runner with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. Representative Assignment, Quiz, Forum, and H5P scenarios pass with `theme_edvorya` active.
+
+Passing static, runtime smoke, and representative activity acceptance does not mean the theme has completed full Moodle 5.2 production acceptance. The foundation PR remains unmerged until the remaining shared Core interaction, responsive, accessibility, editor, and representative plugin regression testing is completed.
