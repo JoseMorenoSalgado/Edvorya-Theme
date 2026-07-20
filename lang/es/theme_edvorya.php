@@ -21,6 +21,7 @@ $string['choosereadme'] = 'Edvorya es un theme standalone para Moodle 5.2 constr
 $string['configtitle'] = 'Edvorya';
 $string['generalsettings'] = 'Configuración general';
 $string['generalsettings_desc'] = 'Configura la identidad institucional y los tokens visuales utilizados por Edvorya Theme.';
+$string['openmainnavigation'] = 'Abrir navegación principal';
 
 $string['brandingheading'] = 'Identidad institucional';
 $string['brandingheading_desc'] = 'Configura la identidad visual principal de la institución. Los archivos cargados se almacenan y sirven mediante la File API de Moodle.';
