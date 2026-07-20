@@ -1,0 +1,52 @@
+{{!
+    @template theme_edvorya/components/mobile_navigation
+
+    Lightweight mobile navigation using Moodle's exported mobileprimarynav data.
+    Native details/summary elements avoid a custom JavaScript dependency while
+    preserving keyboard operation and progressive enhancement.
+}}
+<details class="edv-mobile-nav">
+    <summary class="edv-mobile-nav__toggle">
+        <span class="edv-mobile-nav__icon" aria-hidden="true">
+            {{#pix}} icons/menu, theme_edvorya {{/pix}}
+        </span>
+        <span class="visually-hidden">{{#str}}openmainnavigation, theme_edvorya{{/str}}</span>
+    </summary>
+
+    <div class="edv-mobile-nav__panel">
+        <nav class="edv-mobile-nav__content" aria-label="{{#str}}primarynavigation, core{{/str}}">
+            <ul class="edv-mobile-nav__list">
+                {{#mobileprimarynav}}
+                    <li class="edv-mobile-nav__item">
+                        {{#haschildren}}
+                            <details class="edv-mobile-nav__group" {{#isopen}}open{{/isopen}}>
+                                <summary class="edv-mobile-nav__link {{#isactive}}is-active{{/isactive}}">
+                                    <span>{{{text}}}</span>
+                                    <span class="edv-mobile-nav__chevron" aria-hidden="true">
+                                        {{#pix}} icons/chevron-down, theme_edvorya {{/pix}}
+                                    </span>
+                                </summary>
+                                <ul class="edv-mobile-nav__children">
+                                    {{#children}}
+                                        {{^divider}}
+                                            <li>
+                                                <a href="{{{url}}}" class="edv-mobile-nav__child-link {{#isactive}}is-active{{/isactive}}" {{#isactive}}aria-current="page"{{/isactive}}>
+                                                    {{{text}}}
+                                                </a>
+                                            </li>
+                                        {{/divider}}
+                                    {{/children}}
+                                </ul>
+                            </details>
+                        {{/haschildren}}
+                        {{^haschildren}}
+                            <a href="{{{url}}}" class="edv-mobile-nav__link {{#isactive}}is-active{{/isactive}}" {{#isactive}}aria-current="page"{{/isactive}}>
+                                {{{text}}}
+                            </a>
+                        {{/haschildren}}
+                    </li>
+                {{/mobileprimarynav}}
+            </ul>
+        </nav>
+    </div>
+</details>
