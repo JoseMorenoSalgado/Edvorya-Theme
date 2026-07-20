@@ -6,10 +6,11 @@ The phase-one App Shell uses Moodle's exported `mobileprimarynav` data and rende
 
 Files:
 
-- `layout/drawers.php`: obtains primary navigation from Moodle Core and exposes `mobileprimarynav` plus `hasmobileprimarynav` to the template.
-- `templates/layout/drawers.mustache`: composes the mobile navigation into the Edvorya topbar.
+- `layout/drawers.php`: obtains primary navigation from Moodle Core and exposes `mobileprimarynav` plus `hasmobileprimarynav` to the template. It also exports Moodle secondary-navigation overflow data when available.
+- `templates/layout/drawers.mustache`: composes the mobile navigation into the Edvorya topbar and renders the tertiary overflow selector inside the main region.
 - `templates/components/mobile_navigation.mustache`: renders the mobile navigation with native `details` and `summary` disclosure controls.
-- `src/styles/mobile-navigation.css`: owns responsive presentation.
+- `src/styles/mobile-navigation.css`: owns responsive primary-navigation presentation.
+- `src/styles/tertiary-navigation.css`: owns the responsive tertiary selector presentation.
 - `src/styles/index.css`: unified CSS build entrypoint.
 
 ## Design decisions
@@ -23,6 +24,7 @@ Files:
 - The desktop primary navigation remains in the sidebar.
 - On small screens, the primary navigation moves to a topbar disclosure panel.
 - Blocks are not discarded on mobile. The sidebar block region is visually placed after the main content while the navigation-only sidebar is suppressed.
+- When Moodle reports overflow in secondary navigation, Edvorya renders the Core tertiary navigation selector rather than dropping inaccessible tabs.
 
 ## Responsive contract
 
@@ -41,6 +43,13 @@ At `64rem` and above:
 - the primary navigation is rendered in the sidebar;
 - the two-column App Shell layout is restored.
 
+When Moodle provides secondary-navigation overflow data:
+
+- the normal secondary menu remains rendered through `core/moremenu`;
+- the Core tertiary selector is rendered inside `#region-main`;
+- the selector expands to the available width on narrow screens;
+- the theme does not invent or duplicate navigation destinations.
+
 ## Accessibility
 
 - The icon-only menu control has a localized accessible name.
@@ -48,6 +57,7 @@ At `64rem` and above:
 - Active links expose `aria-current="page"` where available.
 - Disclosure controls remain keyboard operable without a JavaScript dependency.
 - Reduced-motion preferences disable the chevron transition.
+- The tertiary selector keeps the label and attributes supplied by Moodle's navigation API.
 
 ## Remaining validation
 
@@ -58,4 +68,5 @@ The implementation still requires browser-level testing on:
 - tablet widths;
 - keyboard-only navigation;
 - screen-reader smoke tests;
+- Moodle pages with secondary navigation overflow;
 - Moodle pages with multiple blocks and editing mode enabled.
