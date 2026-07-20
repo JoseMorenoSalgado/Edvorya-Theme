@@ -1,0 +1,50 @@
+@layer components {
+    .path-mod-assign .gradingtable,
+    .path-mod-assign .submissionsummarytable,
+    .path-mod-assign .submissionstatustable,
+    .path-mod-assign .gradingsummarytable,
+    .path-mod-assign .feedbacktable {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .path-mod-assign [data-region="configure-filters"] {
+        max-width: calc(100vw - 2rem);
+    }
+
+    .path-mod-assign [data-region="assignment-info"],
+    .path-mod-assign [data-region="user-info"] {
+        min-width: 0;
+    }
+
+    @media (max-width: 47.999rem) {
+        .path-mod-assign div.gradingnavigation div {
+            float: none;
+            margin-left: 0;
+            margin-inline-start: 0;
+        }
+
+        .path-mod-assign [data-region="user-selector"] .alignment {
+            float: none;
+            width: 100%;
+            max-width: 20rem;
+            margin-inline: auto;
+        }
+
+        .path-mod-assign [data-region="configure-filters"] {
+            right: 0;
+            left: auto;
+            width: min(30rem, calc(100vw - 2rem));
+            margin-left: 0;
+            margin-inline-start: 0;
+        }
+
+        .path-mod-assign .submissionsummarytable .c0,
+        .path-mod-assign .gradingsummarytable .c0,
+        .path-mod-assign .mod-assign-history-panel .c0 {
+            width: auto;
+            min-width: 8rem;
+        }
+    }
+}
