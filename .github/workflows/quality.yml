@@ -7,9 +7,11 @@ on:
   push:
     branches:
       - feature/theme-foundation
+    paths-ignore:
+      - 'docs/QUALITY_STATUS.md'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -17,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: feature/theme-foundation
 
       - name: Validate PHP syntax
         shell: bash
@@ -38,3 +42,29 @@ jobs:
 
       - name: Verify compiled CSS is committed
         run: git diff --exit-code -- style/edvorya.css
+
+      - name: Record phase-one static validation
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          cat > docs/QUALITY_STATUS.md <<'EOF'
+          # Phase-one static validation
+
+          This file is generated only after the automated foundation checks complete successfully.
+
+          - PHP syntax (`php -l`): PASS
+          - Tailwind production build: PASS
+          - Compiled CSS matches `src/styles/tailwind.css`: PASS
+
+          These static checks do not replace installation and runtime regression testing on Moodle 5.2.
+          EOF
+
+          if git diff --quiet -- docs/QUALITY_STATUS.md; then
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/QUALITY_STATUS.md
+          git commit -m "ci: record phase-one static validation"
+          git push origin HEAD:feature/theme-foundation
