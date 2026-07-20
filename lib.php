@@ -59,7 +59,5 @@ function theme_edvorya_pluginfile(
     }
 
     $theme = theme_config::load('edvorya');
-    $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
-
-    return false;
+    return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
 }
