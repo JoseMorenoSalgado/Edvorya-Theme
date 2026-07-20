@@ -16,10 +16,25 @@ on:
       - 'style/**'
       - 'templates/**'
       - 'version.php'
+  push:
+    branches:
+      - feature/theme-foundation
+    paths:
+      - '.github/workflows/moodle52-runtime.yml'
+      - 'classes/**'
+      - 'config.php'
+      - 'lang/**'
+      - 'layout/**'
+      - 'lib.php'
+      - 'pix/**'
+      - 'settings.php'
+      - 'style/**'
+      - 'templates/**'
+      - 'version.php'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: edvorya-theme-moodle52-runtime
@@ -315,6 +330,47 @@ jobs:
           done
 
           cp "$REPORT" theme-source/docs/MOODLE52_LAYOUT_REPORT.txt
+
+      - name: Persist successful runtime validation
+        if: github.event_name == 'push'
+        working-directory: theme-source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > docs/MOODLE52_RUNTIME_STATUS.md <<EOF
+          # Moodle 5.2 runtime validation status
+
+          The isolated runtime gate completed successfully on the Edvorya self-hosted CI runner.
+
+          - Moodle branch: \`MOODLE_502_STABLE\`
+          - Database: MariaDB 10.11
+          - PHP: 8.3
+          - Active theme: \`theme_edvorya\`
+          - Theme parent dependency: none
+          - Runner label: \`edvorya-ci\`
+          - Web binding: \`127.0.0.1:18052\`
+          - Database port exposed to host: no
+          - Runtime workflow run: \`${GITHUB_RUN_ID}\`
+          - Source commit: \`${GITHUB_SHA}\`
+
+          Passed gates:
+
+          - Moodle database installation with Edvorya present.
+          - Edvorya activation as the selected theme.
+          - Login page render and authenticated admin session.
+          - Site home, Dashboard, My Courses, course index, runtime course, profile, calendar, grades, administration, and messaging HTTP smoke tests.
+          - All declared Edvorya layout contracts rendered without detected PHP/Moodle fatal error markers.
+
+          This runtime gate does not yet replace browser-level accessibility, mobile Safari/Chrome, File Picker, editor, or full activity regression testing.
+          EOF
+
+          if git status --porcelain -- docs/MOODLE52_RUNTIME_STATUS.md | grep -q .; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add docs/MOODLE52_RUNTIME_STATUS.md
+            git commit -m 'ci: record Moodle 5.2 MariaDB runtime validation'
+            git push origin HEAD:feature/theme-foundation
+          fi
 
       - name: Record environment summary
         if: always()
