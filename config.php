@@ -19,7 +19,7 @@ defined('MOODLE_INTERNAL') || die();
 $THEME->name = 'edvorya';
 $THEME->parents = [];
 $THEME->sheets = ['edvorya'];
-$THEME->editor_sheets = [];
+$THEME->editorsheets = [];
 $THEME->doctype = 'html5';
 $THEME->hidefromselector = false;
 
