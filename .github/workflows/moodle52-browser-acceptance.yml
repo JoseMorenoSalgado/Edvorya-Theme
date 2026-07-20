@@ -69,6 +69,7 @@ jobs:
           echo "COMPOSE_PROJECT_NAME=edvorya-theme-browser-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
 
           mkdir -p "${GITHUB_WORKSPACE}/behat-faildumps"
+          chmod 0777 "${GITHUB_WORKSPACE}/behat-faildumps"
           docker version
           docker compose version
 
