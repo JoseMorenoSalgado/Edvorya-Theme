@@ -88,6 +88,14 @@
                                 {{> core/activity_header }}
                             {{/headercontent}}
 
+                            {{#overflow}}
+                                <div class="edv-tertiary-navigation">
+                                    <div class="edv-tertiary-navigation__item">
+                                        {{> core/tertiary_navigation_selector }}
+                                    </div>
+                                </div>
+                            {{/overflow}}
+
                             {{{ maincontent }}}
                             {{{ output.activity_navigation }}}
                             {{{ output.course_content_footer }}}
