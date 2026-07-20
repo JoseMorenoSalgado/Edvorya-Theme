@@ -1,21 +1,6 @@
 name: Moodle 5.2 MariaDB runtime validation
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/moodle52-runtime.yml'
-      - 'classes/**'
-      - 'config.php'
-      - 'lang/**'
-      - 'layout/**'
-      - 'lib.php'
-      - 'pix/**'
-      - 'settings.php'
-      - 'style/**'
-      - 'templates/**'
-      - 'version.php'
   push:
     branches:
       - feature/theme-foundation
@@ -38,7 +23,7 @@ permissions:
 
 concurrency:
   group: edvorya-theme-moodle52-runtime
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   runtime:
@@ -332,7 +317,6 @@ jobs:
           cp "$REPORT" theme-source/docs/MOODLE52_LAYOUT_REPORT.txt
 
       - name: Persist successful runtime validation
-        if: github.event_name == 'push'
         working-directory: theme-source
         shell: bash
         run: |
