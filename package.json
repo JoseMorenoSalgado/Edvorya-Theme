@@ -4,8 +4,8 @@
   "private": true,
   "description": "Build tooling for the standalone Edvorya Moodle theme",
   "scripts": {
-    "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./style/edvorya.css --minify",
-    "watch:css": "tailwindcss -i ./src/styles/tailwind.css -o ./style/edvorya.css --watch"
+    "build:css": "tailwindcss -i ./src/styles/index.css -o ./style/edvorya.css --minify",
+    "watch:css": "tailwindcss -i ./src/styles/index.css -o ./style/edvorya.css --watch"
   },
   "devDependencies": {
     "@tailwindcss/cli": "4.3.3",
