@@ -1,0 +1,189 @@
+@layer components {
+    .edv-page {
+        grid-template-areas:
+            "main"
+            "sidebar";
+    }
+
+    .edv-main {
+        grid-area: main;
+    }
+
+    .edv-sidebar {
+        grid-area: sidebar;
+        border-top: 1px solid var(--edv-color-border);
+        border-bottom: 0;
+    }
+
+    .edv-sidebar--navigation-only,
+    .edv-primary-nav {
+        display: none;
+    }
+
+    .edv-mobile-nav {
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .edv-mobile-nav__toggle {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: inline-grid;
+        place-items: center;
+        padding: 0;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .edv-mobile-nav__toggle::-webkit-details-marker,
+    .edv-mobile-nav__group > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .edv-mobile-nav__toggle:hover,
+    .edv-mobile-nav[open] > .edv-mobile-nav__toggle {
+        background: var(--edv-hover-overlay);
+        border-color: color-mix(in srgb, var(--edv-color-primary) 35%, var(--edv-color-border));
+    }
+
+    .edv-mobile-nav__icon,
+    .edv-mobile-nav__chevron {
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+    }
+
+    .edv-mobile-nav__icon svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .edv-mobile-nav__panel {
+        position: fixed;
+        z-index: 60;
+        top: var(--edv-topbar-height);
+        inset-inline: 0;
+        max-height: calc(100dvh - var(--edv-topbar-height));
+        overflow-y: auto;
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-sidebar);
+        box-shadow: var(--edv-shadow-md);
+        overscroll-behavior: contain;
+    }
+
+    .edv-mobile-nav__content {
+        width: min(100%, 42rem);
+        margin-inline: auto;
+        padding: var(--edv-space-3) var(--edv-space-4) var(--edv-space-6);
+    }
+
+    .edv-mobile-nav__list,
+    .edv-mobile-nav__children {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .edv-mobile-nav__list {
+        display: grid;
+        gap: var(--edv-space-1);
+    }
+
+    .edv-mobile-nav__link,
+    .edv-mobile-nav__child-link {
+        width: 100%;
+        min-height: 2.75rem;
+        display: flex;
+        align-items: center;
+        gap: var(--edv-space-3);
+        padding: 0.625rem 0.75rem;
+        border-radius: var(--edv-radius-sm);
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .edv-mobile-nav__group > .edv-mobile-nav__link {
+        justify-content: space-between;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .edv-mobile-nav__link:hover,
+    .edv-mobile-nav__child-link:hover,
+    .edv-mobile-nav__group > .edv-mobile-nav__link:hover {
+        background: var(--edv-hover-overlay);
+    }
+
+    .edv-mobile-nav__link.is-active,
+    .edv-mobile-nav__child-link.is-active {
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+        font-weight: 650;
+    }
+
+    .edv-mobile-nav__children {
+        display: grid;
+        gap: var(--edv-space-1);
+        padding-block: var(--edv-space-1) var(--edv-space-2);
+        padding-inline-start: var(--edv-space-4);
+    }
+
+    .edv-mobile-nav__child-link {
+        min-height: 2.5rem;
+        color: var(--edv-color-muted);
+    }
+
+    .edv-mobile-nav__chevron svg {
+        width: 1rem;
+        height: 1rem;
+        transition: transform 160ms ease;
+    }
+
+    .edv-mobile-nav__group[open] > summary .edv-mobile-nav__chevron svg {
+        transform: rotate(180deg);
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-brand__name {
+            display: none;
+        }
+
+        .edv-topbar__inner {
+            gap: var(--edv-space-2);
+        }
+
+        .edv-topbar__actions {
+            flex-wrap: nowrap;
+        }
+    }
+
+    @media (min-width: 64rem) {
+        .edv-mobile-nav {
+            display: none;
+        }
+
+        .edv-page {
+            grid-template-areas: "sidebar main";
+        }
+
+        .edv-sidebar,
+        .edv-sidebar--navigation-only,
+        .edv-primary-nav {
+            display: block;
+        }
+
+        .edv-sidebar {
+            border-top: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .edv-mobile-nav__chevron svg {
+            transition: none;
+        }
+    }
+}
