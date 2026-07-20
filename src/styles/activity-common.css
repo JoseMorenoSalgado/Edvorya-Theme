@@ -1,0 +1,37 @@
+@layer base {
+    :root {
+        /* Minimal compatibility aliases used by Moodle/plugin CSS without importing Bootstrap. */
+        --bs-primary: var(--edv-color-primary);
+        --bs-secondary-bg: #f1f5f9;
+        --bs-border-color: var(--edv-color-border);
+    }
+}
+
+@layer components {
+    .justify-content-end {
+        justify-content: flex-end !important;
+    }
+
+    .d-inline-block {
+        display: inline-block !important;
+    }
+
+    .text-primary {
+        color: var(--edv-color-primary) !important;
+    }
+
+    .border-0 {
+        border: 0 !important;
+    }
+
+    .path-mod-assign .table-responsive,
+    .path-mod-quiz .table-responsive,
+    .path-mod-forum .table-responsive,
+    .path-mod-assign .no-overflow,
+    .path-mod-quiz .no-overflow,
+    .path-mod-forum .no-overflow {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
