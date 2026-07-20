@@ -9,6 +9,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{{ output.page_title }}}</title>
+    {{#branding}}
+        {{> theme_edvorya/components/branding_head }}
+    {{/branding}}
     {{{ output.standard_head_html }}}
 </head>
 <body {{{ bodyattributes }}}>
@@ -18,10 +21,9 @@
 <div id="page-wrapper" class="edv-shell">
     <header class="edv-topbar" role="banner">
         <div class="edv-topbar__inner">
-            <a class="edv-brand" href="{{{ homeurl }}}" aria-label="{{sitename}}">
-                <span class="edv-brand__mark" aria-hidden="true">E</span>
-                <span class="edv-brand__name">{{sitename}}</span>
-            </a>
+            {{#branding}}
+                {{> theme_edvorya/components/brand }}
+            {{/branding}}
 
             <div class="edv-topbar__actions">
                 {{{ navbarpluginoutput }}}
@@ -93,6 +95,16 @@
     </div>
 
     <footer class="edv-footer" role="contentinfo">
+        {{#branding}}
+            {{#footertext}}<p class="edv-footer__text">{{footertext}}</p>{{/footertext}}
+            {{#copyright}}<p class="edv-footer__copyright">{{copyright}}</p>{{/copyright}}
+            <nav class="edv-footer__social" aria-label="{{#str}}footerheading, theme_edvorya{{/str}}">
+                {{#facebookurl}}<a href="{{{ facebookurl }}}" rel="noopener noreferrer">Facebook</a>{{/facebookurl}}
+                {{#instagramurl}}<a href="{{{ instagramurl }}}" rel="noopener noreferrer">Instagram</a>{{/instagramurl}}
+                {{#linkedinurl}}<a href="{{{ linkedinurl }}}" rel="noopener noreferrer">LinkedIn</a>{{/linkedinurl}}
+                {{#youtubeurl}}<a href="{{{ youtubeurl }}}" rel="noopener noreferrer">YouTube</a>{{/youtubeurl}}
+            </nav>
+        {{/branding}}
         {{{ output.standard_footer_html }}}
     </footer>
 </div>
