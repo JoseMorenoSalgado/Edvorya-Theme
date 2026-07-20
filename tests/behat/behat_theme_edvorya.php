@@ -51,7 +51,7 @@ class behat_theme_edvorya extends behat_base {
 
         $toggle = $this->find('css', '.edv-mobile-nav__toggle');
         $this->execute_js_on_node($toggle, '{{ELEMENT}}.focus();');
-        self::type_keys($this->getSession(), [behat_keys::ENTER, behat_keys::NULL_KEY]);
+        self::type_keys($this->getSession(), [behat_keys::ENTER]);
         $this->getSession()->wait(250);
     }
 }
