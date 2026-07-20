@@ -1,0 +1,238 @@
+@layer components {
+    .jsenabled .mform .containsadvancedelements .advanced {
+        display: none;
+    }
+
+    .mform .containsadvancedelements .advanced.show {
+        display: flex;
+    }
+
+    .mform fieldset {
+        margin: 0 0 var(--edv-space-4);
+        padding: 0 0 var(--edv-space-4);
+        border: 0;
+        border-bottom: 1px solid var(--edv-color-border);
+    }
+
+    .mform legend {
+        width: 100%;
+        margin-bottom: var(--edv-space-3);
+        font-weight: 700;
+    }
+
+    .mform .fitem {
+        min-width: 0;
+    }
+
+    .d-flex > .form-control {
+        width: auto;
+        max-width: 100%;
+    }
+
+    .d-flex > textarea.form-control {
+        width: 100%;
+    }
+
+    .form-select {
+        width: auto;
+        max-width: 100%;
+    }
+
+    #jump-to-activity.form-select,
+    [data-fieldtype="modgrade"] .form-select,
+    .mform.full-width-labels .form-control,
+    .mform.full-width-labels .form-select {
+        width: 100%;
+    }
+
+    .mform ul.file-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .form-defaultinfo,
+    .form-label .form-shortname,
+    .no-felement.fstatic {
+        color: var(--edv-color-muted);
+    }
+
+    .form-label .form-shortname {
+        display: block;
+        font-size: 0.75rem;
+    }
+
+    .singleselect {
+        max-width: 100%;
+    }
+
+    .input-group {
+        position: relative;
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .input-group > .form-control,
+    .input-group > .form-select {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .input-group-text {
+        display: flex;
+        align-items: center;
+        padding: 0.55rem 0.75rem;
+        border: 1px solid var(--edv-color-border);
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+        white-space: nowrap;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--edv-space-2);
+        min-width: 0;
+    }
+
+    .form-check-input {
+        flex: 0 0 auto;
+        margin-top: 0.2rem;
+    }
+
+    .form-control[readonly],
+    .form-control:disabled,
+    .form-select:disabled {
+        opacity: 1;
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+        cursor: not-allowed;
+    }
+
+    .invalid-feedback,
+    .form-control-feedback.invalid-feedback {
+        display: none;
+        margin-top: var(--edv-space-1);
+        color: var(--edv-color-danger);
+        font-size: 0.875rem;
+    }
+
+    .is-invalid ~ .invalid-feedback,
+    .has-danger .invalid-feedback {
+        display: block;
+    }
+
+    .is-invalid,
+    .has-danger .form-control,
+    .has-danger .form-select {
+        border-color: var(--edv-color-danger);
+    }
+
+    [data-fieldtype="autocomplete"] select,
+    [data-fieldtype="tags"] select,
+    .form-autocomplete-original-select {
+        width: 15rem;
+        max-width: 100%;
+        height: 2.75rem;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        visibility: hidden;
+        overflow: hidden;
+    }
+
+    .felement[data-fieldtype="autocomplete"],
+    .felement[data-fieldtype="tags"] {
+        position: static;
+        display: block !important;
+    }
+
+    .form-autocomplete-selection {
+        min-height: 2.75rem;
+        margin-block: var(--edv-space-1);
+    }
+
+    .form-autocomplete-selection [role="option"] {
+        cursor: pointer;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .form-autocomplete-suggestions {
+        position: absolute;
+        z-index: 1000;
+        min-width: 12rem;
+        max-width: min(36rem, calc(100vw - 2rem));
+        max-height: 20rem;
+        overflow: auto;
+        margin: var(--edv-space-1) 0 0;
+        padding: var(--edv-space-1) 0;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-md);
+    }
+
+    .form-autocomplete-suggestions li {
+        margin: 0;
+        padding: 0.55rem 0.75rem;
+        color: var(--edv-color-foreground);
+        list-style: none;
+        cursor: pointer;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .form-autocomplete-suggestions li:hover,
+    .form-autocomplete-suggestions li:focus,
+    .form-autocomplete-suggestions li[aria-selected="true"] {
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .form-autocomplete-suggestions li[aria-disabled="true"] {
+        opacity: var(--edv-disabled-opacity);
+        pointer-events: none;
+    }
+
+    .form-autocomplete-selection + input.form-control {
+        display: inline-block;
+        width: auto;
+        max-width: 100%;
+        vertical-align: middle;
+    }
+
+    [data-fieldtype="editor"] > div {
+        min-width: 0;
+        flex-grow: 1;
+    }
+
+    textarea[data-auto-rows] {
+        resize: none;
+        overflow-x: hidden;
+    }
+
+    .mform.full-width-labels .fitem.row {
+        margin-inline: 0;
+    }
+
+    .mform.full-width-labels .fitem.row > .col-md-3,
+    .mform.full-width-labels .fitem.row > .col-md-9 {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%;
+        padding-inline: 0;
+    }
+
+    .mform.full-width-labels .fitem.femptylabel > .col-md-3 {
+        display: none;
+    }
+
+    @media (max-width: 47.999rem) {
+        .mform .fitem.row > [class*="col-md-"] {
+            width: 100%;
+            flex-basis: 100%;
+        }
+    }
+}
