@@ -41,7 +41,7 @@ function theme_edvorya_pluginfile(
     $args,
     $forcedownload,
     array $options = []
-): bool {
+) {
     if ($context->contextlevel !== CONTEXT_SYSTEM) {
         return false;
     }
@@ -59,5 +59,7 @@ function theme_edvorya_pluginfile(
     }
 
     $theme = theme_config::load('edvorya');
-    return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+    $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+
+    return false;
 }
