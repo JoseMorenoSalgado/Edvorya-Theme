@@ -4,5 +4,10 @@
 @import "./filemanager.css";
 @import "./core-overlays.css";
 @import "./action-menu.css";
+@import "./activity-common.css";
+@import "./activity-assign.css";
+@import "./activity-quiz.css";
+@import "./activity-forum.css";
+@import "./activity-h5p.css";
 @import "./mobile-navigation.css";
 @import "./tertiary-navigation.css";
