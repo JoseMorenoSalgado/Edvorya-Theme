@@ -20,10 +20,12 @@ $blockshtml = $OUTPUT->blocks('side-pre');
 $hasblocks = strpos($blockshtml, 'data-block=') !== false;
 $corerenderer = $PAGE->get_renderer('core');
 $headercontent = $PAGE->activityheader->export_for_template($corerenderer);
+$branding = (new \theme_edvorya\output\branding())->export_for_template($OUTPUT);
 
 $templatecontext = [
     'output' => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes(['edv-context-secure']),
+    'branding' => $branding,
     'fullheader' => $OUTPUT->full_header(),
     'maincontent' => $OUTPUT->main_content(),
     'sidepreblocks' => $blockshtml,
