@@ -131,40 +131,72 @@ jobs:
             2>&1 | tee "${GITHUB_WORKSPACE}/behat-init.log"
 
       - name: Assignment file submission acceptance
+        id: assignment
+        continue-on-error: true
         working-directory: moodle-docker
         shell: bash
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Submit a file and update the submission with another file' \
-            --format=progress
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/assignment.log"
 
       - name: Quiz attempt review acceptance
+        id: quiz
+        continue-on-error: true
         working-directory: moodle-docker
         shell: bash
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Review the quiz attempt' \
-            --format=progress
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/quiz.log"
 
       - name: Forum inline reply acceptance
+        id: forum
+        continue-on-error: true
         working-directory: moodle-docker
         shell: bash
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Confirm inpage replies work' \
-            --format=progress
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/forum.log"
 
       - name: H5P activity iframe acceptance
+        id: h5p
+        continue-on-error: true
         working-directory: moodle-docker
         shell: bash
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
             --name='Add an h5pactivity to a course' \
-            --format=progress
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/h5p.log"
+
+      - name: Enforce activity acceptance results
+        if: always()
+        shell: bash
+        env:
+          ASSIGNMENT_OUTCOME: ${{ steps.assignment.outcome }}
+          QUIZ_OUTCOME: ${{ steps.quiz.outcome }}
+          FORUM_OUTCOME: ${{ steps.forum.outcome }}
+          H5P_OUTCOME: ${{ steps.h5p.outcome }}
+        run: |
+          set -euo pipefail
+          printf 'Assignment: %s\nQuiz: %s\nForum: %s\nH5P: %s\n' \
+            "$ASSIGNMENT_OUTCOME" "$QUIZ_OUTCOME" "$FORUM_OUTCOME" "$H5P_OUTCOME"
+
+          if [[ "$ASSIGNMENT_OUTCOME" != 'success' || \
+                "$QUIZ_OUTCOME" != 'success' || \
+                "$FORUM_OUTCOME" != 'success' || \
+                "$H5P_OUTCOME" != 'success' ]]; then
+            exit 1
+          fi
 
       - name: Upload Behat diagnostics
         if: failure()
@@ -173,6 +205,10 @@ jobs:
           name: moodle52-edvorya-behat-diagnostics
           path: |
             behat-init.log
+            assignment.log
+            quiz.log
+            forum.log
+            h5p.log
             behat-faildumps
           if-no-files-found: ignore
           retention-days: 14
