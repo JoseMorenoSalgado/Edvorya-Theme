@@ -30,7 +30,7 @@ jobs:
   browser-acceptance:
     name: Moodle 5.2 + MariaDB 10.11 + Chrome
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 75
 
     env:
       MOODLE_DOCKER_DB: mariadb
@@ -179,7 +179,67 @@ jobs:
             --format=progress \
             2>&1 | tee "${GITHUB_WORKSPACE}/h5p.log"
 
-      - name: Enforce activity acceptance results
+      - name: Block editing and configuration acceptance
+        id: blocks
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
+            --name='Configuring the Text block with Javascript on' \
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/blocks.log"
+
+      - name: TinyMCE File Picker dialogue acceptance
+        id: tinyfilepicker
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
+            --name='Browsing repositories in the TinyMCE editor opens the image dialog and shows the FilePicker' \
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/tiny-filepicker.log"
+
+      - name: TinyMCE nested File Picker focus acceptance
+        id: tinyfocus
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
+            --name='Focus returns to the correct location after closing a nested FilePicker' \
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/tiny-focus.log"
+
+      - name: TinyMCE File Picker upload acceptance
+        id: tinyupload
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
+            --name='Browsing repositories in the TinyMCE editor shows the FilePicker and upload url image' \
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/tiny-upload.log"
+
+      - name: Form autocomplete acceptance
+        id: autocomplete
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php \
+            --name='Use autocomplete element which accepts a single value' \
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/autocomplete.log"
+
+      - name: Enforce browser acceptance results
         if: always()
         shell: bash
         env:
@@ -187,17 +247,35 @@ jobs:
           QUIZ_OUTCOME: ${{ steps.quiz.outcome }}
           FORUM_OUTCOME: ${{ steps.forum.outcome }}
           H5P_OUTCOME: ${{ steps.h5p.outcome }}
+          BLOCKS_OUTCOME: ${{ steps.blocks.outcome }}
+          TINY_FILEPICKER_OUTCOME: ${{ steps.tinyfilepicker.outcome }}
+          TINY_FOCUS_OUTCOME: ${{ steps.tinyfocus.outcome }}
+          TINY_UPLOAD_OUTCOME: ${{ steps.tinyupload.outcome }}
+          AUTOCOMPLETE_OUTCOME: ${{ steps.autocomplete.outcome }}
         run: |
           set -euo pipefail
-          printf 'Assignment: %s\nQuiz: %s\nForum: %s\nH5P: %s\n' \
-            "$ASSIGNMENT_OUTCOME" "$QUIZ_OUTCOME" "$FORUM_OUTCOME" "$H5P_OUTCOME"
+          printf 'Assignment: %s\nQuiz: %s\nForum: %s\nH5P: %s\nBlocks: %s\nTinyMCE File Picker: %s\nTinyMCE focus: %s\nTinyMCE upload: %s\nAutocomplete: %s\n' \
+            "$ASSIGNMENT_OUTCOME" "$QUIZ_OUTCOME" "$FORUM_OUTCOME" "$H5P_OUTCOME" \
+            "$BLOCKS_OUTCOME" "$TINY_FILEPICKER_OUTCOME" "$TINY_FOCUS_OUTCOME" \
+            "$TINY_UPLOAD_OUTCOME" "$AUTOCOMPLETE_OUTCOME"
 
-          if [[ "$ASSIGNMENT_OUTCOME" != 'success' || \
-                "$QUIZ_OUTCOME" != 'success' || \
-                "$FORUM_OUTCOME" != 'success' || \
-                "$H5P_OUTCOME" != 'success' ]]; then
-            exit 1
-          fi
+          outcomes=(
+            "$ASSIGNMENT_OUTCOME"
+            "$QUIZ_OUTCOME"
+            "$FORUM_OUTCOME"
+            "$H5P_OUTCOME"
+            "$BLOCKS_OUTCOME"
+            "$TINY_FILEPICKER_OUTCOME"
+            "$TINY_FOCUS_OUTCOME"
+            "$TINY_UPLOAD_OUTCOME"
+            "$AUTOCOMPLETE_OUTCOME"
+          )
+
+          for outcome in "${outcomes[@]}"; do
+            if [[ "$outcome" != 'success' ]]; then
+              exit 1
+            fi
+          done
 
       - name: Upload Behat diagnostics
         if: failure()
@@ -210,6 +288,11 @@ jobs:
             quiz.log
             forum.log
             h5p.log
+            blocks.log
+            tiny-filepicker.log
+            tiny-focus.log
+            tiny-upload.log
+            autocomplete.log
             behat-faildumps
           if-no-files-found: ignore
           retention-days: 14
