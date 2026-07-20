@@ -28,7 +28,10 @@ concurrency:
 jobs:
   runtime:
     name: Moodle 5.2 + MariaDB 10.11
-    runs-on: [self-hosted, Linux, X64, edvorya-ci]
+    runs-on:
+      - self-hosted
+      - linux
+      - edvorya-ci
     timeout-minutes: 45
 
     env:
