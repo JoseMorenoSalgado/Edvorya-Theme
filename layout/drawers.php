@@ -26,10 +26,22 @@ $primarymenu = $primary->export_for_template($corerenderer);
 $mobileprimarynav = $primarymenu['mobileprimarynav'] ?? false;
 
 $secondarynavigation = false;
+$overflow = false;
 if ($PAGE->has_secondary_navigation()) {
     $tablistnav = $PAGE->has_tablist_secondary_navigation();
     $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
     $secondarynavigation = $moremenu->export_for_template($OUTPUT);
+
+    $overflowdata = $PAGE->secondarynav->get_overflow_menu_data();
+    if (!is_null($overflowdata)) {
+        $selectmenu = new \core\output\select_menu(
+            'tertiarynavigation',
+            $overflowdata->urls,
+            $overflowdata->selected,
+        );
+        $selectmenu->set_label($overflowdata->label, $overflowdata->labelattributes);
+        $overflow = $selectmenu->export_for_template($OUTPUT);
+    }
 }
 
 $buildregionmainsettings = !$PAGE->include_region_main_settings_in_header_actions()
@@ -59,6 +71,7 @@ $templatecontext = [
     'editswitch' => $OUTPUT->edit_switch(),
     'pageheadingmenu' => $OUTPUT->page_heading_menu(),
     'secondarymoremenu' => $secondarynavigation,
+    'overflow' => $overflow,
     'regionmainsettingsmenu' => $regionmainsettingsmenu,
     'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
     'headercontent' => $headercontent,
