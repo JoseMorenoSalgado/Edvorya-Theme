@@ -1,0 +1,14 @@
+{
+  "name": "moodle-theme-edvorya",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "description": "Build tooling for the standalone Edvorya Moodle theme",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./src/styles/tailwind.css -o ./style/edvorya.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./src/styles/tailwind.css -o ./style/edvorya.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}
