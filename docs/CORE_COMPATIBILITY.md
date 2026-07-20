@@ -10,16 +10,19 @@ Edvorya therefore maintains a selective compatibility surface based on observed 
 
 ### `src/styles/core-utilities.css`
 
-Verified utility classes used by Moodle Core templates, including block markup and accessible skip links.
+Verified utility classes used by Moodle Core templates, including block markup, accessible skip links, hidden state, print visibility, and selected small layout helpers.
 
 Current coverage includes:
 
+- `hidden`;
 - `visually-hidden-focusable`;
 - `p-3`;
 - `mt-3`;
 - `mb-3`;
 - `h5`;
 - `btn-icon`;
+- `d-print-none`;
+- `d-print-block`;
 - selected small layout helpers required by Core-generated markup.
 
 ### `src/styles/moodle-forms.css`
@@ -64,6 +67,21 @@ Provides the structural styles required by Core overlay components:
 - dropdown headers, dividers, active and disabled states.
 
 JavaScript state remains owned by Moodle Core.
+
+### `src/styles/action-menu.css`
+
+Presents Moodle Core Action Menu controls used throughout blocks, courses, administration, and activities.
+
+Current coverage includes:
+
+- action menu trigger layout;
+- dropdown trigger hover/focus state;
+- Core caret fallback;
+- menu width constraints on mobile;
+- icon alignment;
+- block control alignment.
+
+The module relies on Moodle's existing `data-bs-toggle="dropdown"` behaviour and does not introduce replacement JavaScript.
 
 ### `src/styles/tertiary-navigation.css`
 
