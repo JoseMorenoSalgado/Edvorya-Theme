@@ -1,8 +1,13 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 
 /**
- * Primary Edvorya layout.
+ * Primary Edvorya application layout.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -11,16 +16,56 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$hasblocks = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
+$blockshtml = $OUTPUT->blocks('side-pre');
+$addblockbutton = $OUTPUT->addblockbutton();
+$hasblocks = strpos($blockshtml, 'data-block=') !== false || !empty($addblockbutton);
+
+$corerenderer = $PAGE->get_renderer('core');
+$primary = new \core\navigation\output\primary($PAGE);
+$primarymenu = $primary->export_for_template($corerenderer);
+
+$secondarynavigation = false;
+if ($PAGE->has_secondary_navigation()) {
+    $tablistnav = $PAGE->has_tablist_secondary_navigation();
+    $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
+    $secondarynavigation = $moremenu->export_for_template($OUTPUT);
+}
+
+$buildregionmainsettings = !$PAGE->include_region_main_settings_in_header_actions()
+    && !$PAGE->has_secondary_navigation();
+$regionmainsettingsmenu = $buildregionmainsettings ? $OUTPUT->region_main_settings_menu() : false;
+$headercontent = $PAGE->activityheader->export_for_template($corerenderer);
+
+$institutionname = get_config('theme_edvorya', 'institutionname');
+if (empty($institutionname)) {
+    $institutionname = $SITE->shortname;
+}
+
+$authenticated = isloggedin() && !isguestuser();
+$bodyclasses = [$authenticated ? 'edv-context-authenticated' : 'edv-context-public'];
 
 $templatecontext = [
     'output' => $OUTPUT,
-    'bodyattributes' => $OUTPUT->body_attributes(),
-    'sitename' => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID)]),
+    'bodyattributes' => $OUTPUT->body_attributes($bodyclasses),
+    'sitename' => format_string($institutionname, true, ['context' => context_course::instance(SITEID)]),
+    'homeurl' => (new \moodle_url('/'))->out(false),
     'fullheader' => $OUTPUT->full_header(),
     'maincontent' => $OUTPUT->main_content(),
-    'sidepreblocks' => $hasblocks ? $OUTPUT->blocks('side-pre') : '',
+    'sidepreblocks' => $blockshtml,
     'hasblocks' => $hasblocks,
+    'addblockbutton' => $addblockbutton,
+    'primarymoremenu' => $primarymenu['moremenu'] ?? false,
+    'mobileprimarynav' => $primarymenu['mobileprimarynav'] ?? false,
+    'langmenu' => $primarymenu['lang'] ?? false,
+    'usermenu' => $OUTPUT->user_menu(),
+    'navbarpluginoutput' => $OUTPUT->navbar_plugin_output(),
+    'editswitch' => $OUTPUT->edit_switch(),
+    'pageheadingmenu' => $OUTPUT->page_heading_menu(),
+    'secondarymoremenu' => $secondarynavigation,
+    'regionmainsettingsmenu' => $regionmainsettingsmenu,
+    'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
+    'headercontent' => $headercontent,
+    'authenticated' => $authenticated,
 ];
 
 echo $OUTPUT->render_from_template('theme_edvorya/layout/drawers', $templatecontext);
