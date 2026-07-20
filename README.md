@@ -5,11 +5,11 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.2`
+- Release: `0.1.0-alpha.3`
 - Target baseline: Moodle 5.2
 - Minimum Moodle version: `2026042000`
 - Parent themes: none (`$THEME->parents = []`)
-- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed for the alpha.1 foundation; alpha.2 adds responsive navigation and selective Moodle Core compatibility hardening; browser-level acceptance work remains
+- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed for the alpha.1 foundation; alpha.2 added responsive navigation and selective Moodle Core compatibility hardening; alpha.3 adds scoped Assignment, Quiz, Forum, and H5P compatibility hardening; browser-level acceptance work remains
 
 ## Runtime dependencies
 
@@ -64,7 +64,7 @@ Build entrypoint:
 src/styles/index.css
 ```
 
-The entrypoint composes the Edvorya Design System stylesheet and selective theme-owned compatibility modules for Moodle Core surfaces. The compatibility layer is intentionally evidence-driven and does not attempt to clone Bootstrap or Boost.
+The entrypoint composes the Edvorya Design System stylesheet and selective theme-owned compatibility modules for Moodle Core and verified activity surfaces. The compatibility layer is intentionally evidence-driven and does not attempt to clone Bootstrap or Boost.
 
 Compiled production artifact:
 
@@ -76,12 +76,13 @@ Tailwind Preflight is intentionally not imported.
 
 ## Architecture
 
-The architectural contract, layout strategy, Design System boundaries, public experience plan, security rules, performance rules, responsive navigation strategy, Core compatibility policy, and future `local_edvorya` integration are documented in:
+The architectural contract, layout strategy, Design System boundaries, public experience plan, security rules, performance rules, responsive navigation strategy, Core compatibility policy, activity compatibility policy, and future `local_edvorya` integration are documented in:
 
 ```text
 docs/ARCHITECTURE.md
 docs/MOBILE_NAVIGATION.md
 docs/CORE_COMPATIBILITY.md
+docs/ACTIVITY_COMPATIBILITY.md
 ```
 
 `theme_edvorya` owns presentation, layouts, visual identity, navigation composition, and branding.
@@ -102,6 +103,6 @@ The isolated Moodle runtime smoke-validation result for the alpha.1 foundation i
 docs/MOODLE52_RUNTIME_STATUS.md
 ```
 
-Alpha.2 includes additional Core compatibility and responsive changes made after that runtime smoke test. These changes must receive browser-level regression testing before the foundation is merged.
+Alpha.2 and alpha.3 include additional Core, responsive, and activity compatibility changes made after that runtime smoke test. These changes must receive browser-level regression testing before the foundation is merged.
 
 Passing static and HTTP/runtime smoke validation does not mean the theme has completed full Moodle 5.2 production acceptance. The foundation PR remains unmerged until browser-level functional, responsive, accessibility, editor, File Picker, activity, and representative plugin regression testing is completed.
