@@ -64,14 +64,7 @@ Workflow run `29786269521` completed successfully and re-ran the activity scenar
 
 Scenario: `Configuring the Text block with Javascript on`
 
-Coverage includes:
-
-- logging in as administrator;
-- enabling editing mode;
-- adding a Text block through the Moodle block interface;
-- configuring the block;
-- saving changes;
-- rendering the configured block and content.
+Coverage includes logging in as administrator, enabling editing mode, adding/configuring a Text block, saving changes, and rendering the configured block content.
 
 Result: **PASS**.
 
@@ -107,6 +100,26 @@ Coverage includes opening the autocomplete suggestions list, selecting a value, 
 
 Result: **PASS**.
 
+## Messaging and notification acceptance
+
+Workflow run `29786702098` completed successfully and re-ran all preceding scenarios together with the following communication surfaces.
+
+### Private messaging conversation
+
+Scenario: `Send a message to a private conversation via contact tab`
+
+Coverage includes opening Moodle messaging, navigating through Contacts, selecting a private conversation, sending a message, and verifying the rendered conversation output.
+
+Result: **PASS**.
+
+### Notification popover and preference behavior
+
+Scenario: `User can disable notification preferences`
+
+Coverage includes generating Assignment submission notifications, validating unread notification counts, opening the notification popover, and confirming notification visibility or absence according to user preferences.
+
+Result: **PASS**.
+
 ## Current gate result
 
 - Moodle/MariaDB/Selenium startup: PASS
@@ -123,13 +136,16 @@ Result: **PASS**.
 - Nested File Picker focus return: PASS
 - TinyMCE File Picker upload: PASS
 - Form autocomplete selection lifecycle: PASS
+- Private messaging conversation: PASS
+- Notification popover/preferences: PASS
+- Aggregate browser gate: PASS
 - Ephemeral environment cleanup: PASS
 
 Overall result: **PASS**.
 
 ## What this validates
 
-The current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity and shared Core interaction flows without requiring Boost or another parent theme.
+The current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity, Core interaction, messaging, and notification flows without requiring Boost or another parent theme.
 
 The tested paths now provide representative browser evidence for:
 
@@ -138,7 +154,9 @@ The tested paths now provide representative browser evidence for:
 - File Picker/File Manager upload flows;
 - TinyMCE dialogues;
 - nested modal focus restoration;
-- autocomplete selection interaction.
+- autocomplete selection interaction;
+- Moodle messaging conversation interaction;
+- notification popover rendering and preference-sensitive notification visibility.
 
 These are representative acceptance tests, not exhaustive proof for every Moodle feature or third-party plugin.
 
@@ -146,8 +164,8 @@ These are representative acceptance tests, not exhaustive proof for every Moodle
 
 The remaining pre-merge acceptance work is now concentrated on:
 
-- notifications and messaging interaction details;
 - broader keyboard-only navigation beyond the tested nested File Picker focus path;
-- screen-reader/accessibility smoke testing;
-- responsive/mobile testing, especially iPhone Safari, Android Chrome, and tablet widths;
+- automated accessibility smoke testing where supported by Moodle's Behat accessibility tooling;
+- responsive viewport testing for phone and tablet layouts in Chrome/Selenium;
+- true Safari/iPhone validation, which cannot be honestly represented by Linux Chrome emulation alone;
 - representative third-party plugins.
