@@ -1,0 +1,235 @@
+@layer components {
+    .filepicker .moodle-dialogue-bd {
+        min-height: min(32.5rem, calc(100dvh - 6rem));
+    }
+
+    .file-picker,
+    .filemanager {
+        min-width: 0;
+        color: var(--edv-color-foreground);
+    }
+
+    .fp-navbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--edv-space-2);
+        padding: var(--edv-space-2);
+        border: 1px solid var(--edv-color-border);
+        border-bottom: 0;
+        border-radius: var(--edv-radius-sm) var(--edv-radius-sm) 0 0;
+        background: #ffffff;
+    }
+
+    .file-picker .fp-content,
+    .filemanager .fp-content {
+        min-width: 0;
+        min-height: 16rem;
+        max-height: min(32rem, calc(100dvh - 10rem));
+        overflow: auto;
+        border: 1px solid var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .file-picker .fp-content-loading,
+    .file-picker .fp-content-error,
+    .filemanager .fp-content-loading {
+        width: 100%;
+        min-height: 16rem;
+        display: grid;
+        place-items: center;
+        text-align: center;
+    }
+
+    .file-picker .fp-list {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .file-picker .fp-list .fp-repo a {
+        display: flex;
+        align-items: center;
+        gap: var(--edv-space-2);
+        min-height: 2.5rem;
+        padding: 0.5rem 0.75rem;
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .file-picker .fp-list .fp-repo a:hover,
+    .file-picker .fp-list .fp-repo.active a {
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .file-picker .fp-list .fp-repo-icon {
+        width: 1rem;
+        height: 1rem;
+        flex: 0 0 auto;
+    }
+
+    .fp-toolbar,
+    .fp-viewbar,
+    .fp-pathbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--edv-space-1);
+        min-width: 0;
+    }
+
+    .fp-toolbar.empty,
+    .fp-pathbar.empty,
+    .fp-toolbar .disabled {
+        display: none;
+    }
+
+    .fp-toolbar img,
+    .fp-icon img {
+        max-width: 1.5rem;
+        max-height: 1.5rem;
+        vertical-align: middle;
+    }
+
+    .fp-viewbar.disabled {
+        opacity: var(--edv-disabled-opacity);
+        pointer-events: none;
+    }
+
+    .fp-viewbar:not(.disabled) a.checked {
+        border-color: var(--edv-color-primary);
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .fp-iconview {
+        min-width: 0;
+    }
+
+    .fp-iconview .fp-file {
+        position: relative;
+        float: inline-start;
+        margin: 0.625rem 0.625rem 2.25rem;
+        text-align: center;
+    }
+
+    .fp-iconview .fp-thumbnail {
+        display: block;
+        min-width: 6.875rem;
+        min-height: 6.875rem;
+        line-height: 6.875rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: #ffffff;
+    }
+
+    .fp-iconview .fp-thumbnail:hover,
+    .fp-iconview .fp-file:focus .fp-thumbnail {
+        border-color: var(--edv-color-primary);
+        background: var(--edv-hover-overlay);
+    }
+
+    .fp-iconview .fp-thumbnail img {
+        max-width: 6rem;
+        max-height: 6rem;
+        padding: var(--edv-space-1);
+        vertical-align: middle;
+    }
+
+    .fp-iconview .fp-filename-field {
+        position: absolute;
+        width: 100%;
+        margin-top: var(--edv-space-1);
+        overflow: hidden;
+        word-break: break-word;
+    }
+
+    .fp-filename {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .fp-iconview .fp-file:hover .fp-filename,
+    .fp-iconview .fp-file:focus .fp-filename {
+        overflow: visible;
+        white-space: normal;
+    }
+
+    .file-picker .yui3-datatable table,
+    .filemanager table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .file-picker .yui3-datatable th,
+    .file-picker .yui3-datatable td,
+    .filemanager th,
+    .filemanager td {
+        padding: 0.625rem;
+        border-bottom: 1px solid var(--edv-color-border);
+        text-align: start;
+        vertical-align: top;
+    }
+
+    .file-picker .fp-upload-form,
+    .file-picker .fp-login-form {
+        width: 100%;
+        min-height: 16rem;
+        display: grid;
+        place-items: center;
+    }
+
+    .fp-select .fp-thumbnail {
+        float: inline-start;
+        min-width: 6.875rem;
+        min-height: 6.875rem;
+        margin: 0.625rem 1rem 0.625rem 0;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: var(--edv-color-background);
+        text-align: center;
+    }
+
+    .fp-select .fp-fileinfo {
+        display: inline-block;
+        max-width: 100%;
+        margin-top: var(--edv-space-2);
+    }
+
+    .fp-select .fp-select-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: var(--edv-space-2);
+        clear: both;
+    }
+
+    .filemanager-container,
+    .filemanager .fp-restrictions {
+        max-width: 100%;
+    }
+
+    @media (max-width: 47.999rem) {
+        .filepicker .moodle-dialogue-bd {
+            min-height: min(28rem, calc(100dvh - 4rem));
+        }
+
+        .file-picker .fp-content,
+        .filemanager .fp-content {
+            max-height: calc(100dvh - 8rem);
+        }
+
+        .fp-navbar {
+            align-items: stretch;
+        }
+
+        .fp-toolbar,
+        .fp-viewbar,
+        .fp-pathbar {
+            width: 100%;
+        }
+    }
+}
