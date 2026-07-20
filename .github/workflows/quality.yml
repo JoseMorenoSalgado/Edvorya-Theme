@@ -1,0 +1,40 @@
+name: Theme quality checks
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - feature/theme-foundation
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate PHP syntax
+        shell: bash
+        run: |
+          php -v
+          find . -type f -name '*.php' -not -path './node_modules/*' -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install CSS build dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Rebuild production CSS
+        run: npm run build:css
+
+      - name: Verify compiled CSS is committed
+        run: git diff --exit-code -- style/edvorya.css
