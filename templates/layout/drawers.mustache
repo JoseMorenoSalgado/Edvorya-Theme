@@ -25,6 +25,10 @@
                 {{> theme_edvorya/components/brand }}
             {{/branding}}
 
+            {{#hasmobileprimarynav}}
+                {{> theme_edvorya/components/mobile_navigation }}
+            {{/hasmobileprimarynav}}
+
             <div class="edv-topbar__actions">
                 {{{ navbarpluginoutput }}}
                 {{{ pageheadingmenu }}}
@@ -38,7 +42,7 @@
     </header>
 
     <div class="edv-page">
-        <aside class="edv-sidebar" aria-label="{{#str}}navigation{{/str}}">
+        <aside class="edv-sidebar {{^hasblocks}}edv-sidebar--navigation-only{{/hasblocks}}">
             {{#primarymoremenu}}
                 <nav class="edv-primary-nav" aria-label="{{#str}}primarynavigation, core{{/str}}">
                     {{> core/moremenu }}
