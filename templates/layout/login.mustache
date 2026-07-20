@@ -1,0 +1,25 @@
+{{! Edvorya login layout. }}
+{{{ output.doctype }}}
+<html {{{ output.htmlattributes }}}>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{{ output.page_title }}}</title>
+    {{{ output.standard_head_html }}}
+</head>
+<body {{{ bodyattributes }}}>
+{{{ output.standard_top_of_body_html }}}
+
+<main id="page" class="edv-login" role="main">
+    <section class="edv-login__panel" aria-label="{{sitename}}">
+        <div class="edv-login__brand" aria-hidden="true">E</div>
+        <div class="edv-login__content">
+            {{{ maincontent }}}
+        </div>
+    </section>
+</main>
+
+{{{ output.standard_after_main_region_html }}}
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>
