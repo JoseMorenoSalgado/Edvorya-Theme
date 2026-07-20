@@ -8,6 +8,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{{ output.page_title }}}</title>
+    {{#branding}}
+        {{> theme_edvorya/components/branding_head }}
+    {{/branding}}
     {{{ output.standard_head_html }}}
 </head>
 <body {{{ bodyattributes }}}>
