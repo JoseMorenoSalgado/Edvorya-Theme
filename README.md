@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.16`
+- Release: `0.1.0-alpha.17`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -19,9 +19,35 @@ Edvorya remains responsible for the application shell, topbar, sidebar, mobile d
 
 The theme does not modify Moodle Core and does not depend on RemUI, Classic, Lambda or commercial themes.
 
+## Visual identity
+
+Alpha.17 begins the direct visual alignment with the current `Edvorya-LMS` product while preserving Moodle semantics and Boost compatibility.
+
+The visual source of truth is documented in:
+
+```text
+docs/VISUAL_IDENTITY.md
+```
+
+Key translated patterns include:
+
+- 64px sticky translucent topbar;
+- compact 36px ghost shell actions;
+- 256px desktop sidebar and 18rem mobile drawer;
+- bare 18px Lucide-style navigation icons;
+- 40px navigation rows;
+- two-level `Edvorya LMS + institution` brand lockup;
+- white/slate neutral canvas with one institutional primary accent;
+- restrained `shadow-sm` surfaces;
+- 12-16px normal surface radii;
+- plain PageShell-style headings with a quiet divider instead of large hero cards;
+- compact dashboard decision cards aligned with Edvorya LMS summary surfaces.
+
+The theme does not import React, shadcn, Radix or Tailwind runtime code from Edvorya-LMS. Product decisions are translated into Moodle CSS, Mustache and PHP components.
+
 ## Compatibility boundary
 
-The original standalone alpha duplicated Moodle Core presentation contracts that Boost already maintains. Alpha.15 moved those responsibilities to Boost. Alpha.16 performs a second surgical cleanup of the remaining transversal CSS.
+The original standalone alpha duplicated Moodle Core presentation contracts that Boost already maintains. Alpha.15 moved those responsibilities to Boost. Alpha.16 performed a second surgical cleanup of the remaining transversal CSS.
 
 Removed or delegated to Boost:
 
@@ -64,6 +90,12 @@ Compiled production artifact:
 
 ```text
 style/edvorya.css
+```
+
+The final compiled visual skin is defined by:
+
+```text
+src/styles/identity.css
 ```
 
 Focused runtime sheets:
