@@ -1,0 +1,360 @@
+/* Edvorya application-shell refinements.
+ *
+ * Boost owns Moodle Core compatibility, dropdowns, forms, popovers and utility
+ * contracts. This sheet only styles the Edvorya-owned shell and navigation.
+ */
+
+.edv-mobile-nav {
+    position: relative;
+    z-index: 70;
+}
+
+.edv-mobile-nav__toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--edv-color-border);
+    border-radius: 0.85rem;
+    background: #fff;
+    color: var(--edv-color-foreground);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    cursor: pointer;
+    list-style: none;
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.edv-mobile-nav__toggle::-webkit-details-marker,
+.edv-mobile-nav__group > summary::-webkit-details-marker {
+    display: none;
+}
+
+.edv-mobile-nav__toggle:hover,
+.edv-mobile-nav[open] > .edv-mobile-nav__toggle {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 20%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 7%, #fff);
+    color: var(--edv-color-primary);
+    box-shadow: 0 5px 14px rgb(15 23 42 / 0.08);
+}
+
+.edv-mobile-nav__toggle:active {
+    transform: scale(0.96);
+}
+
+.edv-mobile-nav[open]::before {
+    content: "";
+    position: fixed;
+    z-index: 55;
+    top: var(--edv-topbar-height);
+    inset-inline: 0;
+    bottom: 0;
+    background: rgb(15 23 42 / 0.42);
+    backdrop-filter: blur(2px);
+}
+
+.edv-mobile-nav__panel {
+    position: fixed;
+    z-index: 60;
+    top: var(--edv-topbar-height);
+    bottom: 0;
+    inset-inline-start: 0;
+    width: min(22rem, calc(100vw - 3rem));
+    overflow-y: auto;
+    border: 0;
+    border-inline-end: 1px solid var(--edv-color-border);
+    border-radius: 0 1.5rem 1.5rem 0;
+    background: #fff;
+    box-shadow: 24px 0 48px rgb(15 23 42 / 0.18);
+    overscroll-behavior: contain;
+    animation: edv-drawer-enter 170ms ease-out;
+}
+
+.edv-mobile-nav__panel-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: grid;
+    gap: 0.65rem;
+    padding: 1rem 1rem 0.9rem;
+    border-bottom: 1px solid var(--edv-color-border);
+    background: rgb(255 255 255 / 0.96);
+    backdrop-filter: blur(12px);
+}
+
+.edv-mobile-nav__panel-brand .edv-brand {
+    width: 100%;
+    gap: 0.7rem;
+}
+
+.edv-mobile-nav__panel-label {
+    color: var(--edv-color-muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.edv-mobile-nav__content {
+    width: 100%;
+    margin: 0;
+    padding: 0.75rem 0.75rem 1.5rem;
+}
+
+.edv-mobile-nav__list,
+.edv-mobile-nav__children {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edv-mobile-nav__list {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.edv-mobile-nav__link,
+.edv-mobile-nav__child-link {
+    width: 100%;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid transparent;
+    border-radius: 0.9rem;
+    color: var(--edv-color-foreground);
+    font-weight: 650;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.edv-mobile-nav__group > .edv-mobile-nav__link {
+    justify-content: space-between;
+}
+
+.edv-mobile-nav__link:hover,
+.edv-mobile-nav__child-link:hover {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 12%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 6%, #fff);
+    color: var(--edv-color-foreground);
+}
+
+.edv-mobile-nav__link:focus-visible,
+.edv-mobile-nav__child-link:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
+    outline-offset: 2px;
+}
+
+.edv-mobile-nav__link.is-active,
+.edv-mobile-nav__child-link.is-active,
+.edv-mobile-nav__link.is-active .edv-mobile-nav__item-text,
+.edv-mobile-nav__child-link.is-active .edv-mobile-nav__item-text {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 16%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #fff);
+    color: var(--edv-color-foreground);
+    font-weight: 750;
+}
+
+.edv-mobile-nav__item-icon {
+    flex: 0 0 auto;
+    width: 2.1rem;
+    height: 2.1rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.edv-mobile-nav__item-icon-svg.icon {
+    width: 1.1rem;
+    max-width: 1.1rem;
+    height: 1.1rem;
+    max-height: 1.1rem;
+    margin: 0;
+}
+
+.edv-mobile-nav__link.is-active .edv-mobile-nav__item-icon,
+.edv-mobile-nav__child-link.is-active .edv-mobile-nav__item-icon {
+    background: color-mix(in srgb, var(--edv-color-primary) 14%, #fff);
+}
+
+.edv-mobile-nav__children {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.25rem 0 0.35rem 1rem;
+    padding: 0.15rem 0 0.15rem 0.75rem;
+    border-inline-start: 1px solid var(--edv-color-border);
+}
+
+.edv-mobile-nav__child-link {
+    min-height: 2.7rem;
+    color: #475569;
+    font-size: 0.925rem;
+    font-weight: 600;
+}
+
+.edv-mobile-nav__chevron {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.55rem;
+    color: var(--edv-color-muted);
+}
+
+.edv-mobile-nav__group[open] > summary .edv-mobile-nav__chevron {
+    background: color-mix(in srgb, var(--edv-color-primary) 8%, #fff);
+    color: var(--edv-color-primary);
+}
+
+.edv-topbar__actions .popover-region-toggle,
+.edv-topbar__actions .userbutton,
+.edv-topbar__actions .dropdown-toggle {
+    border-radius: 0.8rem;
+}
+
+.edv-topbar__actions .popover-region-toggle {
+    width: 2.6rem;
+    min-width: 2.6rem;
+    height: 2.6rem;
+    min-height: 2.6rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--edv-color-foreground);
+}
+
+.edv-topbar__actions .popover-region-toggle:hover,
+.edv-topbar__actions .popover-region-toggle:focus-visible {
+    border-color: var(--edv-color-border);
+    background: #f8fafc;
+    color: var(--edv-color-primary);
+}
+
+.edv-topbar__actions .count-container {
+    min-width: 1.2rem;
+    height: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.28rem;
+    border: 2px solid #fff;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.edv-topbar__actions .usermenu .userbutton {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.35rem;
+    border: 1px solid var(--edv-color-border);
+    background: #fff;
+}
+
+.edv-topbar__actions .usermenu .avatars img,
+.edv-topbar__actions .usermenu .userpicture {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 0.7rem;
+    object-fit: cover;
+}
+
+.edv-topbar__actions .editmode-switch-form .form-check-input,
+.edv-topbar__actions .form-switch .form-check-input {
+    width: 2.25rem;
+    height: 1.25rem;
+    min-width: 2.25rem;
+    margin: 0;
+}
+
+@keyframes edv-drawer-enter {
+    from {
+        opacity: 0.7;
+        transform: translateX(-1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 47.999rem) {
+    :root {
+        --edv-topbar-height: 4.5rem;
+    }
+
+    .edv-topbar__inner {
+        width: 100%;
+        min-width: 0;
+        justify-content: flex-start;
+        gap: 0.45rem;
+        padding-inline: 0.75rem;
+    }
+
+    .edv-topbar__actions {
+        min-width: 0;
+        margin-inline-start: auto;
+        gap: 0.15rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .edv-topbar__actions .usermenu .usertext,
+    .edv-topbar__actions .usertext,
+    .edv-topbar__actions .editmode-switch-form label,
+    .edv-topbar__actions .form-switch > label,
+    .edv-topbar__actions .form-switch .form-check-label {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+
+    .edv-topbar__actions .popover-region-toggle,
+    .edv-topbar__actions .dropdown-toggle,
+    .edv-topbar__actions .userbutton {
+        min-width: 2.6rem;
+        min-height: 2.6rem;
+    }
+
+    .edv-topbar__actions .usermenu .userbutton {
+        padding: 0.15rem 0.25rem;
+        border-color: transparent;
+        background: transparent;
+    }
+
+    .edv-topbar__actions .usermenu .avatars img,
+    .edv-topbar__actions .usermenu .userpicture {
+        width: 2.55rem;
+        height: 2.55rem;
+        border-radius: 0.8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edv-mobile-nav__panel {
+        animation: none;
+    }
+
+    .edv-mobile-nav__toggle,
+    .edv-mobile-nav__link,
+    .edv-mobile-nav__child-link {
+        transition: none;
+    }
+}
