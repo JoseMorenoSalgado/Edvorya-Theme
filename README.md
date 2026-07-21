@@ -9,7 +9,7 @@
 - Target baseline: Moodle 5.2
 - Minimum Moodle version: `2026042000`
 - Parent themes: none (`$THEME->parents = []`)
-- Status: foundation alpha; static validation and isolated Moodle 5.2 + MariaDB 10.11 runtime validation pass; contextual Edvorya experiences for Dashboard, My Courses, and Course View pass representative phone and desktop browser acceptance; representative Chrome/Selenium Behat acceptance also passes for Assignment, Quiz, Forum, H5P, Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, Feedback, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, responsive navigation, keyboard navigation, automated Axe accessibility smoke testing, and the required Google Drive `mod_videoplayer` integration; client colour tokens use Moodle's cached CSS post-processing pipeline instead of a theme-owned inline style block; administrator branding uploads are restricted to raster image types and legacy uploaded SVG branding is rejected at serving time
+- Status: foundation alpha; static validation and isolated Moodle 5.2 + MariaDB 10.11 runtime validation pass; contextual Edvorya experiences for Dashboard, My Courses, Course View, Calendar, Grades, and Profile pass representative phone and desktop browser acceptance; representative Chrome/Selenium Behat acceptance also passes for Assignment, Quiz, Forum, H5P, Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, Feedback, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, responsive navigation, keyboard navigation, automated Axe accessibility smoke testing, and the required Google Drive `mod_videoplayer` integration; client colour tokens use Moodle's cached CSS post-processing pipeline instead of a theme-owned inline style block; administrator branding uploads are restricted to raster image types and legacy uploaded SVG branding is rejected at serving time
 
 ## Runtime dependencies
 
@@ -36,26 +36,33 @@ Stable theme-owned body hooks include:
 edv-layout-mydashboard
 edv-layout-mycourses
 edv-layout-course
+edv-pagetype-calendar-view
+edv-pagetype-grade-report-user-index
+edv-pagetype-user-profile
 ```
 
-The contextual visual layer lives in:
+The contextual visual layers live in:
 
 ```text
 src/styles/page-experiences.css
+src/styles/learning-support-experiences.css
 ```
 
-It provides:
+They provide:
 
 - Dashboard content-header and block surface hierarchy;
 - My Courses responsive course-card and summary-list treatment;
 - course image, metadata, progress, and card-footer presentation;
 - Course View section surfaces and activity-row treatment;
 - scroll-safe secondary course navigation;
+- Calendar month-grid containment with internal responsive scrolling;
+- Grades report surfaces that preserve readable table width and contain horizontal scrolling;
+- Profile information cards built around Moodle's existing `.userprofile` and `.profile_tree` output;
 - responsive spacing and horizontal containment.
 
-Moodle continues to own navigation data, blocks, course-card markup, activity markup, progress data, completion data, editing behavior, and plugin integrations.
+Moodle continues to own navigation data, blocks, course-card markup, activity markup, Calendar behavior, grade data and calculations, profile data, progress data, completion data, editing behavior, and plugin integrations.
 
-The current page-experience acceptance run `29794968969` passes Dashboard, My Courses, and Course View at `390x844` and `1366x768`, including horizontal-containment assertions. The same functional checkpoint also passes the full browser gate (`29794968978`), bundled Moodle plugins (`29794968984`), Google Drive compatibility (`29794968976`), Axe accessibility (`29794968974`), and branding security (`29794969009`).
+The current contextual page-experience acceptance run `29796915539` passes Dashboard, My Courses, Course View, Calendar, Grades, and Profile at `390x844` and `1366x768`, including horizontal-containment assertions. The same functional checkpoint also passes the full browser gate (`29796915496`), bundled Moodle plugins (`29796915497`), Google Drive compatibility (`29796915520`), Axe accessibility (`29796915484`), and branding security (`29796915514`).
 
 ## Installation for Moodle 5.2 testing
 
@@ -95,7 +102,7 @@ Build entrypoint:
 src/styles/index.css
 ```
 
-The entrypoint composes the Edvorya Design System stylesheet, contextual page-experience layer, and selective theme-owned compatibility modules for Moodle Core and verified activity surfaces. The compatibility layer is intentionally evidence-driven and does not attempt to clone Bootstrap or Boost.
+The entrypoint composes the Edvorya Design System stylesheet, contextual page-experience layers, and selective theme-owned compatibility modules for Moodle Core and verified activity surfaces. The compatibility layer is intentionally evidence-driven and does not attempt to clone Bootstrap or Boost.
 
 Client-configurable colour overrides are appended by Moodle's cached theme CSS post-processing callback after the compiled stylesheet is loaded. The theme does not emit its former page-level client-token `<style>` block.
 
@@ -144,7 +151,7 @@ Representative browser, contextual page-experience, bundled-plugin, responsive, 
 docs/MOODLE52_BROWSER_ACCEPTANCE.md
 ```
 
-The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. Dashboard, My Courses, and Course View pass contextual layout and horizontal-containment checks at `390x844` and `1366x768`. The tested activity/Core/communication flows pass with `theme_edvorya` active. A dedicated bundled-plugin matrix passes for Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, and Feedback. The required real `mod_videoplayer` Google Drive repository also passes its dedicated mobile/desktop, overflow, and Axe compatibility gate without plugin-specific theme CSS overrides.
+The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. Dashboard, My Courses, Course View, Calendar, Grades, and Profile pass contextual layout and horizontal-containment checks at `390x844` and `1366x768`. The tested activity/Core/communication flows pass with `theme_edvorya` active. A dedicated bundled-plugin matrix passes for Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, and Feedback. The required real `mod_videoplayer` Google Drive repository also passes its dedicated mobile/desktop, overflow, and Axe compatibility gate without plugin-specific theme CSS overrides.
 
 Theme-specific responsive navigation scenarios pass at `390x844`, `820x1180`, and `1366x768`, including keyboard opening and closing of the native mobile navigation. Representative Site Home, Dashboard, phone navigation, and tablet navigation states also pass Moodle's Axe-based automated accessibility smoke checks.
 
