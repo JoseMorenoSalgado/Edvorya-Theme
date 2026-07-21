@@ -31,6 +31,50 @@ Representative Moodle 5.2 scenarios executed with `theme_edvorya` forced as the 
 
 These flows cover representative file submission/editing, Quiz review, JavaScript in-page Forum reply, and nested H5P iframe rendering.
 
+## Moodle bundled plugin compatibility
+
+Dedicated bundled-plugin workflow run `29794095994` completed successfully with Moodle 5.2, PHP 8.3, MariaDB 10.11, Chrome/Selenium, and `theme_edvorya` active.
+
+Fixtures were created with Moodle's own testing generators for the plugins shipped with Moodle Core. The compatibility matrix covered:
+
+- Book (`mod_book`): **PASS**;
+- Page (`mod_page`): **PASS**;
+- File / Resource (`mod_resource`): **PASS**;
+- Folder (`mod_folder`): **PASS**;
+- URL (`mod_url`) course-page integration: **PASS**;
+- Choice (`mod_choice`): **PASS**;
+- Database (`mod_data`): **PASS**;
+- Glossary (`mod_glossary`): **PASS**;
+- Lesson (`mod_lesson`): **PASS**;
+- Wiki (`mod_wiki`): **PASS**;
+- Workshop (`mod_workshop`): **PASS**;
+- Feedback (`mod_feedback`): **PASS**.
+
+The test also validated that all of these bundled activities/resources remain visible on a `390x844` course page without horizontal overflow. Individual Moodle-owned plugin pages, except the external URL target, were opened at `1366x768` and verified to render inside the Edvorya application shell with `#region-main` contained within the viewport.
+
+The URL resource was intentionally validated at course-page integration level rather than following the external destination, because the external target is not a theme-rendered Moodle surface.
+
+SCORM and LTI are not marked as tested by this matrix. Meaningful SCORM acceptance requires an actual SCORM package, and meaningful LTI acceptance requires a real or deterministic LTI provider. Synthetic empty instances would not constitute trustworthy compatibility evidence.
+
+## Google Drive plugin compatibility
+
+The required third-party integration scope is the real repository `JoseMorenoSalgado/moodle-mod_videoplayer` (`mod_videoplayer`).
+
+Dedicated compatibility workflow run `29792661235` completed successfully against tested plugin revision `37b26d9026de3a4e472c99fa0c604ac10b3a5d72`.
+
+Coverage included:
+
+- installing Moodle 5.2 with Edvorya and Drive Resource together: **PASS**;
+- creating the activity through Moodle's module API: **PASS**;
+- rendering the plugin container and resource iframe: **PASS**;
+- `390x844` viewport: **PASS**;
+- `1366x768` viewport: **PASS**;
+- no horizontal container overflow: **PASS**;
+- Axe on both representative plugin surfaces: **PASS**;
+- ephemeral environment cleanup: **PASS**.
+
+No plugin-specific Edvorya CSS override was required.
+
 ## Shared Core interaction acceptance
 
 Workflow run `29786269521` completed successfully and re-ran the activity scenarios together with:
@@ -113,6 +157,19 @@ The theme now applies client colour overrides through Moodle's cached CSS post-p
 - Quiz representative flow: PASS
 - Forum representative flow: PASS
 - H5P representative flow: PASS
+- Moodle Book: PASS
+- Moodle Page: PASS
+- Moodle File / Resource: PASS
+- Moodle Folder: PASS
+- Moodle URL course integration: PASS
+- Moodle Choice: PASS
+- Moodle Database: PASS
+- Moodle Glossary: PASS
+- Moodle Lesson: PASS
+- Moodle Wiki: PASS
+- Moodle Workshop: PASS
+- Moodle Feedback: PASS
+- Google Drive `mod_videoplayer`: PASS
 - Blocks/editing mode representative flow: PASS
 - TinyMCE/File Picker dialogue: PASS
 - Nested File Picker focus return: PASS
@@ -134,11 +191,14 @@ Overall result for the tested automated Chrome/Selenium surfaces: **PASS**.
 
 ## What remains environment-specific
 
-The automated gates above are representative, not exhaustive proof for every Moodle or third-party plugin surface.
+The automated gates above are representative, not exhaustive proof for every possible Moodle configuration.
 
-Remaining validation that cannot honestly be inferred from Linux Chrome/Selenium alone:
+Remaining validation that cannot honestly be inferred from the current Linux Chrome/Selenium gates alone:
 
 - true Safari/iPhone behavior in a Safari-capable environment;
-- representative third-party Moodle plugins using their actual repositories.
+- SCORM behavior with a representative real SCORM package;
+- LTI behavior with a representative real or deterministic LTI provider.
+
+The required Google Drive integration is already covered separately with the actual `mod_videoplayer` repository.
 
 System-wide CSP compliance also depends on Moodle Core, installed plugins, and server policy. The Edvorya-specific inline client-token style has been removed, but this is not a claim of universal CSP compliance for an entire Moodle installation.
