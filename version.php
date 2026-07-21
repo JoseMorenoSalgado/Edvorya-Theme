@@ -9,8 +9,8 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.11 fixes the standalone language selector by removing an invalid
- * dependency on the non-existent core/language_menu Mustache partial.
+ * Alpha.12 hardens mobile navigation contrast and corrects the automated
+ * compatibility matrix for the Moodle 5.0 versus Moodle 5.1+ directory layout.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -20,8 +20,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072111;
+$plugin->version = 2026072112;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.11';
+$plugin->release = '0.1.0-alpha.12';
