@@ -18,7 +18,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $THEME->name = 'edvorya';
 $THEME->parents = [];
-$THEME->sheets = ['edvorya', 'edvorya-compat', 'edvorya-dashboard'];
+$THEME->sheets = ['edvorya', 'edvorya-compat', 'edvorya-dashboard', 'edvorya-accessibility'];
 $THEME->csspostprocess = 'theme_edvorya_css_post_process';
 $THEME->editor_sheets = [];
 $THEME->doctype = 'html5';
