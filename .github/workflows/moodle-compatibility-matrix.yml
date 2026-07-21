@@ -95,9 +95,11 @@ jobs:
           test -f "$THEME_TARGET/version.php"
           test -f "$THEME_TARGET/config.php"
           test -f "$THEME_TARGET/style/edvorya.css"
+          test -f "$THEME_TARGET/style/edvorya-shell.css"
 
           grep -F '$plugin->requires = 2025041400;' "$THEME_TARGET/version.php"
           grep -F '$plugin->supported = [500, 502];' "$THEME_TARGET/version.php"
+          grep -F '$THEME->parents = ['"'"'boost'"'"'];' "$THEME_TARGET/config.php"
 
       - name: Prepare isolated Moodle configuration
         shell: bash
@@ -106,7 +108,7 @@ jobs:
           cp moodle-docker/config.docker-template.php moodle/config.php
 
           # Force the compatibility site, including Behat, to render theme_edvorya.
-          sed -i "/require_once(__DIR__ . '\/lib\/setup.php');/i\\\$CFG->theme = 'edvorya';" moodle/config.php
+          sed -i "/require_once(__DIR__ . '\/lib\/setup.php');/i\$CFG->theme = 'edvorya';" moodle/config.php
 
           cat > moodle-docker/edvorya-compat-runtime.ini <<'INI'
           max_input_vars=5000
@@ -163,7 +165,7 @@ jobs:
             --format=progress \
             2>&1 | tee "${GITHUB_WORKSPACE}/dashboard-${{ matrix.moodle }}.log"
 
-      - name: Validate standalone Design System containment
+      - name: Validate Edvorya Design System containment
         working-directory: moodle-docker
         shell: bash
         run: |
