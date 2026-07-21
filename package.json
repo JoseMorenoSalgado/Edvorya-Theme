@@ -1,8 +1,8 @@
 {
   "name": "moodle-theme-edvorya",
-  "version": "0.1.0-alpha.9",
+  "version": "0.1.0-alpha.15",
   "private": true,
-  "description": "Build tooling for the standalone Edvorya Moodle theme",
+  "description": "Build tooling for the Edvorya Moodle theme with Boost compatibility parent",
   "scripts": {
     "build:css": "tailwindcss -i ./src/styles/index.css -o ./style/edvorya.css --minify",
     "watch:css": "tailwindcss -i ./src/styles/index.css -o ./style/edvorya.css --watch"
