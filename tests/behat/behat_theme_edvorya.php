@@ -248,7 +248,7 @@ JS;
         }
 
         $script = sprintf(
-            'const element = document.querySelector(%s); return element ? element.getBoundingClientRect().height : -1;',
+            'return document.querySelector(%1$s) ? document.querySelector(%1$s).getBoundingClientRect().height : -1;',
             json_encode($selector, JSON_THROW_ON_ERROR)
         );
         $actual = (float) $this->getSession()->evaluateScript($script);
