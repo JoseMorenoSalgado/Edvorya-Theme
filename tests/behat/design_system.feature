@@ -48,6 +48,7 @@ Feature: Edvorya transversal Design System
     And "#edv-modal-fixture .btn-close" "css_element" should be visible
     And "#edv-modal-fixture .btn-primary" "css_element" should be visible
     And the Edvorya element "#edv-modal-fixture .modal-dialog" should fit within the viewport horizontally
+    And the Edvorya element "#edv-modal-fixture .modal-content" should fit within the viewport horizontally
     And the Edvorya element "#edv-modal-fixture .btn-close" should have a minimum height of "40" pixels
     And the Edvorya page should not have horizontal overflow
 
