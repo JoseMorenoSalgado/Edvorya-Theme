@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.15`
+- Release: `0.1.0-alpha.16`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -13,7 +13,7 @@
 
 ## Architecture
 
-Edvorya uses Boost only as the Moodle Core compatibility parent. Boost owns generic Moodle presentation contracts such as Bootstrap-based utilities, modal/dropdown/popover behavior and technical fallback layouts. Edvorya owns the product experience above that compatibility layer.
+Edvorya uses Boost only as the Moodle Core compatibility parent. Boost owns generic Moodle presentation mechanics such as Bootstrap component behavior, form structure, modal/dropdown/popover behavior, File Picker/File Manager mechanics, Action Menu mechanics and technical fallback layouts. Edvorya owns the product experience above that compatibility layer.
 
 Edvorya remains responsible for the application shell, topbar, sidebar, mobile drawer, Design System, Lucide-style navigation iconography, student/teacher dashboard experience, learning pages, administration presentation, branding, login and responsive behavior.
 
@@ -21,22 +21,27 @@ The theme does not modify Moodle Core and does not depend on RemUI, Classic, Lam
 
 ## Compatibility boundary
 
-The original standalone alpha duplicated Moodle Core presentation contracts that Boost already maintains. Alpha.15 removes that duplication and delegates generic compatibility to Boost.
+The original standalone alpha duplicated Moodle Core presentation contracts that Boost already maintains. Alpha.15 moved those responsibilities to Boost. Alpha.16 performs a second surgical cleanup of the remaining transversal CSS.
 
-Removed from the Edvorya compatibility surface:
+Removed or delegated to Boost:
 
-- standalone Core utility replicas;
-- standalone modal/dropdown/popover positioning contracts;
+- generic Core utility replicas;
+- modal/dropdown/popover mechanics;
 - duplicate technical layouts for popup, embedded, maintenance, print, redirect and secure contexts;
+- generic Bootstrap button/card/table/progress mechanics;
+- Moodle form behavior and autocomplete mechanics;
+- File Picker/File Manager structural layout rules already maintained by Boost;
+- Action Menu/dropdown mechanics;
 - obsolete standalone compatibility and accessibility sheets.
 
-Retained by Edvorya because they define product identity:
+Retained by Edvorya because they define product identity or proven responsive behavior:
 
-- custom application layouts for primary Moodle experiences;
-- custom login layout;
+- custom application and login layouts;
 - Edvorya shell and navigation;
 - dashboard and page-specific experiences;
-- Design System visual overrides;
+- Design System colors, radii, shadows, density and focus treatment;
+- minimum touch targets;
+- table and File Picker viewport containment verified by browser tests;
 - branding settings and token pipeline.
 
 Boost is a compatibility dependency, not the Edvorya visual framework.
@@ -70,7 +75,7 @@ style/edvorya-admin.css
 style/edvorya-context-nav.css
 ```
 
-`style/edvorya-shell.css` contains only Edvorya-owned shell refinements. Generic Moodle Core compatibility rules are inherited from Boost.
+`style/edvorya-shell.css` contains only Edvorya-owned shell refinements. Generic Moodle Core compatibility mechanics are inherited from Boost.
 
 ## Development CSS build
 
@@ -95,9 +100,7 @@ Moodle 5.1 and 5.2 may use the new public webroot structure:
 <moodle-root>/public/theme/edvorya/
 ```
 
-Always use the actual directory structure of the installed Moodle instance.
-
-After updating the theme, complete the Moodle plugin upgrade and purge caches.
+Always use the actual directory structure of the installed Moodle instance. After updating the theme, complete the Moodle plugin upgrade and purge caches.
 
 ## Compatibility target
 
