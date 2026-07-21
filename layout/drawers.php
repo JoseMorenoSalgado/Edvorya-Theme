@@ -53,6 +53,18 @@ $branding = (new \theme_edvorya\output\branding())->export_for_template($OUTPUT)
 $authenticated = isloggedin() && !isguestuser();
 $bodyclasses = [$authenticated ? 'edv-context-authenticated' : 'edv-context-public'];
 
+// Add stable Edvorya-owned context classes without depending on Core body-class naming conventions.
+// These classes are presentation hooks only and do not replace Moodle's own page layout or page type data.
+$layoutclass = preg_replace('/[^a-z0-9_-]+/', '-', strtolower((string) $PAGE->pagelayout));
+if ($layoutclass !== '') {
+    $bodyclasses[] = 'edv-layout-' . trim($layoutclass, '-');
+}
+
+$pagetypeclass = preg_replace('/[^a-z0-9_-]+/', '-', strtolower((string) $PAGE->pagetype));
+if ($pagetypeclass !== '') {
+    $bodyclasses[] = 'edv-pagetype-' . trim($pagetypeclass, '-');
+}
+
 $templatecontext = [
     'output' => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes($bodyclasses),
