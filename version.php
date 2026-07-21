@@ -9,6 +9,8 @@
 /**
  * Version details for theme_edvorya.
  *
+ * Alpha.5 includes the final active-navigation contrast correction and security hardening checkpoint.
+ *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
