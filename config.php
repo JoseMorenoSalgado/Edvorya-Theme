@@ -5,9 +5,18 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
 /**
  * Edvorya theme configuration.
+ *
+ * Boost is used strictly as the Moodle compatibility parent. Edvorya keeps
+ * ownership of the application shell, branding, learning experiences and
+ * visual Design System while delegating generic Core contracts to Boost.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -17,12 +26,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $THEME->name = 'edvorya';
-$THEME->parents = [];
+$THEME->parents = ['boost'];
 $THEME->sheets = [
     'edvorya',
-    'edvorya-compat',
+    'edvorya-shell',
     'edvorya-dashboard',
-    'edvorya-accessibility',
     'edvorya-admin',
     'edvorya-context-nav',
 ];
@@ -34,9 +42,14 @@ $THEME->hidefromselector = false;
 $THEME->yuicssmodules = [];
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->requiredblocks = '';
+$THEME->enable_dock = false;
+$THEME->addblockposition = BLOCK_ADDBLOCK_POSITION_FLATNAV;
+$THEME->iconsystem = \core\output\icon_system::FONTAWESOME;
 $THEME->haseditswitch = true;
+$THEME->usescourseindex = true;
 
 $THEME->layouts = [
+    // Edvorya-owned application layouts.
     'base' => [
         'file' => 'drawers.php',
         'regions' => [],
@@ -95,8 +108,12 @@ $THEME->layouts = [
         'regions' => [],
         'options' => ['langmenu' => true],
     ],
+
+    // Technical/minimal layouts add no Edvorya product value. Delegate them to
+    // Boost so Moodle Core owns their compatibility and maintenance surface.
     'popup' => [
-        'file' => 'embedded.php',
+        'theme' => 'boost',
+        'file' => 'columns1.php',
         'regions' => [],
         'options' => [
             'nofooter' => true,
@@ -109,7 +126,8 @@ $THEME->layouts = [
         ],
     ],
     'frametop' => [
-        'file' => 'embedded.php',
+        'theme' => 'boost',
+        'file' => 'columns1.php',
         'regions' => [],
         'options' => [
             'nofooter' => true,
@@ -120,19 +138,24 @@ $THEME->layouts = [
         ],
     ],
     'embedded' => [
+        'theme' => 'boost',
         'file' => 'embedded.php',
-        'regions' => [],
+        'regions' => ['side-pre'],
+        'defaultregion' => 'side-pre',
     ],
     'maintenance' => [
+        'theme' => 'boost',
         'file' => 'maintenance.php',
         'regions' => [],
     ],
     'print' => [
-        'file' => 'embedded.php',
+        'theme' => 'boost',
+        'file' => 'columns1.php',
         'regions' => [],
         'options' => ['nofooter' => true, 'nonavbar' => false, 'noactivityheader' => true],
     ],
     'redirect' => [
+        'theme' => 'boost',
         'file' => 'embedded.php',
         'regions' => [],
     ],
@@ -142,6 +165,7 @@ $THEME->layouts = [
         'defaultregion' => 'side-pre',
     ],
     'secure' => [
+        'theme' => 'boost',
         'file' => 'secure.php',
         'regions' => ['side-pre'],
         'defaultregion' => 'side-pre',
