@@ -111,6 +111,16 @@ if ($pagetypeclass !== '') {
     $bodyclasses[] = 'edv-pagetype-' . trim($pagetypeclass, '-');
 }
 
+// The dashboard focus layer adds intent and hierarchy only. Moodle Core remains
+// responsible for all actual course, completion, timeline and calendar data.
+$dashboardexperience = [];
+if ($authenticated && $PAGE->pagelayout === 'mydashboard') {
+    $dashboardexperience = (new \theme_edvorya\output\dashboard_experience())->export_for_template($OUTPUT);
+    if (!empty($dashboardexperience['persona'])) {
+        $bodyclasses[] = 'edv-dashboard-persona-' . $dashboardexperience['persona'];
+    }
+}
+
 $templatecontext = [
     'output' => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes($bodyclasses),
@@ -134,6 +144,7 @@ $templatecontext = [
     'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
     'headercontent' => $headercontent,
     'authenticated' => $authenticated,
+    'dashboardexperience' => $dashboardexperience,
 ];
 
 echo $OUTPUT->render_from_template('theme_edvorya/layout/drawers', $templatecontext);
