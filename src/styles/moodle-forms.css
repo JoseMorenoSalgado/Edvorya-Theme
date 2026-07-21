@@ -1,11 +1,8 @@
 @layer components {
-    .jsenabled .mform .containsadvancedelements .advanced {
-        display: none;
-    }
-
-    .mform .containsadvancedelements .advanced.show {
-        display: flex;
-    }
+    /*
+     * Boost owns Moodle form mechanics and Bootstrap form structure. Edvorya
+     * only applies product typography, density, states and viewport-safe skin.
+     */
 
     .mform {
         min-width: 0;
@@ -13,15 +10,11 @@
 
     .mform fieldset {
         min-width: 0;
-        margin: 0 0 var(--edv-space-4);
-        padding: 0 0 var(--edv-space-4);
-        border: 0;
-        border-bottom: 1px solid var(--edv-color-border);
+        padding-bottom: var(--edv-space-4);
+        border-bottom-color: var(--edv-color-border);
     }
 
     .mform legend {
-        width: 100%;
-        margin-bottom: var(--edv-space-3);
         color: var(--edv-color-foreground);
         font-size: 1.05rem;
         font-weight: 700;
@@ -36,7 +29,6 @@
     .form-label,
     .col-form-label,
     .mform .form-label {
-        margin-bottom: var(--edv-space-1);
         color: var(--edv-color-foreground);
         font-size: 0.9rem;
         font-weight: 650;
@@ -48,29 +40,16 @@
         min-width: 0;
         min-height: 2.5rem;
         max-width: 100%;
-        padding: 0.55rem 0.75rem;
-        border: 1px solid var(--edv-color-border);
+        border-color: var(--edv-color-border);
         border-radius: var(--edv-radius-sm);
         background-color: #ffffff;
         color: var(--edv-color-foreground);
-        font: inherit;
         font-size: 0.925rem;
-        line-height: 1.4;
         transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
-    }
-
-    .form-control {
-        width: 100%;
     }
 
     textarea.form-control {
         min-height: 7rem;
-        resize: vertical;
-    }
-
-    .form-select {
-        width: auto;
-        padding-inline-end: 2.25rem;
     }
 
     .form-control::placeholder {
@@ -86,23 +65,18 @@
     .form-control:focus,
     .form-select:focus {
         border-color: var(--edv-color-primary);
-        outline: 0;
         box-shadow: var(--edv-focus-ring);
     }
 
     .form-control-sm,
     .form-select-sm {
         min-height: 2rem;
-        padding-block: 0.35rem;
-        font-size: 0.825rem;
     }
 
     .form-control-lg,
     .form-select-lg {
         min-height: 3rem;
-        padding-block: 0.75rem;
         border-radius: var(--edv-radius-md);
-        font-size: 1rem;
     }
 
     .form-text,
@@ -112,94 +86,19 @@
         color: var(--edv-color-muted);
     }
 
-    .form-text {
-        margin-top: var(--edv-space-1);
-        font-size: 0.825rem;
-        line-height: 1.4;
-    }
-
     .form-label .form-shortname {
-        display: block;
-        font-size: 0.75rem;
         font-weight: 500;
     }
 
-    .d-flex > .form-control {
-        width: auto;
-        max-width: 100%;
-    }
-
-    .d-flex > textarea.form-control {
-        width: 100%;
-    }
-
-    #jump-to-activity.form-select,
-    [data-fieldtype="modgrade"] .form-select,
-    .mform.full-width-labels .form-control,
-    .mform.full-width-labels .form-select {
-        width: 100%;
-    }
-
-    .mform ul.file-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .singleselect {
-        max-width: 100%;
-    }
-
-    .input-group {
-        position: relative;
-        display: flex;
-        width: 100%;
-        align-items: stretch;
-    }
-
-    .input-group > .form-control,
-    .input-group > .form-select {
-        min-width: 0;
-        flex: 1 1 auto;
-    }
-
-    .input-group > :not(:first-child) {
-        margin-inline-start: -1px;
-        border-start-start-radius: 0;
-        border-end-start-radius: 0;
-    }
-
-    .input-group > :not(:last-child) {
-        border-start-end-radius: 0;
-        border-end-end-radius: 0;
-    }
-
     .input-group-text {
-        display: flex;
-        align-items: center;
-        padding: 0.55rem 0.75rem;
-        border: 1px solid var(--edv-color-border);
+        border-color: var(--edv-color-border);
         border-radius: var(--edv-radius-sm);
         background: var(--edv-color-background);
         color: var(--edv-color-muted);
-        font-size: 0.875rem;
-        white-space: nowrap;
-    }
-
-    .form-check {
-        display: flex;
-        align-items: flex-start;
-        gap: var(--edv-space-2);
-        min-width: 0;
     }
 
     .form-check-input {
-        width: 1.125rem;
-        height: 1.125rem;
-        flex: 0 0 auto;
-        margin-top: 0.15rem;
         accent-color: var(--edv-color-primary);
-        cursor: pointer;
     }
 
     .form-check-input:focus-visible {
@@ -207,35 +106,18 @@
         outline-offset: 2px;
     }
 
-    .form-check-label {
-        min-width: 0;
-        color: var(--edv-color-foreground);
-        overflow-wrap: anywhere;
-        cursor: pointer;
-    }
-
     .form-control[readonly],
     .form-control:disabled,
     .form-select:disabled {
         opacity: 1;
+        border-color: var(--edv-color-border);
         background: var(--edv-color-background);
         color: var(--edv-color-muted);
-        cursor: not-allowed;
     }
 
     .form-check-input:disabled,
     .form-check-input:disabled + .form-check-label {
         opacity: var(--edv-disabled-opacity);
-        cursor: not-allowed;
-    }
-
-    .invalid-feedback,
-    .valid-feedback,
-    .form-control-feedback.invalid-feedback {
-        display: none;
-        margin-top: var(--edv-space-1);
-        font-size: 0.825rem;
-        line-height: 1.4;
     }
 
     .invalid-feedback,
@@ -245,13 +127,6 @@
 
     .valid-feedback {
         color: var(--edv-color-success);
-    }
-
-    .is-invalid ~ .invalid-feedback,
-    .has-danger .invalid-feedback,
-    .is-valid ~ .valid-feedback,
-    .has-success .valid-feedback {
-        display: block;
     }
 
     .is-invalid,
@@ -278,76 +153,24 @@
         box-shadow: 0 0 0 3px color-mix(in srgb, var(--edv-color-success) 24%, transparent);
     }
 
-    input[type="file"].form-control {
-        padding: 0.35rem;
-    }
-
     input[type="file"].form-control::file-selector-button {
-        min-height: 1.8rem;
-        margin: -0.2rem var(--edv-space-2) -0.2rem -0.2rem;
-        padding: 0.35rem 0.65rem;
-        border: 0;
-        border-inline-end: 1px solid var(--edv-color-border);
-        border-radius: calc(var(--edv-radius-sm) - 2px) 0 0 calc(var(--edv-radius-sm) - 2px);
+        border-inline-end-color: var(--edv-color-border);
         background: var(--edv-color-background);
         color: var(--edv-color-foreground);
-        font: inherit;
         font-weight: 600;
-        cursor: pointer;
     }
 
-    [data-fieldtype="autocomplete"] select,
-    [data-fieldtype="tags"] select,
-    .form-autocomplete-original-select {
-        width: 15rem;
-        max-width: 100%;
-        height: 2.75rem;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        visibility: hidden;
-        overflow: hidden;
-    }
-
-    .felement[data-fieldtype="autocomplete"],
-    .felement[data-fieldtype="tags"] {
-        position: static;
-        display: block !important;
-    }
-
-    .form-autocomplete-selection {
-        min-height: 2.75rem;
-        margin-block: var(--edv-space-1);
-    }
-
-    .form-autocomplete-selection [role="option"] {
-        cursor: pointer;
-        white-space: normal;
-        overflow-wrap: anywhere;
-    }
-
+    /* Boost owns autocomplete positioning/interaction; Edvorya skins the popup. */
     .form-autocomplete-suggestions {
-        position: absolute;
-        z-index: 1000;
-        min-width: 12rem;
         max-width: min(36rem, calc(100vw - 2rem));
-        max-height: 20rem;
-        overflow: auto;
-        margin: var(--edv-space-1) 0 0;
-        padding: var(--edv-space-1) 0;
-        border: 1px solid var(--edv-color-border);
+        border-color: var(--edv-color-border);
         border-radius: var(--edv-radius-sm);
         background: #ffffff;
         box-shadow: var(--edv-shadow-md);
     }
 
     .form-autocomplete-suggestions li {
-        margin: 0;
-        padding: 0.55rem 0.75rem;
         color: var(--edv-color-foreground);
-        list-style: none;
-        cursor: pointer;
-        white-space: normal;
         overflow-wrap: anywhere;
     }
 
@@ -360,48 +183,9 @@
 
     .form-autocomplete-suggestions li[aria-disabled="true"] {
         opacity: var(--edv-disabled-opacity);
-        pointer-events: none;
-    }
-
-    .form-autocomplete-selection + input.form-control {
-        display: inline-block;
-        width: auto;
-        max-width: 100%;
-        vertical-align: middle;
-    }
-
-    [data-fieldtype="editor"] > div {
-        min-width: 0;
-        flex-grow: 1;
-    }
-
-    textarea[data-auto-rows] {
-        resize: none;
-        overflow-x: hidden;
-    }
-
-    .mform.full-width-labels .fitem.row {
-        margin-inline: 0;
-    }
-
-    .mform.full-width-labels .fitem.row > .col-md-3,
-    .mform.full-width-labels .fitem.row > .col-md-9 {
-        flex: 0 0 100%;
-        width: 100%;
-        max-width: 100%;
-        padding-inline: 0;
-    }
-
-    .mform.full-width-labels .fitem.femptylabel > .col-md-3 {
-        display: none;
     }
 
     @media (max-width: 47.999rem) {
-        .mform .fitem.row > [class*="col-md-"] {
-            width: 100%;
-            flex-basis: 100%;
-        }
-
         .form-control,
         .form-select,
         .singleselect {
