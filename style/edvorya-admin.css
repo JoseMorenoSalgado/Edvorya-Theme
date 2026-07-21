@@ -1,17 +1,10 @@
 /*
  * Edvorya administration and desktop navigation experience.
- * Moodle Core owns markup, links, state and behaviour. This file supplies the
- * standalone visual contract required by the Edvorya Design System.
+ * Boost owns generic Core/Bootstrap mechanics. This file is limited to the
+ * Edvorya desktop navigation and administration-specific presentation.
  */
 
-/* Core utility contract required by core/settings_link_page on Moodle 5.0-5.2. */
-.edv-shell .list-unstyled {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-/* Desktop navigation: reuse Core's primary navigation data with Edvorya presentation. */
+/* Desktop navigation: Core supplies navigation data; Edvorya owns presentation. */
 .edv-desktop-nav,
 .edv-desktop-nav__list,
 .edv-desktop-nav__children {
@@ -306,38 +299,6 @@
 .edv-pagetype-admin-tool-installaddon-index #installfromzipbox .text-muted {
     color: var(--edv-color-muted) !important;
     font-size: 0.9rem;
-}
-
-/* Topbar actions use one coherent visual language. */
-.edv-topbar .popover-region-toggle {
-    width: 2.5rem;
-    height: 2.5rem;
-    display: inline-grid;
-    place-items: center;
-    border-radius: 0.75rem;
-    color: #334155;
-    text-decoration: none;
-}
-
-.edv-topbar .popover-region-toggle:hover,
-.edv-topbar .popover-region-toggle:focus-visible {
-    background: #f1f5f9;
-    color: var(--edv-color-foreground);
-}
-
-.edv-topbar .popover-region-toggle .icon {
-    width: 1.2rem;
-    max-width: 1.2rem;
-    height: 1.2rem;
-    max-height: 1.2rem;
-}
-
-.edv-topbar .usermenu .dropdown-toggle {
-    min-height: 2.75rem;
-    border: 1px solid var(--edv-color-border);
-    border-radius: 0.85rem;
-    background: #ffffff;
-    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
 }
 
 @media (min-width: 64rem) {
