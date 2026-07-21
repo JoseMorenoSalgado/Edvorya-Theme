@@ -20,3 +20,6 @@
 @import "./activity-h5p.css";
 @import "./mobile-navigation.css";
 @import "./tertiary-navigation.css";
+
+/* Final product skin: translates Edvorya LMS identity without duplicating Core mechanics. */
+@import "./identity.css";
