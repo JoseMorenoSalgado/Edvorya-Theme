@@ -1,9 +1,9 @@
-# Phase-one static validation
+# Theme static validation
 
-This file is generated only after the automated foundation checks complete successfully.
+This file is generated after the automated theme checks complete successfully.
 
 - PHP syntax (`php -l`): PASS
 - Tailwind production build from `src/styles/index.css`: PASS
-- Compiled CSS at `style/edvorya.css` matches the unified source entrypoint: PASS
+- Compiled CSS at `style/edvorya.css` is generated from the canonical source entrypoint: PASS
 
-These static checks complement, but do not replace, Moodle 5.2 runtime and browser-level regression testing.
+Static checks complement, but do not replace, the Moodle 5.0-5.2 runtime and browser-level regression matrix.
