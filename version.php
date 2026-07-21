@@ -10,6 +10,7 @@
  * Version details for theme_edvorya.
  *
  * Alpha.10 introduces intent-first student and teacher dashboard experiences aligned with Edvorya LMS.
+ * The dashboard experience contract is documented in docs/DASHBOARD_EXPERIENCE.md.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
