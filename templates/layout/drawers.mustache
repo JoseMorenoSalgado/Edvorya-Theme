@@ -43,11 +43,9 @@
 
     <div class="edv-page">
         <aside class="edv-sidebar {{^hasblocks}}edv-sidebar--navigation-only{{/hasblocks}}">
-            {{#primarymoremenu}}
-                <nav class="edv-primary-nav" aria-label="{{#str}}primarynavigationlabel, theme_edvorya{{/str}}">
-                    {{> core/moremenu }}
-                </nav>
-            {{/primarymoremenu}}
+            {{#hasdesktopprimarynav}}
+                {{> theme_edvorya/components/desktop_navigation }}
+            {{/hasdesktopprimarynav}}
 
             {{#hasblocks}}
                 <div class="edv-block-region" data-region="blocks-column">
