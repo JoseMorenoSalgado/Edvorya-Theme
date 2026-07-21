@@ -6,7 +6,7 @@ The browser acceptance gates run independently from Edvorya-LMS and its Vercel d
 
 - Moodle branch: `MOODLE_502_STABLE`
 - Theme: `theme_edvorya`
-- Current theme release: `0.1.0-alpha.4`
+- Current theme release: `0.1.0-alpha.5`
 - Database: MariaDB 10.11
 - PHP: 8.3
 - Browser: Chrome through Moodle Docker Selenium
@@ -24,154 +24,83 @@ Workflow run `29785856670` completed successfully.
 
 Representative Moodle 5.2 scenarios executed with `theme_edvorya` forced as the active theme:
 
-### Assignment
+- Assignment — `Submit a file and update the submission with another file`: **PASS**.
+- Quiz — `Review the quiz attempt`: **PASS**.
+- Forum — `Confirm inpage replies work`: **PASS**.
+- H5P — `Add an h5pactivity to a course`: **PASS**.
 
-Scenario: `Submit a file and update the submission with another file`
-
-Coverage includes opening an Assignment as a student, adding/editing a submission, uploading/renaming/deleting files through Moodle File Manager, saving changes, and rendering submission/grading status.
-
-Result: **PASS**.
-
-### Quiz
-
-Scenario: `Review the quiz attempt`
-
-Coverage includes opening a Quiz as a teacher, navigating to an existing attempt review, rendering the attempt summary and question review output, and returning to the attempt list.
-
-Result: **PASS**.
-
-### Forum
-
-Scenario: `Confirm inpage replies work`
-
-Coverage includes loading a Forum, using the JavaScript in-page reply flow, submitting a reply, rendering the new post, reloading, and confirming persistence.
-
-Result: **PASS**.
-
-### H5P
-
-Scenario: `Add an h5pactivity to a course`
-
-Coverage includes loading an H5P activity, rendering its description, entering the H5P player/content iframe stack, and validating configured H5P action visibility.
-
-Result: **PASS**.
+These flows cover representative file submission/editing, Quiz review, JavaScript in-page Forum reply, and nested H5P iframe rendering.
 
 ## Shared Core interaction acceptance
 
-Workflow run `29786269521` completed successfully and re-ran the activity scenarios above together with the following shared interaction surfaces.
+Workflow run `29786269521` completed successfully and re-ran the activity scenarios together with:
 
-### Blocks and editing mode
-
-Scenario: `Configuring the Text block with Javascript on`
-
-Coverage includes logging in as administrator, enabling editing mode, adding/configuring a Text block, saving changes, and rendering the configured block content.
-
-Result: **PASS**.
-
-### TinyMCE and File Picker dialogue
-
-Scenario: `Browsing repositories in the TinyMCE editor opens the image dialog and shows the FilePicker`
-
-Coverage includes opening the TinyMCE image dialogue and launching the nested Moodle File Picker.
-
-Result: **PASS**.
-
-### Nested File Picker focus management
-
-Scenario: `Focus returns to the correct location after closing a nested FilePicker`
-
-Coverage includes opening TinyMCE, opening the nested File Picker, closing it with Escape, and verifying that keyboard focus returns to the Browse repositories control.
-
-Result: **PASS**.
-
-### TinyMCE file upload
-
-Scenario: `Browsing repositories in the TinyMCE editor shows the FilePicker and upload url image`
-
-Coverage includes opening TinyMCE, launching File Picker, uploading an image fixture, and rendering the image preview.
-
-Result: **PASS**.
-
-### Form autocomplete
-
-Scenario: `Use autocomplete element which accepts a single value`
-
-Coverage includes opening the autocomplete suggestions list, selecting a value, replacing the value, removing the selection, and rendering the empty selection state.
-
-Result: **PASS**.
+- blocks/editing mode — `Configuring the Text block with Javascript on`: **PASS**;
+- TinyMCE image dialogue and nested File Picker: **PASS**;
+- nested File Picker Escape/focus restoration: **PASS**;
+- TinyMCE File Picker upload: **PASS**;
+- single-value autocomplete selection/replacement/removal: **PASS**.
 
 ## Messaging and notification acceptance
 
-Workflow run `29786702098` completed successfully and re-ran all preceding scenarios together with the following communication surfaces.
+Workflow run `29786702098` completed successfully and re-ran all preceding scenarios together with:
 
-### Private messaging conversation
-
-Scenario: `Send a message to a private conversation via contact tab`
-
-Coverage includes opening Moodle messaging, navigating through Contacts, selecting a private conversation, sending a message, and verifying the rendered conversation output.
-
-Result: **PASS**.
-
-### Notification popover and preference behavior
-
-Scenario: `User can disable notification preferences`
-
-Coverage includes generating Assignment submission notifications, validating unread notification counts, opening the notification popover, and confirming notification visibility or absence according to user preferences.
-
-Result: **PASS**.
+- private messaging conversation via Contacts: **PASS**;
+- notification popover, unread counts, and preference-sensitive visibility: **PASS**.
 
 ## Responsive and keyboard acceptance
 
-Dedicated responsive workflow run `29787985130` completed successfully after two harness corrections and one production accessibility fix.
+Dedicated responsive workflow run `29787985130` completed successfully.
 
-The production issue discovered by the first responsive run was the use of non-existent Moodle Core language identifiers `primarynavigation` and `secondarynavigation` for navigation landmark labels. The theme now owns valid localized strings:
+A production issue discovered during responsive acceptance was the use of non-existent Moodle Core language identifiers for primary and secondary navigation landmark labels. The theme now owns localized strings `primarynavigationlabel` and `secondarynavigationlabel`. The fix was introduced in `0.1.0-alpha.4`.
 
-- `primarynavigationlabel`;
-- `secondarynavigationlabel`.
+Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure:
 
-This fix is included in `0.1.0-alpha.4`.
+### Phone viewport — `390x844`
 
-Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure.
+- mobile navigation visible: PASS;
+- desktop primary navigation hidden: PASS;
+- localized accessible control name: PASS;
+- labelled primary navigation landmark: PASS;
+- Enter opens the native `<details>` menu: PASS;
+- Enter closes the menu: PASS.
 
-### Phone viewport
+### Tablet portrait — `820x1180`
 
-Viewport: `390x844`
+- compact navigation contract active below `64rem`: PASS;
+- desktop primary navigation hidden: PASS;
+- Enter opens the mobile navigation: PASS.
 
-Coverage includes:
+### Desktop — `1366x768`
 
-- mobile navigation control visible;
-- desktop primary navigation hidden;
-- localized accessible name present on the mobile navigation control;
-- primary navigation landmark has an accessible label;
-- pressing Enter opens the native `<details>` mobile menu;
-- mobile menu panel becomes visible;
-- pressing Enter again closes the menu.
+- mobile navigation hidden: PASS;
+- sidebar primary navigation restored: PASS.
 
-Result: **PASS**.
+## Automated accessibility acceptance
 
-### Tablet portrait viewport
+Dedicated Axe workflow run `29788706252` completed successfully using Moodle's integrated accessibility Behat step.
 
-Viewport: `820x1180`
+Representative states:
 
-Coverage includes:
+- authenticated Site Home desktop: **PASS**;
+- Dashboard desktop: **PASS**;
+- phone navigation closed: **PASS**;
+- phone navigation open: **PASS**;
+- tablet navigation open: **PASS**.
 
-- compact/mobile navigation contract remains active below `64rem`;
-- desktop primary navigation remains hidden;
-- pressing Enter opens the mobile navigation;
-- mobile navigation panel is visible.
+This is automated Axe smoke testing and is not represented as a substitute for every assistive-technology or manual screen-reader test.
 
-Result: **PASS**.
+## Branding and CSP-oriented acceptance
 
-### Desktop viewport
+Dedicated branding-security workflow run `29789505912` completed successfully.
 
-Viewport: `1366x768`
+The scenario configures the Edvorya primary colour as `#123456`, resets theme caches, loads the site through Chrome/Selenium, and verifies:
 
-Coverage includes:
+- `--edv-color-primary` resolves to `#123456` from the processed stylesheet: **PASS**;
+- the former `#theme-edvorya-client-tokens` inline style element is absent from the DOM: **PASS**;
+- ephemeral environment cleanup: **PASS**.
 
-- mobile navigation control hidden;
-- sidebar primary navigation restored.
-
-Result: **PASS**.
+The theme now applies client colour overrides through Moodle's cached CSS post-processing callback. Administrator-uploaded branding SVG is no longer accepted by settings, and legacy uploaded SVG branding is rejected by the Edvorya pluginfile callback.
 
 ## Current gate result
 
@@ -196,38 +125,20 @@ Result: **PASS**.
 - Desktop sidebar navigation: PASS
 - Keyboard Enter open/close of mobile navigation: PASS
 - Localized navigation landmark labels: PASS
-- Aggregate browser gate: PASS
-- Responsive gate: PASS
+- Axe Site Home/Dashboard/mobile/tablet smoke tests: PASS
+- Cached configurable branding CSS token: PASS
+- Theme-owned inline client-token style removal: PASS
 - Ephemeral environment cleanup: PASS
 
-Overall result for the tested Chrome/Selenium surfaces: **PASS**.
+Overall result for the tested automated Chrome/Selenium surfaces: **PASS**.
 
-## What this validates
+## What remains environment-specific
 
-The current standalone theme can coexist with representative JavaScript-heavy Moodle 5.2 activity, Core interaction, messaging, notification, and responsive navigation flows without requiring Boost or another parent theme.
+The automated gates above are representative, not exhaustive proof for every Moodle or third-party plugin surface.
 
-The tested paths now provide representative browser evidence for:
+Remaining validation that cannot honestly be inferred from Linux Chrome/Selenium alone:
 
-- activity rendering/interactions;
-- editing mode and block configuration;
-- File Picker/File Manager upload flows;
-- TinyMCE dialogues;
-- nested modal focus restoration;
-- autocomplete selection interaction;
-- Moodle messaging conversation interaction;
-- notification popover rendering and preference-sensitive notification visibility;
-- phone/tablet/desktop responsive navigation behavior in Chrome/Selenium;
-- keyboard activation of the Edvorya mobile navigation;
-- accessible navigation landmark naming.
+- true Safari/iPhone behavior in a Safari-capable environment;
+- representative third-party Moodle plugins using their actual repositories.
 
-These are representative acceptance tests, not exhaustive proof for every Moodle feature or third-party plugin.
-
-## Remaining acceptance areas
-
-The remaining pre-merge acceptance work is concentrated on:
-
-- automated Axe accessibility smoke testing on representative Edvorya pages;
-- true Safari/iPhone validation, which cannot be honestly represented by Linux Chrome viewport testing alone;
-- representative third-party plugins;
-- production hardening review for strict CSP handling of the inline branding token style block;
-- production hardening review for administrator-uploaded SVG branding assets.
+System-wide CSP compliance also depends on Moodle Core, installed plugins, and server policy. The Edvorya-specific inline client-token style has been removed, but this is not a claim of universal CSP compliance for an entire Moodle installation.
