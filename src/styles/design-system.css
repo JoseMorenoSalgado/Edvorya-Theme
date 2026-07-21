@@ -75,7 +75,8 @@
 
     .btn-success {
         border-color: var(--edv-color-success);
-        background: var(--edv-color-success);
+        background: #12823b;
+        background: color-mix(in srgb, var(--edv-color-success) 80%, #000000);
         color: #ffffff;
     }
 
@@ -87,13 +88,43 @@
 
     .btn-warning {
         border-color: var(--edv-color-warning);
-        background: var(--edv-color-warning);
+        background: #ae5f05;
+        background: color-mix(in srgb, var(--edv-color-warning) 80%, #000000);
         color: #ffffff;
     }
 
     .btn-info {
         border-color: var(--edv-color-info);
-        background: var(--edv-color-info);
+        background: #026a9f;
+        background: color-mix(in srgb, var(--edv-color-info) 80%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-success:hover,
+    .btn-success:focus-visible {
+        background: #107a38;
+        background: color-mix(in srgb, var(--edv-color-success) 75%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-danger:hover,
+    .btn-danger:focus-visible {
+        background: var(--edv-color-danger);
+        background: color-mix(in srgb, var(--edv-color-danger) 86%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-warning:hover,
+    .btn-warning:focus-visible {
+        background: #a35904;
+        background: color-mix(in srgb, var(--edv-color-warning) 75%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-info:hover,
+    .btn-info:focus-visible {
+        background: #026395;
+        background: color-mix(in srgb, var(--edv-color-info) 75%, #000000);
         color: #ffffff;
     }
 
@@ -151,7 +182,8 @@
 
     .btn-outline-success:hover,
     .btn-outline-success:focus-visible {
-        background: var(--edv-color-success);
+        background: #12823b;
+        background: color-mix(in srgb, var(--edv-color-success) 80%, #000000);
         color: #ffffff;
     }
 
@@ -163,13 +195,15 @@
 
     .btn-outline-warning:hover,
     .btn-outline-warning:focus-visible {
-        background: var(--edv-color-warning);
+        background: #ae5f05;
+        background: color-mix(in srgb, var(--edv-color-warning) 80%, #000000);
         color: #ffffff;
     }
 
     .btn-outline-info:hover,
     .btn-outline-info:focus-visible {
-        background: var(--edv-color-info);
+        background: #026a9f;
+        background: color-mix(in srgb, var(--edv-color-info) 80%, #000000);
         color: #ffffff;
     }
 
@@ -376,12 +410,14 @@
     }
 
     .badge.bg-success {
-        background: var(--edv-color-success) !important;
+        background: #12823b !important;
+        background: color-mix(in srgb, var(--edv-color-success) 80%, #000000) !important;
         color: #ffffff;
     }
 
     .badge.bg-warning {
-        background: var(--edv-color-warning) !important;
+        background: #ae5f05 !important;
+        background: color-mix(in srgb, var(--edv-color-warning) 80%, #000000) !important;
         color: #ffffff;
     }
 
@@ -391,7 +427,8 @@
     }
 
     .badge.bg-info {
-        background: var(--edv-color-info) !important;
+        background: #026a9f !important;
+        background: color-mix(in srgb, var(--edv-color-info) 80%, #000000) !important;
         color: #ffffff;
     }
 
