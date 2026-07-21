@@ -54,4 +54,47 @@ class behat_theme_edvorya extends behat_base {
         self::type_keys($this->getSession(), [behat_keys::ENTER]);
         $this->getSession()->wait(250);
     }
+
+    /**
+     * Configure the Edvorya primary colour and invalidate cached theme CSS.
+     *
+     * @Given /^I set the Edvorya primary colour to "(?P<colour>#[0-9a-fA-F]{6})"$/
+     * @param string $colour Valid six-digit hexadecimal colour.
+     */
+    public function i_set_the_edvorya_primary_colour_to(string $colour): void {
+        if (preg_match('/^#[0-9a-f]{6}$/i', $colour) !== 1) {
+            throw new \InvalidArgumentException('Edvorya test colours must use six-digit hexadecimal notation.');
+        }
+
+        set_config('primary', strtolower($colour), 'theme_edvorya');
+        theme_reset_all_caches();
+    }
+
+    /**
+     * Assert a CSS custom property on the document root.
+     *
+     * @Then /^the Edvorya CSS variable "(?P<variable>--[a-z0-9-]+)" should equal "(?P<value>#[0-9a-fA-F]{6})"$/
+     * @param string $variable CSS custom-property name.
+     * @param string $value Expected six-digit hexadecimal colour.
+     */
+    public function the_edvorya_css_variable_should_equal(string $variable, string $value): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('CSS variable assertions require a JavaScript-capable browser session.');
+        }
+
+        $script = sprintf(
+            'return window.getComputedStyle(document.documentElement).getPropertyValue(%s).trim();',
+            json_encode($variable, JSON_THROW_ON_ERROR)
+        );
+        $actual = (string) $this->getSession()->evaluateScript($script);
+
+        if (strtolower($actual) !== strtolower($value)) {
+            throw new \RuntimeException(sprintf(
+                'Expected CSS variable %s to equal %s, but found %s.',
+                $variable,
+                $value,
+                $actual === '' ? '[empty]' : $actual
+            ));
+        }
+    }
 }
