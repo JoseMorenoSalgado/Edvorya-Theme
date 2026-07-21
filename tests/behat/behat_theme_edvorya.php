@@ -99,6 +99,228 @@ class behat_theme_edvorya extends behat_base {
     }
 
     /**
+     * Inject representative Moodle-shaped markup for transversal Design System acceptance.
+     *
+     * This fixture exists only inside the Behat browser session. It does not add a production
+     * route or renderer and deliberately uses classes emitted by Moodle Core.
+     *
+     * @Given /^I inject the Edvorya design system fixture$/
+     */
+    public function i_inject_the_edvorya_design_system_fixture(): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('Design System fixture injection requires a JavaScript-capable browser session.');
+        }
+
+        $script = <<<'JS'
+(function() {
+    const host = document.querySelector('#region-main') || document.querySelector('.edv-content') || document.body;
+    const existing = document.querySelector('#edv-design-system-fixture');
+    if (existing) {
+        existing.remove();
+    }
+
+    const fixture = document.createElement('section');
+    fixture.id = 'edv-design-system-fixture';
+    fixture.setAttribute('aria-labelledby', 'edv-design-system-heading');
+    fixture.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                <h2 id="edv-design-system-heading" class="card-title">Edvorya Design System</h2>
+            </div>
+            <div class="card-body">
+                <div id="edv-button-fixture">
+                    <button type="button" class="btn btn-primary">Primary action</button>
+                    <button type="button" class="btn btn-secondary">Secondary action</button>
+                    <button type="button" class="btn btn-danger">Danger action</button>
+                    <button type="button" class="btn btn-outline-primary">Outline action</button>
+                    <button type="button" class="btn btn-secondary" disabled>Disabled action</button>
+                </div>
+
+                <div id="edv-form-fixture">
+                    <label class="form-label" for="edv-test-name">Name</label>
+                    <input id="edv-test-name" class="form-control" type="text" placeholder="Learner name">
+                    <label class="form-label" for="edv-test-select">Course</label>
+                    <select id="edv-test-select" class="form-select">
+                        <option>Edvorya Course</option>
+                    </select>
+                    <label class="form-label" for="edv-test-notes">Notes</label>
+                    <textarea id="edv-test-notes" class="form-control">Accessible fixture content</textarea>
+                    <div class="form-check">
+                        <input id="edv-test-check" class="form-check-input" type="checkbox">
+                        <label class="form-check-label" for="edv-test-check">Enable learning reminder</label>
+                    </div>
+                    <label class="form-label" for="edv-test-invalid">Required field</label>
+                    <input id="edv-test-invalid" class="form-control is-invalid" type="text" aria-invalid="true" aria-describedby="edv-test-invalid-feedback">
+                    <div id="edv-test-invalid-feedback" class="invalid-feedback">This field is required.</div>
+                </div>
+
+                <div id="edv-status-fixture">
+                    <div class="alert alert-success" role="status">Learning progress saved successfully.</div>
+                    <div class="alert alert-warning" role="status">A due date is approaching.</div>
+                    <span class="badge bg-primary">In progress</span>
+                    <span class="badge bg-success rounded-pill">Completed</span>
+                </div>
+
+                <div class="table-responsive" id="edv-table-fixture">
+                    <table class="table table-striped table-hover" style="min-width: 48rem">
+                        <caption>Representative responsive Moodle table</caption>
+                        <thead>
+                            <tr><th scope="col">Course</th><th scope="col">Activity</th><th scope="col">Status</th><th scope="col">Due date</th><th scope="col">Grade</th><th scope="col">Feedback</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Edvorya Course</td><td>Assignment</td><td>Submitted</td><td>2026-07-30</td><td>95</td><td>Excellent work</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="progress" id="edv-progress-fixture" aria-label="Course progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"></div>
+                </div>
+            </div>
+            <div class="card-footer">Reusable Moodle-compatible Edvorya surface</div>
+        </div>`;
+
+    host.prepend(fixture);
+})();
+JS;
+        $this->getSession()->executeScript($script);
+        $this->getSession()->wait(100);
+    }
+
+    /**
+     * Inject a representative visible modal for standalone overlay acceptance.
+     *
+     * @Given /^I inject the Edvorya modal fixture$/
+     */
+    public function i_inject_the_edvorya_modal_fixture(): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('Modal fixture injection requires a JavaScript-capable browser session.');
+        }
+
+        $script = <<<'JS'
+(function() {
+    const existing = document.querySelector('#edv-modal-fixture');
+    if (existing) {
+        existing.remove();
+    }
+
+    const modal = document.createElement('div');
+    modal.id = 'edv-modal-fixture';
+    modal.className = 'modal show';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'edv-modal-title');
+    modal.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="edv-modal-title" class="modal-title">Edvorya modal</h2>
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Representative Moodle modal content.</p>
+                    <label class="form-label" for="edv-modal-input">Comment</label>
+                    <input id="edv-modal-input" class="form-control" type="text">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.append(modal);
+})();
+JS;
+        $this->getSession()->executeScript($script);
+        $this->getSession()->wait(100);
+    }
+
+    /**
+     * Assert that an element meets a minimum rendered height.
+     *
+     * @Then /^the Edvorya element "(?P<selector>[^"]+)" should have a minimum height of "(?P<height>\d+)" pixels$/
+     * @param string $selector CSS selector.
+     * @param int $height Minimum rendered height.
+     */
+    public function the_edvorya_element_should_have_a_minimum_height_of_pixels(string $selector, int $height): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('Rendered size assertions require a JavaScript-capable browser session.');
+        }
+
+        $script = sprintf(
+            'const element = document.querySelector(%s); return element ? element.getBoundingClientRect().height : -1;',
+            json_encode($selector, JSON_THROW_ON_ERROR)
+        );
+        $actual = (float) $this->getSession()->evaluateScript($script);
+
+        if ($actual < $height) {
+            throw new \RuntimeException(sprintf(
+                'Expected element %s to have a minimum height of %d pixels, but found %.2f.',
+                $selector,
+                $height,
+                $actual
+            ));
+        }
+    }
+
+    /**
+     * Assert that an element contains horizontal overflow internally while staying viewport-safe.
+     *
+     * @Then /^the Edvorya element "(?P<selector>[^"]+)" should contain horizontal overflow internally$/
+     * @param string $selector CSS selector.
+     */
+    public function the_edvorya_element_should_contain_horizontal_overflow_internally(string $selector): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('Overflow assertions require a JavaScript-capable browser session.');
+        }
+
+        $script = sprintf(
+            <<<'JS'
+return (function() {
+    const element = document.querySelector(%s);
+    if (!element) {
+        return 'missing';
+    }
+    const rect = element.getBoundingClientRect();
+    const viewport = document.documentElement.clientWidth;
+    const contained = rect.left >= -1 && rect.right <= viewport + 1;
+    const scrollable = element.scrollWidth > element.clientWidth + 1;
+    return contained && scrollable ? 'ok' : `${rect.left},${rect.right},${viewport},${element.clientWidth},${element.scrollWidth}`;
+})();
+JS,
+            json_encode($selector, JSON_THROW_ON_ERROR)
+        );
+        $result = (string) $this->getSession()->evaluateScript($script);
+
+        if ($result !== 'ok') {
+            throw new \RuntimeException(sprintf(
+                'Expected element %s to contain horizontal overflow internally, geometry result: %s.',
+                $selector,
+                $result
+            ));
+        }
+    }
+
+    /**
+     * Assert that the document itself has no horizontal overflow.
+     *
+     * @Then /^the Edvorya page should not have horizontal overflow$/
+     */
+    public function the_edvorya_page_should_not_have_horizontal_overflow(): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('Page overflow assertions require a JavaScript-capable browser session.');
+        }
+
+        $result = (string) $this->getSession()->evaluateScript(
+            'return document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1 ? "ok" : `${document.documentElement.clientWidth},${document.documentElement.scrollWidth}`;'
+        );
+
+        if ($result !== 'ok') {
+            throw new \RuntimeException('Expected the Edvorya page to avoid horizontal overflow, geometry result: ' . $result . '.');
+        }
+    }
+
+    /**
      * Create a deterministic Drive Resource fixture through Moodle's module creation API.
      *
      * Drive Resource does not currently ship tests/generator/lib.php, so this compatibility
