@@ -48,6 +48,57 @@
 }
 
 @layer components {
+    /* Product + institution lockup used by the protected Edvorya LMS shell. */
+    .edv-brand {
+        gap: 0.75rem;
+        font-weight: 600;
+    }
+
+    .edv-brand__mark {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: var(--edv-radius-lg);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-brand__logo {
+        max-width: 7rem;
+        height: 2.25rem;
+    }
+
+    .edv-brand__copy {
+        min-width: 0;
+        display: grid;
+        gap: 0.125rem;
+        line-height: 1.1;
+    }
+
+    .edv-brand__name,
+    .edv-brand__meta {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .edv-brand__name {
+        color: var(--edv-color-foreground);
+        font-size: 0.9375rem;
+        font-weight: 650;
+    }
+
+    .edv-brand__meta {
+        max-width: 12rem;
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+
+    .edv-sidebar {
+        padding: 0.75rem;
+        background: var(--edv-color-sidebar);
+    }
+
     /* Edvorya LMS uses plain page intros with a quiet divider instead of hero cards. */
     .edv-layout-mydashboard .edv-content-header,
     .edv-layout-mycourses .edv-content-header,
@@ -146,6 +197,14 @@
     }
 
     @media (max-width: 47.999rem) {
+        .edv-topbar__inner > .edv-brand .edv-brand__copy {
+            display: none;
+        }
+
+        .edv-mobile-nav__panel-brand .edv-brand__copy {
+            display: grid;
+        }
+
         .edv-layout-mydashboard .edv-content-header,
         .edv-layout-mycourses .edv-content-header,
         .edv-layout-course .edv-content-header,
