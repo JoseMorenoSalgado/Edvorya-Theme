@@ -18,9 +18,23 @@ The browser acceptance gates run independently from Edvorya-LMS and its Vercel d
 
 The environments are ephemeral and destroyed after every workflow run.
 
+## Current functional checkpoint
+
+The latest accepted checkpoint after the Administration/Messaging/Notifications and Core popover work is:
+
+- Theme quality/PHP/CSS run `29798604566`: **PASS**;
+- responsive/page-experience run `29798604549`: **PASS**;
+- browser functional run `29798604527`: **PASS**;
+- Moodle bundled-plugin run `29798604525`: **PASS**;
+- Google Drive compatibility run `29798604510`: **PASS**;
+- Axe accessibility run `29798604519`: **PASS**;
+- branding-security run `29798604509`: **PASS**.
+
+The compiled `style/edvorya.css` is reproducible from the committed source styles and passed the repository quality gate.
+
 ## Activity acceptance
 
-Current browser workflow run `29796915496` completed successfully with `theme_edvorya` active.
+Current browser workflow run `29798604527` completed successfully with `theme_edvorya` active.
 
 Representative Moodle 5.2 scenarios:
 
@@ -38,7 +52,7 @@ Representative Moodle 5.2 scenarios:
 
 ## Dashboard, My Courses, and Course View experience acceptance
 
-Dedicated page-experience scenarios run through the responsive gate. Current workflow run `29796915539` completed successfully.
+Dedicated page-experience scenarios run through the responsive gate. Current workflow run `29798604549` completed successfully.
 
 The implementation adds stable Edvorya-owned context classes while preserving Moodle's own page layout and page type data:
 
@@ -47,8 +61,6 @@ The implementation adds stable Edvorya-owned context classes while preserving Mo
 - `edv-layout-course`.
 
 The visual layer is implemented in `src/styles/page-experiences.css` and does not replace Moodle Core renderers or copy Core Mustache templates.
-
-Coverage:
 
 ### Dashboard
 
@@ -90,7 +102,7 @@ These surfaces are implemented in `src/styles/learning-support-experiences.css` 
 
 The implementation does not replace Core renderers or copy Calendar, Gradebook, or Profile Mustache templates.
 
-Current responsive workflow run `29796915539`: **PASS**.
+Current responsive workflow run `29798604549`: **PASS**.
 
 ### Calendar
 
@@ -120,11 +132,69 @@ Current responsive workflow run `29796915539`: **PASS**.
 - `390x844` profile/page containment: **PASS**;
 - `1366x768` profile/page containment: **PASS**.
 
+## Administration, Messaging, and Notifications experience acceptance
+
+These surfaces are implemented in `src/styles/operational-experiences.css` while preserving Moodle's own forms, message application, preferences tables, `data-region` attributes, ARIA state, and AMD controllers.
+
+Current responsive workflow run `29798604549`: **PASS**.
+
+### Administration
+
+- Moodle `admin` layout preserved through `edv-layout-admin`: **PASS**;
+- Edvorya content header visible: **PASS**;
+- Moodle `#region-main` preserved: **PASS**;
+- representative Administration page at `390x844`: **PASS**;
+- representative Administration page at `1366x768`: **PASS**;
+- page-level horizontal containment: **PASS**.
+
+### Messaging
+
+- real `/message/index.php` opened: **PASS**;
+- `body.edv-pagetype-message-index` present: **PASS**;
+- `.message-app[data-region="message-index"]` preserved: **PASS**;
+- `.conversationcontainer` preserved: **PASS**;
+- responsive message application at `390x844`: **PASS**;
+- responsive message application at `1366x768`: **PASS**;
+- browser-level private conversation flow: **PASS**.
+
+### Notification preferences
+
+- real `/message/notificationpreferences.php` opened: **PASS**;
+- `.preferences-page-container` preserved: **PASS**;
+- `.preference-table` preserved: **PASS**;
+- wide processor table contained by internal horizontal scrolling: **PASS**;
+- `390x844` page containment: **PASS**;
+- `1366x768` page containment: **PASS**.
+
+### Notification popover and standalone Core overlay contract
+
+During this block, cross-plugin browser acceptance exposed a real standalone-theme defect rather than a plugin defect. The Moodle `core/popover_region` template relies on positioning and collapsed-state CSS normally provided by a parent theme. Because Edvorya has no parent theme, the missing contract caused the notification region to participate in normal topbar flow, allowed the notification icon to grow beyond its intended box, and made `.edv-topbar__inner` cover activity links.
+
+The fix is implemented in theme-owned compatibility primitives:
+
+- `src/styles/core-overlays.css` now supplies the minimal standalone `core/popover_region` positioning, collapsed visibility, pointer-event, sizing, scrolling, z-index, and mobile viewport contract;
+- `src/styles/core-utilities.css` now supplies a stable base geometry for Moodle Core `.icon` pix icons.
+
+Moodle Core templates, AMD controllers, `data-region` attributes, ARIA state, and plugin code are unchanged.
+
+Regression acceptance verifies:
+
+- notification region initially has `.collapsed`: **PASS**;
+- collapsed popover container is not visible: **PASS**;
+- `.edv-topbar__inner` fits within the viewport: **PASS**;
+- notification toggle opens the Core popover: **PASS**;
+- open popover remains inside the viewport: **PASS**;
+- browser notification popover flow: **PASS**;
+- Google Drive activity links remain clickable after the fix: **PASS**;
+- bundled Moodle activity links remain clickable after the fix: **PASS**.
+
+The recovery of the unchanged Google Drive and bundled-plugin navigation scenarios confirms that the obstruction was fixed at the global Core overlay layer rather than hidden by changing those plugin tests.
+
 ## Moodle bundled plugin compatibility
 
-Current bundled-plugin workflow run `29796915497` completed successfully with Moodle 5.2, PHP 8.3, MariaDB 10.11, Chrome/Selenium, and `theme_edvorya` active.
+Current bundled-plugin workflow run `29798604525` completed successfully with Moodle 5.2, PHP 8.3, MariaDB 10.11, Chrome/Selenium, and `theme_edvorya` active.
 
-Fixtures were created with Moodle's own testing generators for the plugins shipped with Moodle Core. The compatibility matrix covered:
+Fixtures are created with Moodle's own testing generators for the plugins shipped with Moodle Core. The compatibility matrix covers:
 
 - Book (`mod_book`): **PASS**;
 - Page (`mod_page`): **PASS**;
@@ -139,9 +209,7 @@ Fixtures were created with Moodle's own testing generators for the plugins shipp
 - Workshop (`mod_workshop`): **PASS**;
 - Feedback (`mod_feedback`): **PASS**.
 
-The test also validates that these bundled activities/resources remain visible on a `390x844` course page without horizontal overflow. Individual Moodle-owned plugin pages, except the external URL target, are opened at `1366x768` and verified to render inside the Edvorya application shell with `#region-main` contained within the viewport.
-
-The URL resource is intentionally validated at course-page integration level rather than following the external destination, because the external target is not a theme-rendered Moodle surface.
+The test also validates that these bundled activities/resources remain visible on a `390x844` course page without horizontal overflow. Individual Moodle-owned plugin pages, except the external URL target, are opened at desktop width and verified to render inside the Edvorya application shell.
 
 SCORM and LTI are not marked as tested by this matrix. Meaningful SCORM acceptance requires an actual SCORM package, and meaningful LTI acceptance requires a real or deterministic LTI provider.
 
@@ -149,12 +217,13 @@ SCORM and LTI are not marked as tested by this matrix. Meaningful SCORM acceptan
 
 The required third-party integration scope is the real repository `JoseMorenoSalgado/moodle-mod_videoplayer` (`mod_videoplayer`).
 
-Current compatibility workflow run `29796915520` completed successfully. The previously recorded tested plugin revision is `37b26d9026de3a4e472c99fa0c604ac10b3a5d72`; each compatibility workflow also records the exact checked-out plugin revision for that run.
+Current compatibility workflow run `29798604510` completed successfully. Each compatibility workflow records the exact checked-out plugin revision for that run.
 
 Coverage:
 
 - installing Moodle 5.2 with Edvorya and Drive Resource together: **PASS**;
 - creating the activity through Moodle's module API: **PASS**;
+- activity link navigation after the Core popover fix: **PASS**;
 - rendering the plugin container and resource iframe: **PASS**;
 - `390x844` viewport: **PASS**;
 - `1366x768` viewport: **PASS**;
@@ -166,9 +235,9 @@ No plugin-specific Edvorya CSS override is required.
 
 ## Responsive and keyboard acceptance
 
-Current responsive workflow run `29796915539` completed successfully.
+Current responsive workflow run `29798604549` completed successfully.
 
-Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure together with Dashboard, My Courses, Course View, Calendar, Grades, and Profile experience scenarios.
+Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure together with Dashboard, My Courses, Course View, Calendar, Grades, Profile, Administration, Messaging, Notification Preferences, and Notification Popover scenarios.
 
 ### Phone viewport — `390x844`
 
@@ -177,7 +246,9 @@ Theme-specific Behat scenarios validate exact viewport sizes and keyboard activa
 - localized accessible control name: PASS;
 - labelled primary navigation landmark: PASS;
 - Enter opens the native `<details>` menu: PASS;
-- Enter closes the menu: PASS.
+- Enter closes the menu: PASS;
+- contextual page surfaces remain horizontally contained: PASS;
+- collapsed notification popover does not expand the topbar: PASS.
 
 ### Tablet portrait — `820x1180`
 
@@ -188,11 +259,13 @@ Theme-specific Behat scenarios validate exact viewport sizes and keyboard activa
 ### Desktop — `1366x768`
 
 - mobile navigation hidden: PASS;
-- sidebar primary navigation restored: PASS.
+- sidebar primary navigation restored: PASS;
+- contextual page surfaces remain horizontally contained: PASS;
+- notification popover opens without obstructing page content: PASS.
 
 ## Automated accessibility acceptance
 
-Current Axe workflow run `29796915484` completed successfully using Moodle's integrated accessibility Behat step.
+Current Axe workflow run `29798604519` completed successfully using Moodle's integrated accessibility Behat step.
 
 Representative states include:
 
@@ -206,7 +279,7 @@ This is automated Axe smoke testing and is not represented as a substitute for e
 
 ## Branding and CSP-oriented acceptance
 
-Current branding-security workflow run `29796915514` completed successfully.
+Current branding-security workflow run `29798604509` completed successfully.
 
 The gate verifies:
 
@@ -230,26 +303,19 @@ The theme applies client colour overrides through Moodle's cached CSS post-proce
 - Calendar contextual experience: PASS
 - Grades contextual experience: PASS
 - Profile contextual experience: PASS
-- Dashboard/My Courses/Course View phone containment: PASS
-- Dashboard/My Courses/Course View desktop containment: PASS
-- Calendar/Grades/Profile phone containment: PASS
-- Calendar/Grades/Profile desktop containment: PASS
+- Administration contextual experience: PASS
+- Messaging contextual experience: PASS
+- Notification preferences contextual experience: PASS
+- Notification popover collapsed/open geometry: PASS
+- Core popover region standalone contract: PASS
+- Dashboard/My Courses/Course View phone and desktop containment: PASS
+- Calendar/Grades/Profile phone and desktop containment: PASS
+- Administration/Messaging/Notifications phone and desktop containment: PASS
 - Assignment representative flow: PASS
 - Quiz representative flow: PASS
 - Forum representative flow: PASS
 - H5P representative flow: PASS
-- Moodle Book: PASS
-- Moodle Page: PASS
-- Moodle File / Resource: PASS
-- Moodle Folder: PASS
-- Moodle URL course integration: PASS
-- Moodle Choice: PASS
-- Moodle Database: PASS
-- Moodle Glossary: PASS
-- Moodle Lesson: PASS
-- Moodle Wiki: PASS
-- Moodle Workshop: PASS
-- Moodle Feedback: PASS
+- Moodle bundled-plugin matrix: PASS
 - Google Drive `mod_videoplayer`: PASS
 - Blocks/editing mode representative flow: PASS
 - TinyMCE/File Picker dialogue: PASS
@@ -279,6 +345,6 @@ Remaining validation that cannot honestly be inferred from the current Linux Chr
 - SCORM behavior with a representative real SCORM package;
 - LTI behavior with a representative real or deterministic LTI provider.
 
-The required Google Drive integration is already covered separately with the actual `mod_videoplayer` repository.
+The required Google Drive integration is covered separately with the actual `mod_videoplayer` repository.
 
 System-wide CSP compliance also depends on Moodle Core, installed plugins, and server policy. The Edvorya-specific inline client-token style has been removed, but this is not a claim of universal CSP compliance for an entire Moodle installation.
