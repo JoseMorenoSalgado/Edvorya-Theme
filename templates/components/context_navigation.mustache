@@ -1,0 +1,29 @@
+{{!
+    @template theme_edvorya/components/context_navigation
+
+    Compact secondary/context navigation for phone and tablet layouts.
+    Moodle Core remains the source of URLs, labels, and active states.
+}}
+{{#hascontextnavigation}}
+<details class="edv-context-nav">
+    <summary class="edv-context-nav__summary">
+        <span class="edv-context-nav__summary-label">{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}</span>
+        <span class="edv-context-nav__summary-current">{{contextnavigationcurrent}}</span>
+        <span class="edv-context-nav__chevron" aria-hidden="true"></span>
+    </summary>
+    <nav class="edv-context-nav__panel" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
+        <ul class="edv-context-nav__list">
+            {{#contextnavigationitems}}
+                <li class="edv-context-nav__item">
+                    <a class="edv-context-nav__link {{#isactive}}is-active{{/isactive}}"
+                       href="{{{url}}}"
+                       {{#isactive}}aria-current="page"{{/isactive}}>
+                        <span>{{text}}</span>
+                        {{#isactive}}<span class="edv-context-nav__active-dot" aria-hidden="true"></span>{{/isactive}}
+                    </a>
+                </li>
+            {{/contextnavigationitems}}
+        </ul>
+    </nav>
+</details>
+{{/hascontextnavigation}}
