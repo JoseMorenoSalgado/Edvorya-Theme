@@ -5,7 +5,10 @@ Feature: Edvorya page experiences for Dashboard My Courses and Course View
   I need Dashboard, My Courses, and Course View to remain responsive and functional
 
   Background:
-    Given the following "users" exist:
+    Given the following config values are set as admin:
+      | enablemyhome    | 1 |
+      | enablemycourses | 1 |
+    And the following "users" exist:
       | username | firstname | lastname | email               |
       | student1 | Edvorya   | Learner  | learner@example.com |
     And the following "courses" exist:
@@ -21,7 +24,7 @@ Feature: Edvorya page experiences for Dashboard My Courses and Course View
   Scenario Outline: Dashboard uses the contextual Edvorya experience without horizontal overflow
     Given I log in as "student1"
     And I am on site homepage
-    When I follow "Dashboard"
+    When I click on "Dashboard" "link" in the ".edv-primary-nav" "css_element"
     And I set the Edvorya viewport to "<viewport>"
     Then "body.edv-layout-mydashboard" "css_element" should exist
     And ".edv-content-header" "css_element" should be visible
