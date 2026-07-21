@@ -173,8 +173,8 @@ class behat_theme_edvorya extends behat_base {
                     </table>
                 </div>
 
-                <div class="progress" id="edv-progress-fixture" aria-label="Course progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"></div>
+                <div class="progress" id="edv-progress-fixture">
+                    <div class="progress-bar" role="progressbar" aria-label="Course progress" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"></div>
                 </div>
             </div>
             <div class="card-footer">Reusable Moodle-compatible Edvorya surface</div>
