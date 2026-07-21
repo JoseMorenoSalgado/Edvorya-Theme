@@ -9,9 +9,10 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.16 surgically reduces the remaining component CSS after the Boost-parent
- * migration. Generic form, File Manager, Action Menu and Bootstrap mechanics stay
- * owned by Boost; Edvorya keeps only visual identity and proven containment rules.
+ * Alpha.17 translates the production Edvorya LMS visual language to Moodle:
+ * compact shell actions, two-level product/institution branding, 18rem mobile
+ * drawer, Lucide-style bare navigation icons, quiet slate surfaces and a
+ * PageShell/dashboard hierarchy aligned with the main product.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -21,8 +22,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072116;
+$plugin->version = 2026072117;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.16';
+$plugin->release = '0.1.0-alpha.17';
