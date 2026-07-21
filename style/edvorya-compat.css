@@ -36,6 +36,116 @@
     white-space: nowrap;
 }
 
+/* Moodle Settings and Navigation blocks expose semantic tree markup whose
+   presentation is normally supplied by a parent theme. Keep Core markup and
+   JS untouched while providing Edvorya's own compact, touch-friendly tree. */
+.block_navigation .block_tree,
+.block_settings .block_tree {
+    margin: 0;
+    padding: 0;
+}
+
+.block_navigation .block_tree ul,
+.block_settings .block_tree ul,
+.block_navigation .block_tree li,
+.block_settings .block_tree li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.block_navigation .block_tree li + li,
+.block_settings .block_tree li + li {
+    margin-top: 0.25rem;
+}
+
+.block_navigation .block_tree ul ul,
+.block_settings .block_tree ul ul {
+    margin-top: 0.25rem;
+    margin-inline-start: 0.75rem;
+    padding-inline-start: 0.75rem;
+    border-inline-start: 1px solid var(--edv-color-border);
+}
+
+.block_navigation .block_tree .tree_item,
+.block_settings .block_tree .tree_item,
+.block_navigation .block_tree .root_node,
+.block_settings .block_tree .root_node,
+.block_navigation .block_tree .navigation_node,
+.block_settings .block_tree .navigation_node {
+    margin: 0;
+    min-width: 0;
+}
+
+.block_navigation .block_tree a,
+.block_settings .block_tree a {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--edv-radius-sm);
+    color: var(--edv-color-foreground);
+    line-height: 1.35;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.block_navigation .block_tree a:hover,
+.block_settings .block_tree a:hover {
+    background: var(--edv-hover-overlay);
+    color: var(--edv-color-foreground);
+}
+
+.block_navigation .block_tree a:focus-visible,
+.block_settings .block_tree a:focus-visible {
+    background: var(--edv-hover-overlay);
+    outline: 3px solid var(--edv-color-primary);
+    outline-offset: 2px;
+}
+
+.block_navigation .block_tree .branch,
+.block_settings .block_tree .branch,
+.block_navigation .block_tree .root_node,
+.block_settings .block_tree .root_node,
+.block_navigation .block_tree .navigation_node,
+.block_settings .block_tree .navigation_node {
+    color: var(--edv-color-foreground);
+    font-weight: 700;
+}
+
+.block_navigation .block_tree .active_tree_node > a,
+.block_settings .block_tree .active_tree_node > a,
+.block_navigation .block_tree a[aria-current="page"],
+.block_settings .block_tree a[aria-current="page"] {
+    background: var(--edv-active-overlay);
+    color: var(--edv-color-primary);
+    font-weight: 700;
+}
+
+.block_navigation .block_tree .icon,
+.block_settings .block_tree .icon {
+    margin-inline-end: 0.5rem;
+}
+
+/* Blocks that land below the main content on compact layouts should still
+   read as intentional navigation surfaces rather than raw document lists. */
+.edv-sidebar .block_navigation,
+.edv-sidebar .block_settings {
+    overflow: hidden;
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--edv-shadow-sm);
+}
+
+.edv-sidebar .block_navigation .card-body,
+.edv-sidebar .block_settings .card-body,
+.edv-sidebar .block_navigation .content,
+.edv-sidebar .block_settings .content {
+    padding: var(--edv-space-3);
+}
+
 /* Keep the application topbar a single compact row on phones. */
 @media (max-width: 47.999rem) {
     .edv-topbar__inner {
@@ -107,6 +217,11 @@
     .edv-topbar__actions .userbutton {
         min-width: 2.5rem;
         min-height: 2.5rem;
+    }
+
+    .edv-sidebar .block_navigation,
+    .edv-sidebar .block_settings {
+        border-radius: var(--edv-radius-md);
     }
 }
 
