@@ -8,39 +8,22 @@
 
 namespace theme_edvorya\output;
 
-use renderer_base;
 use renderable;
+use renderer_base;
 use templatable;
 use theme_config;
 
 /**
- * Exports client branding and central design-token overrides for templates.
+ * Exports client branding data for Edvorya templates.
+ *
+ * Colour-token settings are applied through Moodle's cached CSS post-processing
+ * pipeline and are intentionally not exported as inline CSS.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class branding implements renderable, templatable {
-    /** @var array<string, string> Default Edvorya colour tokens. */
-    private const DEFAULT_COLOURS = [
-        'primary' => '#2563eb',
-        'secondary' => '#0f172a',
-        'accent' => '#06b6d4',
-        'background' => '#f8fafc',
-        'foreground' => '#0f172a',
-        'muted' => '#64748b',
-        'border' => '#e2e8f0',
-        'success' => '#16a34a',
-        'warning' => '#d97706',
-        'danger' => '#dc2626',
-        'info' => '#0284c7',
-        'sidebar' => '#ffffff',
-        'topbar' => '#ffffff',
-        'button' => '#2563eb',
-        'link' => '#2563eb',
-        'loginbackground' => '#f8fafc',
-    ];
-
     /**
      * Export branding data for Mustache templates.
      *
@@ -73,7 +56,6 @@ final class branding implements renderable, templatable {
             'instagramurl' => $this->get_url_setting('instagramurl'),
             'linkedinurl' => $this->get_url_setting('linkedinurl'),
             'youtubeurl' => $this->get_url_setting('youtubeurl'),
-            'tokenscss' => $this->build_token_css(),
         ];
     }
 
@@ -103,40 +85,5 @@ final class branding implements renderable, templatable {
 
         $clean = clean_param($value, PARAM_URL);
         return $clean !== '' ? $clean : null;
-    }
-
-    /**
-     * Build the single CSS variable override block used by normal Edvorya layouts.
-     *
-     * Only validated hexadecimal colour values are interpolated into this CSS.
-     *
-     * @return string
-     */
-    private function build_token_css(): string {
-        $declarations = [];
-
-        foreach (self::DEFAULT_COLOURS as $name => $default) {
-            $value = get_config('theme_edvorya', $name);
-            $colour = $this->normalise_colour(is_string($value) ? $value : '', $default);
-            $declarations[] = '--edv-color-' . $name . ':' . $colour;
-        }
-
-        return ':root{' . implode('', $declarations) . '}';
-    }
-
-    /**
-     * Validate a configured colour and fall back to the Edvorya default.
-     *
-     * @param string $value Configured value.
-     * @param string $default Default value.
-     * @return string
-     */
-    private function normalise_colour(string $value, string $default): string {
-        $value = trim($value);
-        if (preg_match('/^#[0-9a-f]{6}$/i', $value) === 1) {
-            return strtolower($value);
-        }
-
-        return $default;
     }
 }
