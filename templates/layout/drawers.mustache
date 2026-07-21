@@ -21,13 +21,13 @@
 <div id="page-wrapper" class="edv-shell">
     <header class="edv-topbar" role="banner">
         <div class="edv-topbar__inner">
-            {{#branding}}
-                {{> theme_edvorya/components/brand }}
-            {{/branding}}
-
             {{#hasmobileprimarynav}}
                 {{> theme_edvorya/components/mobile_navigation }}
             {{/hasmobileprimarynav}}
+
+            {{#branding}}
+                {{> theme_edvorya/components/brand }}
+            {{/branding}}
 
             <div class="edv-topbar__actions">
                 {{{ navbarpluginoutput }}}
