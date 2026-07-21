@@ -17,13 +17,32 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Edvorya';
-$string['choosereadme'] = 'Edvorya is a standalone Moodle 5.2 theme built around the Edvorya Design System.';
+$string['choosereadme'] = 'Edvorya is a standalone theme for Moodle 5.0, 5.1 and 5.2 built around the Edvorya Design System.';
 $string['configtitle'] = 'Edvorya';
 $string['generalsettings'] = 'General settings';
 $string['generalsettings_desc'] = 'Configure the institutional identity and visual tokens used by the Edvorya theme.';
 $string['openmainnavigation'] = 'Open main navigation';
 $string['primarynavigationlabel'] = 'Primary navigation';
 $string['secondarynavigationlabel'] = 'Secondary navigation';
+
+$string['dashboardstudenteyebrow'] = 'Your learning';
+$string['dashboardstudenttitle'] = 'What matters, first';
+$string['dashboardstudentdescription'] = 'Continue where you left off, handle what is pending, and check your progress without getting lost in options.';
+$string['dashboardstudentcontinue'] = 'Where do I continue?';
+$string['dashboardstudentcontinue_desc'] = 'Return to your active courses and keep learning.';
+$string['dashboardstudentpending'] = 'What is pending?';
+$string['dashboardstudentpending_desc'] = 'Review upcoming activities and dates in your calendar.';
+$string['dashboardstudentprogress'] = 'How am I doing?';
+$string['dashboardstudentprogress_desc'] = 'Check the progress available in your courses.';
+$string['dashboardteachereyebrow'] = 'Your teaching work';
+$string['dashboardteachertitle'] = 'Focus on what needs action';
+$string['dashboardteacherdescription'] = 'Open your courses to review activities, follow progress, and respond to your students.';
+$string['dashboardteacherreview'] = 'What should I review?';
+$string['dashboardteacherreview_desc'] = 'Open your courses and handle activities that require evaluation.';
+$string['dashboardteacherfollowup'] = 'Who needs follow-up?';
+$string['dashboardteacherfollowup_desc'] = 'Review progress and completion within your courses.';
+$string['dashboardteachercommunication'] = 'Is there anything to answer?';
+$string['dashboardteachercommunication_desc'] = 'Review messages and pending communication.';
 
 $string['brandingheading'] = 'Institutional branding';
 $string['brandingheading_desc'] = 'Configure the primary institutional identity. Uploaded files are stored and served by the Moodle File API.';
