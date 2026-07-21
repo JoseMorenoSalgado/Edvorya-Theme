@@ -9,7 +9,7 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.8 adds standalone presentation contracts for Moodle Settings and Navigation trees.
+ * Alpha.9 aligns the mobile drawer, topbar actions and navigation iconography with Edvorya LMS.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -19,8 +19,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072008;
+$plugin->version = 2026072009;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.8';
+$plugin->release = '0.1.0-alpha.9';
