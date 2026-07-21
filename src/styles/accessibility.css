@@ -1,8 +1,0 @@
-/* Accessibility-critical refinements kept separate from visual compatibility rules. */
-
-.edv-mobile-nav__link.is-active,
-.edv-mobile-nav__child-link.is-active,
-.edv-mobile-nav__link.is-active .edv-mobile-nav__item-text,
-.edv-mobile-nav__child-link.is-active .edv-mobile-nav__item-text {
-    color: var(--edv-color-foreground);
-}
