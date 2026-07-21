@@ -171,16 +171,18 @@ class behat_theme_edvorya extends behat_base {
 
         $script = sprintf(
             <<<'JS'
-const element = document.querySelector(%s);
-if (!element) {
-    return 'missing';
-}
-const rect = element.getBoundingClientRect();
-const viewport = document.documentElement.clientWidth;
-if (rect.left >= -1 && rect.right <= viewport + 1) {
-    return 'ok';
-}
-return `${rect.left},${rect.right},${viewport}`;
+return (function() {
+    const element = document.querySelector(%s);
+    if (!element) {
+        return 'missing';
+    }
+    const rect = element.getBoundingClientRect();
+    const viewport = document.documentElement.clientWidth;
+    if (rect.left >= -1 && rect.right <= viewport + 1) {
+        return 'ok';
+    }
+    return `${rect.left},${rect.right},${viewport}`;
+})();
 JS,
             json_encode($selector, JSON_THROW_ON_ERROR)
         );
