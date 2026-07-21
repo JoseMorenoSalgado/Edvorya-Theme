@@ -1,36 +1,17 @@
 /* Edvorya role-aware dashboard experience.
- * This stylesheet changes hierarchy and presentation only. Moodle Core blocks
- * remain the source of course, timeline, completion and calendar information.
+ *
+ * The dashboard answers the same product questions as Edvorya LMS while Moodle
+ * Core remains the source of course, timeline, completion and calendar data.
  */
 
-/* The dashboard page heading should introduce the page, not compete with the
-   intent panel as another large card. */
+/* The PageShell identity is supplied by src/styles/identity.css. */
 .edv-layout-mydashboard .edv-content-header {
     overflow: visible;
-    margin-bottom: 0.75rem;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-}
-
-.edv-layout-mydashboard .edv-content-header::before {
-    display: none;
-}
-
-.edv-layout-mydashboard #page-header h1 {
-    font-size: clamp(1.5rem, 2.2vw, 2rem);
-    letter-spacing: -0.03em;
 }
 
 .edv-dashboard-focus {
     width: min(100%, var(--edv-content-max-width));
     margin: 0 auto var(--edv-space-6);
-    padding: clamp(1rem, 2.5vw, 1.5rem);
-    border: 1px solid var(--edv-color-border);
-    border-radius: var(--edv-radius-xl);
-    background: #ffffff;
 }
 
 .edv-dashboard-focus__intro {
@@ -38,113 +19,115 @@
 }
 
 .edv-dashboard-focus__eyebrow {
-    margin: 0 0 0.35rem;
+    margin: 0;
     color: var(--edv-color-primary);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 .edv-dashboard-focus__title {
-    margin: 0;
+    margin: 0.35rem 0 0;
     color: var(--edv-color-foreground);
-    font-size: clamp(1.25rem, 2vw, 1.55rem);
-    font-weight: 750;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 650;
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
 }
 
 .edv-dashboard-focus__description {
     max-width: 42rem;
-    margin: 0.45rem 0 0;
+    margin: 0.4rem 0 0;
     color: var(--edv-color-muted);
-    font-size: 0.925rem;
+    font-size: 0.875rem;
     line-height: 1.55;
 }
 
+/* Compact decision cards mirror Edvorya LMS SummaryCard surfaces. */
 .edv-dashboard-focus__questions {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.6rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: 1.25rem;
 }
 
 .edv-dashboard-focus__question {
     min-width: 0;
-    min-height: 4.25rem;
+    min-height: 6rem;
     display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.7rem;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1rem;
     border: 1px solid var(--edv-color-border);
-    border-radius: var(--edv-radius-lg);
+    border-radius: var(--edv-radius-xl);
     background: #ffffff;
     color: var(--edv-color-foreground);
+    box-shadow: var(--edv-shadow-sm);
     text-decoration: none;
-    transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
-.edv-dashboard-focus__question:hover {
-    border-color: color-mix(in srgb, var(--edv-color-primary) 20%, var(--edv-color-border));
-    background: color-mix(in srgb, var(--edv-color-primary) 4%, #ffffff);
+.edv-dashboard-focus__question:hover,
+.edv-dashboard-focus__question:focus-visible {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
+    background: #ffffff;
     color: var(--edv-color-foreground);
+    box-shadow: var(--edv-shadow-md);
 }
 
 .edv-dashboard-focus__question:active {
-    transform: scale(0.99);
+    transform: translateY(1px);
 }
 
 .edv-dashboard-focus__question--primary {
-    border-color: color-mix(in srgb, var(--edv-color-primary) 20%, var(--edv-color-border));
-    background: color-mix(in srgb, var(--edv-color-primary) 8%, #ffffff);
+    border-color: color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
 }
 
 .edv-dashboard-focus__icon {
     flex: 0 0 auto;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: grid;
     place-items: center;
-    border-radius: 0.7rem;
-    background: var(--edv-color-background);
+    border-radius: var(--edv-radius-lg);
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
     color: var(--edv-color-primary);
 }
 
 .edv-dashboard-focus__question--primary .edv-dashboard-focus__icon {
-    background: var(--edv-color-primary);
-    color: #ffffff;
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
+    color: var(--edv-color-primary);
 }
 
 .edv-dashboard-focus__icon-svg.icon {
-    width: 1.1rem;
-    max-width: 1.1rem;
-    height: 1.1rem;
-    max-height: 1.1rem;
+    width: 1.125rem;
+    max-width: 1.125rem;
+    height: 1.125rem;
+    max-height: 1.125rem;
     margin: 0;
 }
 
 .edv-dashboard-focus__question-copy {
     min-width: 0;
     display: grid;
-    gap: 0.15rem;
+    gap: 0.25rem;
+    padding-top: 0.1rem;
 }
 
 .edv-dashboard-focus__question-copy strong {
     color: inherit;
-    font-size: 0.9rem;
-    font-weight: 750;
-    line-height: 1.25;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 .edv-dashboard-focus__question-copy > span {
     color: var(--edv-color-muted);
-    font-size: 0.78rem;
-    line-height: 1.35;
+    font-size: 0.75rem;
+    line-height: 1.45;
 }
 
-/* Let the native dashboard answer the questions in the same priority order.
-   No block is hidden; lower-priority or third-party blocks remain available. */
+/* Native Moodle blocks answer the questions in priority order. No block is hidden. */
 .edv-layout-mydashboard #block-region-content,
 .edv-layout-mydashboard #region-main .block-region {
     display: flex;
@@ -192,8 +175,7 @@
     order: 10;
 }
 
-/* My overview already contains course cards. Remove the redundant outer card
-   treatment so the dashboard reads as one clear layer instead of nested boxes. */
+/* My overview already contains course cards: avoid a redundant nested surface. */
 .edv-layout-mydashboard .block_myoverview.card,
 .edv-layout-mydashboard .block_myoverview.block,
 .edv-layout-mydashboard .block_recentlyaccessedcourses.card,
@@ -216,44 +198,48 @@
 }
 
 .edv-layout-mydashboard .block_myoverview .course-card {
-    box-shadow: none;
-}
-
-.edv-layout-mydashboard .block_myoverview .course-card:hover {
-    transform: none;
     box-shadow: var(--edv-shadow-sm);
 }
 
-/* Secondary dashboard blocks use quieter surfaces. */
+.edv-layout-mydashboard .block_myoverview .course-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--edv-shadow-md);
+}
+
+/* Timeline and calendar are secondary information surfaces. */
 .edv-layout-mydashboard .block_timeline,
 .edv-layout-mydashboard .block_calendar_upcoming {
-    box-shadow: none !important;
+    box-shadow: var(--edv-shadow-sm) !important;
 }
 
 @media (max-width: 61.999rem) {
     .edv-dashboard-focus__questions {
         grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
     }
 
     .edv-dashboard-focus__question {
-        min-height: 3.75rem;
+        min-height: 4.5rem;
+        align-items: center;
     }
 }
 
 @media (max-width: 47.999rem) {
     .edv-dashboard-focus {
         margin-bottom: var(--edv-space-4);
-        padding: 1rem;
-        border-radius: var(--edv-radius-lg);
     }
 
     .edv-dashboard-focus__description {
-        font-size: 0.875rem;
+        font-size: 0.8125rem;
     }
 
     .edv-dashboard-focus__questions {
-        gap: 0.5rem;
-        margin-top: 0.85rem;
+        margin-top: 1rem;
+    }
+
+    .edv-dashboard-focus__question {
+        padding: 0.75rem;
+        border-radius: var(--edv-radius-lg);
     }
 
     .edv-dashboard-focus__question-copy > span {
@@ -266,7 +252,8 @@
         transition: none;
     }
 
-    .edv-dashboard-focus__question:active {
+    .edv-dashboard-focus__question:active,
+    .edv-layout-mydashboard .block_myoverview .course-card:hover {
         transform: none;
     }
 }
