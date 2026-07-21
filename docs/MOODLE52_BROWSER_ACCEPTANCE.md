@@ -20,20 +20,69 @@ The environments are ephemeral and destroyed after every workflow run.
 
 ## Activity acceptance
 
-Workflow run `29785856670` completed successfully.
+Current browser workflow run `29794968978` completed successfully with `theme_edvorya` active.
 
-Representative Moodle 5.2 scenarios executed with `theme_edvorya` forced as the active theme:
+Representative Moodle 5.2 scenarios:
 
-- Assignment — `Submit a file and update the submission with another file`: **PASS**.
-- Quiz — `Review the quiz attempt`: **PASS**.
-- Forum — `Confirm inpage replies work`: **PASS**.
-- H5P — `Add an h5pactivity to a course`: **PASS**.
+- Assignment file submission/editing: **PASS**;
+- Quiz attempt review: **PASS**;
+- Forum inline reply: **PASS**;
+- H5P activity iframe rendering: **PASS**;
+- blocks/editing mode: **PASS**;
+- TinyMCE File Picker dialogue: **PASS**;
+- nested File Picker focus restoration: **PASS**;
+- TinyMCE File Picker upload: **PASS**;
+- autocomplete selection lifecycle: **PASS**;
+- private messaging conversation: **PASS**;
+- notification popover/preferences: **PASS**.
 
-These flows cover representative file submission/editing, Quiz review, JavaScript in-page Forum reply, and nested H5P iframe rendering.
+## Dashboard, My Courses, and Course View experience acceptance
+
+Dedicated page-experience scenarios run through the responsive gate. Current workflow run `29794968969` completed successfully.
+
+The implementation adds stable Edvorya-owned context classes while preserving Moodle's own page layout and page type data:
+
+- `edv-layout-mydashboard`;
+- `edv-layout-mycourses`;
+- `edv-layout-course`.
+
+The visual layer is implemented in `src/styles/page-experiences.css` and does not replace Moodle Core renderers or copy Core Mustache templates.
+
+Coverage:
+
+### Dashboard
+
+- contextual Edvorya page class: **PASS**;
+- Edvorya content header visible: **PASS**;
+- Moodle `#region-main` preserved: **PASS**;
+- `390x844` horizontal containment: **PASS**;
+- `1366x768` horizontal containment: **PASS**.
+
+### My Courses
+
+- Moodle `enablemycourses` enabled in the deterministic fixture: **PASS**;
+- contextual Edvorya page class: **PASS**;
+- learner's enrolled course rendered: **PASS**;
+- Moodle `[data-region="course-content"]` preserved: **PASS**;
+- `390x844` horizontal containment: **PASS**;
+- `1366x768` horizontal containment: **PASS**.
+
+The Design System layer provides responsive course-card grids, course image proportions, progress/footer treatment, summary-list treatment, and block card surfaces without overriding the Core course-card templates.
+
+### Course View
+
+- contextual Edvorya page class: **PASS**;
+- Edvorya content header visible: **PASS**;
+- Moodle `.course-content` preserved: **PASS**;
+- representative Page activity visible in the course: **PASS**;
+- `390x844` horizontal containment: **PASS**;
+- `1366x768` horizontal containment: **PASS**.
+
+The course layer styles the secondary navigation, section surfaces, activity rows, completion metadata, and responsive spacing while leaving Moodle activity/plugin behavior intact.
 
 ## Moodle bundled plugin compatibility
 
-Dedicated bundled-plugin workflow run `29794095994` completed successfully with Moodle 5.2, PHP 8.3, MariaDB 10.11, Chrome/Selenium, and `theme_edvorya` active.
+Current bundled-plugin workflow run `29794968984` completed successfully with Moodle 5.2, PHP 8.3, MariaDB 10.11, Chrome/Selenium, and `theme_edvorya` active.
 
 Fixtures were created with Moodle's own testing generators for the plugins shipped with Moodle Core. The compatibility matrix covered:
 
@@ -50,19 +99,19 @@ Fixtures were created with Moodle's own testing generators for the plugins shipp
 - Workshop (`mod_workshop`): **PASS**;
 - Feedback (`mod_feedback`): **PASS**.
 
-The test also validated that all of these bundled activities/resources remain visible on a `390x844` course page without horizontal overflow. Individual Moodle-owned plugin pages, except the external URL target, were opened at `1366x768` and verified to render inside the Edvorya application shell with `#region-main` contained within the viewport.
+The test also validates that these bundled activities/resources remain visible on a `390x844` course page without horizontal overflow. Individual Moodle-owned plugin pages, except the external URL target, are opened at `1366x768` and verified to render inside the Edvorya application shell with `#region-main` contained within the viewport.
 
-The URL resource was intentionally validated at course-page integration level rather than following the external destination, because the external target is not a theme-rendered Moodle surface.
+The URL resource is intentionally validated at course-page integration level rather than following the external destination, because the external target is not a theme-rendered Moodle surface.
 
-SCORM and LTI are not marked as tested by this matrix. Meaningful SCORM acceptance requires an actual SCORM package, and meaningful LTI acceptance requires a real or deterministic LTI provider. Synthetic empty instances would not constitute trustworthy compatibility evidence.
+SCORM and LTI are not marked as tested by this matrix. Meaningful SCORM acceptance requires an actual SCORM package, and meaningful LTI acceptance requires a real or deterministic LTI provider.
 
 ## Google Drive plugin compatibility
 
 The required third-party integration scope is the real repository `JoseMorenoSalgado/moodle-mod_videoplayer` (`mod_videoplayer`).
 
-Dedicated compatibility workflow run `29792661235` completed successfully against tested plugin revision `37b26d9026de3a4e472c99fa0c604ac10b3a5d72`.
+Current compatibility workflow run `29794968976` completed successfully. The previously recorded tested plugin revision is `37b26d9026de3a4e472c99fa0c604ac10b3a5d72`; each compatibility workflow also records the exact checked-out plugin revision for that run.
 
-Coverage included:
+Coverage:
 
 - installing Moodle 5.2 with Edvorya and Drive Resource together: **PASS**;
 - creating the activity through Moodle's module API: **PASS**;
@@ -70,35 +119,16 @@ Coverage included:
 - `390x844` viewport: **PASS**;
 - `1366x768` viewport: **PASS**;
 - no horizontal container overflow: **PASS**;
-- Axe on both representative plugin surfaces: **PASS**;
+- Axe on representative plugin surfaces: **PASS**;
 - ephemeral environment cleanup: **PASS**.
 
-No plugin-specific Edvorya CSS override was required.
-
-## Shared Core interaction acceptance
-
-Workflow run `29786269521` completed successfully and re-ran the activity scenarios together with:
-
-- blocks/editing mode — `Configuring the Text block with Javascript on`: **PASS**;
-- TinyMCE image dialogue and nested File Picker: **PASS**;
-- nested File Picker Escape/focus restoration: **PASS**;
-- TinyMCE File Picker upload: **PASS**;
-- single-value autocomplete selection/replacement/removal: **PASS**.
-
-## Messaging and notification acceptance
-
-Workflow run `29786702098` completed successfully and re-ran all preceding scenarios together with:
-
-- private messaging conversation via Contacts: **PASS**;
-- notification popover, unread counts, and preference-sensitive visibility: **PASS**.
+No plugin-specific Edvorya CSS override is required.
 
 ## Responsive and keyboard acceptance
 
-Dedicated responsive workflow run `29787985130` completed successfully.
+Current responsive workflow run `29794968969` completed successfully.
 
-A production issue discovered during responsive acceptance was the use of non-existent Moodle Core language identifiers for primary and secondary navigation landmark labels. The theme now owns localized strings `primarynavigationlabel` and `secondarynavigationlabel`. The fix was introduced in `0.1.0-alpha.4`.
-
-Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure:
+Theme-specific Behat scenarios validate exact viewport sizes and keyboard activation of the native mobile navigation disclosure together with the Dashboard/My Courses/Course View scenarios documented above.
 
 ### Phone viewport — `390x844`
 
@@ -122,9 +152,9 @@ Theme-specific Behat scenarios validate exact viewport sizes and keyboard activa
 
 ## Automated accessibility acceptance
 
-Dedicated Axe workflow run `29788706252` completed successfully using Moodle's integrated accessibility Behat step.
+Current Axe workflow run `29794968974` completed successfully using Moodle's integrated accessibility Behat step.
 
-Representative states:
+Representative states include:
 
 - authenticated Site Home desktop: **PASS**;
 - Dashboard desktop: **PASS**;
@@ -136,23 +166,29 @@ This is automated Axe smoke testing and is not represented as a substitute for e
 
 ## Branding and CSP-oriented acceptance
 
-Dedicated branding-security workflow run `29789505912` completed successfully.
+Current branding-security workflow run `29794969009` completed successfully.
 
-The scenario configures the Edvorya primary colour as `#123456`, resets theme caches, loads the site through Chrome/Selenium, and verifies:
+The gate verifies:
 
-- `--edv-color-primary` resolves to `#123456` from the processed stylesheet: **PASS**;
-- the former `#theme-edvorya-client-tokens` inline style element is absent from the DOM: **PASS**;
+- configurable client colour delivery through Moodle's processed stylesheet: **PASS**;
+- former `#theme-edvorya-client-tokens` inline style element absent from the DOM: **PASS**;
 - ephemeral environment cleanup: **PASS**.
 
-The theme now applies client colour overrides through Moodle's cached CSS post-processing callback. Administrator-uploaded branding SVG is no longer accepted by settings, and legacy uploaded SVG branding is rejected by the Edvorya pluginfile callback.
+The theme applies client colour overrides through Moodle's cached CSS post-processing callback. Administrator-uploaded branding SVG is not accepted by settings, and legacy uploaded SVG branding is rejected by the Edvorya pluginfile callback.
 
 ## Current gate result
 
+- Theme quality/PHP/CSS: PASS
 - Moodle/MariaDB/Selenium startup: PASS
 - PHP 8.3 verification: PASS
 - MariaDB 10.11 verification: PASS
 - `max_input_vars >= 5000`: PASS
 - Behat environment initialization with Edvorya: PASS
+- Dashboard contextual experience: PASS
+- My Courses contextual experience: PASS
+- Course View contextual experience: PASS
+- Dashboard/My Courses/Course View phone containment: PASS
+- Dashboard/My Courses/Course View desktop containment: PASS
 - Assignment representative flow: PASS
 - Quiz representative flow: PASS
 - Forum representative flow: PASS
@@ -181,8 +217,7 @@ The theme now applies client colour overrides through Moodle's cached CSS post-p
 - Tablet responsive navigation: PASS
 - Desktop sidebar navigation: PASS
 - Keyboard Enter open/close of mobile navigation: PASS
-- Localized navigation landmark labels: PASS
-- Axe Site Home/Dashboard/mobile/tablet smoke tests: PASS
+- Axe representative smoke tests: PASS
 - Cached configurable branding CSS token: PASS
 - Theme-owned inline client-token style removal: PASS
 - Ephemeral environment cleanup: PASS
