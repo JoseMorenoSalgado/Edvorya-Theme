@@ -1,132 +1,94 @@
-# Moodle 5.2 Core compatibility surface
+# Moodle Core compatibility surface
 
 ## Purpose
 
-`theme_edvorya` is standalone and does not inherit Boost, Classic, or Bootstrap as its visual framework. Moodle Core and many plugins nevertheless emit stable class names that require a minimal presentation layer to remain usable.
+`theme_edvorya` uses Boost as its Moodle Core compatibility parent. Edvorya no longer recreates generic Bootstrap/Core presentation contracts that Moodle already maintains upstream.
 
-Edvorya therefore maintains a selective compatibility surface based on observed Moodle 5.2 templates and frontend contracts. It does not attempt to clone Bootstrap or Boost wholesale.
+The compatibility rule is now:
 
-## Current compatibility modules
+> Boost owns generic Moodle Core compatibility. Edvorya only adds product-specific visual treatment or a targeted override backed by a verified regression.
 
-### `src/styles/core-utilities.css`
+## Removed standalone compatibility modules
 
-Verified utility classes used by Moodle Core templates, including block markup, accessible skip links, hidden state, print visibility, and selected small layout helpers.
+The following modules were removed from the production build after adopting Boost:
 
-Current coverage includes:
+- `src/styles/core-utilities.css`;
+- `src/styles/core-overlays.css`.
 
-- `hidden`;
-- `visually-hidden-focusable`;
-- `p-3`;
-- `mt-3`;
-- `mb-3`;
-- `h5`;
-- `btn-icon`;
-- `d-print-none`;
-- `d-print-block`;
-- selected small layout helpers required by Core-generated markup.
+The former standalone sheets were also removed:
+
+- `style/edvorya-compat.css`;
+- `style/edvorya-accessibility.css`.
+
+Their generic responsibilities are now inherited from Boost. The accessibility-critical active navigation state that belongs to Edvorya was consolidated into `style/edvorya-shell.css`.
+
+## Retained Edvorya refinements
 
 ### `src/styles/moodle-forms.css`
 
-Covers structural behaviour needed by Moodle Forms:
-
-- advanced element visibility;
-- fieldset and legend structure;
-- responsive form rows;
-- selects and grouped inputs;
-- validation states;
-- readonly/disabled fields;
-- autocomplete and tag suggestion surfaces;
-- editor containers;
-- full-width-label forms.
-
-The module does not replace Moodle Forms JavaScript or renderers.
+Retained only as an Edvorya visual treatment layer for Moodle forms. Moodle/Boost continue to own form structure, behavior and compatibility.
 
 ### `src/styles/filemanager.css`
 
-Provides a minimal standalone presentation contract for:
-
-- File Picker;
-- File Manager;
-- repository lists;
-- picker toolbar/view/path bars;
-- icon and table views;
-- upload/login surfaces;
-- selection panels;
-- responsive viewport constraints.
-
-The module intentionally preserves Moodle's existing JavaScript behaviour and data hooks.
-
-### `src/styles/core-overlays.css`
-
-Provides the structural styles required by Core overlay components:
-
-- modal backdrop;
-- modal dialog/content/header/body/footer;
-- centered and scrollable modal variants;
-- dropdown menu visibility and alignment;
-- dropdown headers, dividers, active and disabled states.
-
-JavaScript state remains owned by Moodle Core.
+Retained for targeted Edvorya presentation of File Picker/File Manager surfaces. Moodle/Boost continue to own repository behavior, JavaScript and structural compatibility.
 
 ### `src/styles/action-menu.css`
 
-Presents Moodle Core Action Menu controls used throughout blocks, courses, administration, and activities.
-
-Current coverage includes:
-
-- action menu trigger layout;
-- dropdown trigger hover/focus state;
-- Core caret fallback;
-- menu width constraints on mobile;
-- icon alignment;
-- block control alignment.
-
-The module relies on Moodle's existing `data-bs-toggle="dropdown"` behaviour and does not introduce replacement JavaScript.
+Retained for Edvorya-specific spacing and visual refinement of Core action menus. Dropdown behavior remains owned by Moodle/Boost.
 
 ### `src/styles/tertiary-navigation.css`
 
-Presents the Core tertiary navigation selector exported when secondary navigation overflows.
+Retained for the Edvorya presentation of Core tertiary navigation data.
 
 ### `src/styles/mobile-navigation.css`
 
-Owns the Edvorya presentation of Moodle Core `mobileprimarynav` data.
+Retained because the Edvorya mobile drawer is a product-specific navigation composition built from Moodle-owned navigation data.
+
+### `style/edvorya-shell.css`
+
+Contains only application-shell refinements: mobile drawer presentation, topbar composition and accessibility-critical states belonging to Edvorya.
+
+## Layout compatibility
+
+Edvorya delegates technical/minimal layouts directly to Boost:
+
+- popup;
+- frametop;
+- embedded;
+- maintenance;
+- print;
+- redirect;
+- secure.
+
+The mapping is explicit in `config.php`, preserving compatibility with the Moodle 5.0 layout model while also working on Moodle 5.1 and 5.2.
 
 ## Design rule
 
-A new compatibility rule is added only when at least one of these conditions is met:
+A new Core-targeted rule may be added only when one of these conditions is true:
 
-1. Moodle Core 5.2 emits the class or structure in an official template or renderer.
-2. A supported activity/plugin demonstrates a concrete regression without the rule.
-3. Runtime/browser testing demonstrates a functional or accessibility need.
+1. It changes the visible component into the Edvorya Design System without replacing Core behavior.
+2. A supported Moodle/plugin surface demonstrates a concrete regression that Boost does not already solve.
+3. Browser or accessibility testing provides reproducible evidence for the rule.
 
-The theme must not add a large generic framework compatibility layer speculatively.
+Do not recreate generic Bootstrap utilities, modal mechanics, dropdown visibility logic or Core popover positioning inside Edvorya.
 
 ## Performance rule
 
-Compatibility modules are compiled into the single production artifact `style/edvorya.css`.
+- Boost compatibility is reused instead of duplicated.
+- Tailwind remains build-time only.
+- No external stylesheet CDN is required.
+- Edvorya production CSS contains product-specific visual rules, not a second Core framework.
+- New compatibility code must be measured against CSS weight and maintenance cost.
 
-There is:
+## Validation
 
-- no Bootstrap CSS runtime dependency;
-- no Tailwind runtime dependency;
-- no external stylesheet CDN;
-- no additional HTTP request per compatibility module in production.
+Compatibility changes must pass:
 
-## Remaining browser validation
+- Moodle 5.0/5.1/5.2 matrix;
+- browser functional acceptance;
+- responsive acceptance;
+- Axe accessibility;
+- bundled plugin compatibility;
+- required Google Drive plugin compatibility.
 
-The current compatibility layer still requires real browser tests for:
-
-- File Picker upload/select flows;
-- TinyMCE and editor resizing;
-- autocomplete and tags keyboard navigation;
-- modal focus management;
-- action menus and dropdown placement;
-- block controls in editing mode;
-- Assignment submission forms;
-- Quiz editing/attempt surfaces;
-- Forum forms;
-- H5P embeds and fullscreen behaviour;
-- iPhone Safari;
-- Android Chrome;
-- tablet layouts;
-- representative third-party plugins.
+Real Safari/iPhone, SCORM and deterministic LTI validation remain environment-specific gates.
