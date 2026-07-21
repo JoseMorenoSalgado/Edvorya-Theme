@@ -15,16 +15,7 @@
 
 Edvorya uses Boost only as the Moodle Core compatibility parent. Boost owns generic Moodle presentation contracts such as Bootstrap-based utilities, modal/dropdown/popover behavior and technical fallback layouts. Edvorya owns the product experience above that compatibility layer.
 
-Edvorya remains responsible for:
-
-- application shell, topbar, sidebar and mobile drawer;
-- Edvorya Design System tokens and visual components;
-- Lucide-style theme navigation iconography;
-- Dashboard experiences for students and teachers;
-- My Courses, Course View and learning-support experiences;
-- Administration visual hierarchy;
-- institutional branding, login experience and footer;
-- responsive behavior specific to Edvorya.
+Edvorya remains responsible for the application shell, topbar, sidebar, mobile drawer, Design System, Lucide-style navigation iconography, student/teacher dashboard experience, learning pages, administration presentation, branding, login and responsive behavior.
 
 The theme does not modify Moodle Core and does not depend on RemUI, Classic, Lambda or commercial themes.
 
@@ -48,11 +39,13 @@ Retained by Edvorya because they define product identity:
 - Design System visual overrides;
 - branding settings and token pipeline.
 
+Boost is a compatibility dependency, not the Edvorya visual framework.
+
 ## Runtime dependencies
 
 Production does not require Node.js, npm, React, Tailwind runtime, a Tailwind CDN, or external icon/font CDNs.
 
-Boost is shipped with Moodle and acts as the compatibility base. Bootstrap is not the primary visual language of Edvorya; Edvorya overrides the visible product experience through its own Design System.
+Boost is shipped with Moodle and acts as the compatibility base. Tailwind is build-time only.
 
 ## CSS architecture
 
@@ -78,8 +71,6 @@ style/edvorya-context-nav.css
 ```
 
 `style/edvorya-shell.css` contains only Edvorya-owned shell refinements. Generic Moodle Core compatibility rules are inherited from Boost.
-
-Tailwind is build-time only and Tailwind Preflight is intentionally not imported.
 
 ## Development CSS build
 
