@@ -9,7 +9,7 @@
 - Target baseline: Moodle 5.2
 - Minimum Moodle version: `2026042000`
 - Parent themes: none (`$THEME->parents = []`)
-- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed; representative Chrome/Selenium Behat acceptance passes for Assignment, Quiz, Forum, H5P, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, phone/tablet/desktop navigation, keyboard mobile navigation, and automated Axe accessibility smoke testing; client colour tokens now use Moodle's cached CSS post-processing pipeline instead of a theme-owned inline style block; administrator branding uploads are restricted to raster image types and legacy uploaded SVG branding is rejected at serving time
+- Status: foundation alpha; static validation passed; isolated Moodle 5.2 + MariaDB 10.11 runtime smoke validation passed; representative Chrome/Selenium Behat acceptance passes for Assignment, Quiz, Forum, H5P, Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, Feedback, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, phone/tablet/desktop navigation, keyboard mobile navigation, automated Axe accessibility smoke testing, and the required Google Drive `mod_videoplayer` integration; client colour tokens use Moodle's cached CSS post-processing pipeline instead of a theme-owned inline style block; administrator branding uploads are restricted to raster image types and legacy uploaded SVG branding is rejected at serving time
 
 ## Runtime dependencies
 
@@ -107,14 +107,16 @@ The isolated Moodle runtime smoke-validation result is recorded in:
 docs/MOODLE52_RUNTIME_STATUS.md
 ```
 
-Representative browser, responsive, keyboard, communication, and accessibility acceptance is recorded in:
+Representative browser, bundled-plugin, responsive, keyboard, communication, Google Drive, and accessibility acceptance is recorded in:
 
 ```text
 docs/MOODLE52_BROWSER_ACCEPTANCE.md
 ```
 
-The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. The tested activity/Core/communication flows pass with `theme_edvorya` active. Theme-specific responsive scenarios pass at 390x844, 820x1180, and 1366x768, including keyboard opening and closing of the native mobile navigation. Representative Site Home, Dashboard, phone navigation, and tablet navigation states also pass Moodle's Axe-based automated accessibility smoke checks.
+The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. The tested activity/Core/communication flows pass with `theme_edvorya` active. A dedicated bundled-plugin matrix passes for Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, and Feedback. The required real `mod_videoplayer` Google Drive repository also passes its dedicated mobile/desktop, overflow, and Axe compatibility gate without plugin-specific theme CSS overrides.
+
+Theme-specific responsive scenarios pass at 390x844, 820x1180, and 1366x768, including keyboard opening and closing of the native mobile navigation. Representative Site Home, Dashboard, phone navigation, and tablet navigation states also pass Moodle's Axe-based automated accessibility smoke checks.
 
 A dedicated branding-security gate verifies that a configured client primary colour is delivered through Moodle's processed stylesheet and that the former `#theme-edvorya-client-tokens` inline style element is absent from the rendered DOM.
 
-Passing static, runtime smoke, representative browser, responsive, keyboard, and automated accessibility acceptance does not constitute exhaustive validation of every Moodle or third-party plugin surface. True Safari/iPhone validation requires a real Safari-capable environment, and representative third-party plugin compatibility should be verified against actual plugin repositories before the foundation is considered production-ready.
+Passing static, runtime smoke, representative browser, bundled-plugin, Google Drive, responsive, keyboard, and automated accessibility acceptance does not constitute exhaustive validation of every possible Moodle environment. True Safari/iPhone validation requires a Safari-capable environment. SCORM requires a representative real SCORM package and LTI requires a real or deterministic LTI provider before those integrations can be honestly marked as accepted.
