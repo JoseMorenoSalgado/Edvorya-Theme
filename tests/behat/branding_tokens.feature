@@ -1,3 +1,4 @@
+# Security acceptance for cached theme colour tokens and inline-style removal.
 @theme_edvorya_branding @javascript
 Feature: Edvorya client branding colour tokens
   In order to support client branding under stricter content security policies
