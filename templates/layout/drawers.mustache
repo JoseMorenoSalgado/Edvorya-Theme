@@ -65,6 +65,10 @@
                     {{> theme_edvorya/components/dashboard_focus }}
                 {{/dashboardexperience}}
 
+                {{#hascontextnavigation}}
+                    {{> theme_edvorya/components/context_navigation }}
+                {{/hascontextnavigation}}
+
                 {{#secondarymoremenu}}
                     <nav class="edv-secondary-nav" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
                         {{> core/moremenu }}
