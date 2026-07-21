@@ -158,6 +158,9 @@ Feature: Edvorya contextual page experiences
     Given I log in as "student1"
     And I am on site homepage
     And I set the Edvorya viewport to "<viewport>"
+    Then ".popover-region-notifications.collapsed" "css_element" should exist
+    And ".popover-region-notifications .popover-region-container" "css_element" should not be visible
+    And the Edvorya element ".edv-topbar__inner" should fit within the viewport horizontally
     When I click on ".popover-region-notifications [data-region='popover-region-toggle']" "css_element"
     Then ".popover-region-notifications .popover-region-container" "css_element" should be visible
     And the Edvorya element ".popover-region-notifications .popover-region-container" should fit within the viewport horizontally
