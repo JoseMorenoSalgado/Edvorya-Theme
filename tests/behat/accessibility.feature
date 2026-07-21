@@ -2,7 +2,7 @@
 Feature: Edvorya automated accessibility smoke testing
   In order to use Moodle with assistive technologies
   As a Moodle user
-  I need representative Edvorya pages and navigation states to meet automated accessibility standards
+  I need representative Edvorya pages navigation states and common components to meet automated accessibility standards
 
   Scenario: Authenticated site home meets accessibility standards on desktop
     Given I log in as "admin"
@@ -31,3 +31,10 @@ Feature: Edvorya automated accessibility smoke testing
     When I toggle the Edvorya mobile navigation with the keyboard
     Then ".edv-mobile-nav[open]" "css_element" should exist
     And the page should meet accessibility standards
+
+  Scenario: Transversal Design System fixture meets accessibility standards
+    Given I log in as "admin"
+    And I am on site homepage
+    And I set the Edvorya viewport to "1366x768"
+    And I inject the Edvorya design system fixture
+    Then the page should meet accessibility standards
