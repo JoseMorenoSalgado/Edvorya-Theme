@@ -15,6 +15,16 @@
         border: 0 !important;
     }
 
+    /* Moodle Core pix icons rely on a stable icon box normally supplied by a parent theme. */
+    .icon {
+        width: 1rem;
+        height: 1rem;
+        max-width: 1rem;
+        max-height: 1rem;
+        flex: 0 0 auto;
+        vertical-align: middle;
+    }
+
     .p-3 {
         padding: var(--edv-space-4) !important;
     }
