@@ -4,6 +4,7 @@
  */
 @import "./tailwind.css";
 @import "./core-utilities.css";
+@import "./design-system.css";
 @import "./moodle-forms.css";
 @import "./filemanager.css";
 @import "./core-overlays.css";
