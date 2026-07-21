@@ -38,13 +38,22 @@ jobs:
         include:
           - moodle: '5.0'
             branch: MOODLE_500_STABLE
+            slug: moodle500
             port: '127.0.0.1:18050'
+            themepath: theme/edvorya
+            behatclidir: admin/tool/behat/cli
           - moodle: '5.1'
             branch: MOODLE_501_STABLE
+            slug: moodle501
             port: '127.0.0.1:18051'
+            themepath: public/theme/edvorya
+            behatclidir: public/admin/tool/behat/cli
           - moodle: '5.2'
             branch: MOODLE_502_STABLE
+            slug: moodle502
             port: '127.0.0.1:18052'
+            themepath: public/theme/edvorya
+            behatclidir: public/admin/tool/behat/cli
 
     env:
       MOODLE_DOCKER_DB: mariadb
@@ -78,16 +87,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf moodle/public/theme/edvorya
-          mkdir -p moodle/public/theme/edvorya
-          rsync -a --delete --exclude='.git' theme-source/ moodle/public/theme/edvorya/
+          THEME_TARGET="moodle/${{ matrix.themepath }}"
+          rm -rf "$THEME_TARGET"
+          mkdir -p "$THEME_TARGET"
+          rsync -a --delete --exclude='.git' theme-source/ "$THEME_TARGET/"
 
-          test -f moodle/public/theme/edvorya/version.php
-          test -f moodle/public/theme/edvorya/config.php
-          test -f moodle/public/theme/edvorya/style/edvorya.css
+          test -f "$THEME_TARGET/version.php"
+          test -f "$THEME_TARGET/config.php"
+          test -f "$THEME_TARGET/style/edvorya.css"
 
-          grep -F '$plugin->requires = 2025041400;' moodle/public/theme/edvorya/version.php
-          grep -F '$plugin->supported = [500, 502];' moodle/public/theme/edvorya/version.php
+          grep -F '$plugin->requires = 2025041400;' "$THEME_TARGET/version.php"
+          grep -F '$plugin->supported = [500, 502];' "$THEME_TARGET/version.php"
 
       - name: Prepare isolated Moodle configuration
         shell: bash
@@ -111,7 +121,7 @@ jobs:
 
           echo "MOODLE_DOCKER_WWWROOT=${GITHUB_WORKSPACE}/moodle" >> "$GITHUB_ENV"
           echo "MOODLE_DOCKER_BEHAT_FAILDUMP=${GITHUB_WORKSPACE}/behat-faildumps" >> "$GITHUB_ENV"
-          echo "COMPOSE_PROJECT_NAME=edvorya-theme-${{ matrix.branch }}-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
+          echo "COMPOSE_PROJECT_NAME=edvorya-theme-${{ matrix.slug }}-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
 
           mkdir -p "${GITHUB_WORKSPACE}/behat-faildumps"
           chmod 0777 "${GITHUB_WORKSPACE}/behat-faildumps"
@@ -139,7 +149,7 @@ jobs:
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T webserver \
-            php public/admin/tool/behat/cli/init.php --disable-composer --no-axe \
+            php ${{ matrix.behatclidir }}/init.php --disable-composer --no-axe \
             2>&1 | tee "${GITHUB_WORKSPACE}/behat-init-${{ matrix.moodle }}.log"
 
       - name: Validate Edvorya Dashboard shell
@@ -148,7 +158,7 @@ jobs:
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T -u www-data webserver \
-            php public/admin/tool/behat/cli/run.php \
+            php ${{ matrix.behatclidir }}/run.php \
             --name='Dashboard uses the contextual Edvorya experience without horizontal overflow' \
             --format=progress \
             2>&1 | tee "${GITHUB_WORKSPACE}/dashboard-${{ matrix.moodle }}.log"
@@ -159,7 +169,7 @@ jobs:
         run: |
           set -euo pipefail
           bin/moodle-docker-compose exec -T -u www-data webserver \
-            php public/admin/tool/behat/cli/run.php \
+            php ${{ matrix.behatclidir }}/run.php \
             --name='Wide Moodle tables use internal scrolling instead of expanding the phone viewport' \
             --format=progress \
             2>&1 | tee "${GITHUB_WORKSPACE}/design-system-${{ matrix.moodle }}.log"
