@@ -6,19 +6,13 @@
 @source "../../classes/**/*.php";
 
 @theme {
-    --*: initial;
-    --spacing: 0.25rem;
-    --breakpoint-md: 48rem;
-    --breakpoint-lg: 64rem;
-    --font-sans: var(--edv-font-sans);
-    --color-edv-primary: var(--edv-color-primary);
-    --color-edv-background: var(--edv-color-background);
-    --color-edv-foreground: var(--edv-color-foreground);
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @layer base {
     :root {
         color-scheme: light;
+
         --edv-color-primary: #2563eb;
         --edv-color-secondary: #0f172a;
         --edv-color-accent: #06b6d4;
@@ -35,28 +29,42 @@
         --edv-color-button: #2563eb;
         --edv-color-link: #2563eb;
         --edv-color-loginbackground: #f8fafc;
+
         --edv-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
         --edv-space-1: 0.25rem;
         --edv-space-2: 0.5rem;
         --edv-space-3: 0.75rem;
         --edv-space-4: 1rem;
         --edv-space-6: 1.5rem;
         --edv-space-8: 2rem;
+
         --edv-radius-sm: 0.5rem;
         --edv-radius-md: 0.75rem;
         --edv-radius-lg: 1rem;
         --edv-radius-xl: 1.5rem;
         --edv-radius-pill: 999px;
+
         --edv-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
         --edv-shadow-md: 0 8px 24px rgb(15 23 42 / 0.08);
         --edv-shadow-lg: 0 20px 45px rgb(15 23 42 / 0.12);
-        --edv-focus-ring: 0 0 0 3px color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
-        --edv-hover-overlay: color-mix(in srgb, var(--edv-color-primary) 8%, transparent);
-        --edv-active-overlay: color-mix(in srgb, var(--edv-color-primary) 14%, transparent);
+
+        --edv-focus-ring: 0 0 0 3px var(--edv-color-primary);
+        --edv-hover-overlay: var(--edv-color-primary);
+        --edv-active-overlay: var(--edv-color-primary);
         --edv-disabled-opacity: 0.55;
+
         --edv-topbar-height: 4rem;
         --edv-sidebar-width: 17rem;
         --edv-content-max-width: 90rem;
+    }
+
+    @supports (color: color-mix(in srgb, black, white)) {
+        :root {
+            --edv-focus-ring: 0 0 0 3px color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
+            --edv-hover-overlay: color-mix(in srgb, var(--edv-color-primary) 8%, transparent);
+            --edv-active-overlay: color-mix(in srgb, var(--edv-color-primary) 14%, transparent);
+        }
     }
 
     html {
@@ -66,8 +74,8 @@
     }
 
     body {
-        margin: 0;
         min-width: 20rem;
+        margin: 0;
         background: var(--edv-color-background);
         color: var(--edv-color-foreground);
         font-family: var(--edv-font-sans);
@@ -113,15 +121,41 @@
         border: 0 !important;
     }
 
-    .d-none { display: none !important; }
-    .d-block { display: block !important; }
-    .d-flex { display: flex !important; }
-    .flex-column { flex-direction: column !important; }
-    .flex-wrap { flex-wrap: wrap !important; }
-    .align-items-center { align-items: center !important; }
-    .justify-content-between { justify-content: space-between !important; }
-    .ms-auto { margin-inline-start: auto !important; }
-    .w-100 { width: 100% !important; }
+    .d-none {
+        display: none !important;
+    }
+
+    .d-block {
+        display: block !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .flex-column {
+        flex-direction: column !important;
+    }
+
+    .flex-wrap {
+        flex-wrap: wrap !important;
+    }
+
+    .align-items-center {
+        align-items: center !important;
+    }
+
+    .justify-content-between {
+        justify-content: space-between !important;
+    }
+
+    .ms-auto {
+        margin-inline-start: auto !important;
+    }
+
+    .w-100 {
+        width: 100% !important;
+    }
 
     .edv-shell {
         min-height: 100dvh;
@@ -246,7 +280,7 @@
     .edv-primary-nav .active > .nav-link,
     .edv-secondary-nav .active > .nav-link {
         background: var(--edv-active-overlay);
-        color: var(--edv-color-primary);
+        color: var(--edv-color-foreground);
         font-weight: 650;
     }
 
@@ -336,11 +370,11 @@
         width: 100%;
         max-width: 32rem;
         justify-self: center;
+        padding: clamp(1.25rem, 4vw, 2rem);
         border: 1px solid var(--edv-color-border);
         border-radius: var(--edv-radius-xl);
         background: #ffffff;
         box-shadow: var(--edv-shadow-md);
-        padding: clamp(1.25rem, 4vw, 2rem);
     }
 
     .edv-login__panel > .edv-brand {
@@ -373,10 +407,10 @@
 
     .edv-maintenance__panel {
         width: min(100%, 32rem);
+        padding: var(--edv-space-6);
         border: 1px solid var(--edv-color-border);
         border-radius: var(--edv-radius-xl);
         background: #ffffff;
-        padding: var(--edv-space-6);
     }
 
     .edv-button,
@@ -444,10 +478,10 @@
     }
 
     .edv-avatar {
-        display: inline-grid;
-        place-items: center;
         width: 2.5rem;
         height: 2.5rem;
+        display: inline-grid;
+        place-items: center;
         overflow: hidden;
         border-radius: 50%;
     }
@@ -494,9 +528,9 @@
     }
 
     .edv-empty-state {
+        min-height: 12rem;
         display: grid;
         place-items: center;
-        min-height: 12rem;
         padding: var(--edv-space-8);
         border: 1px dashed var(--edv-color-border);
         border-radius: var(--edv-radius-lg);
@@ -534,8 +568,8 @@
     .form-control:focus,
     .form-select:focus,
     .custom-select:focus {
-        border-color: var(--edv-color-primary);
         outline: none;
+        border-color: var(--edv-color-primary);
         box-shadow: var(--edv-focus-ring);
     }
 
@@ -594,8 +628,8 @@
     }
 
     .dropdown-item {
-        display: block;
         width: 100%;
+        display: block;
         padding: 0.55rem 0.75rem;
         border: 0;
         border-radius: var(--edv-radius-sm);
@@ -615,12 +649,8 @@
         inset: 0;
         z-index: 1050;
         display: none;
-        overflow: auto;
         padding: var(--edv-space-4);
-    }
-
-    .modal.show {
-        display: block;
+        overflow: auto;
     }
 
     .modal-dialog {
@@ -629,11 +659,11 @@
     }
 
     .modal-content {
+        overflow: hidden;
         border: 1px solid var(--edv-color-border);
         border-radius: var(--edv-radius-lg);
         background: #ffffff;
         box-shadow: var(--edv-shadow-lg);
-        overflow: hidden;
     }
 
     .modal-header,
@@ -660,11 +690,30 @@
     }
 
     @media (min-width: 48rem) {
-        .col-md-3 { flex: 0 0 auto; width: 25%; }
-        .col-md-4 { flex: 0 0 auto; width: 33.333333%; }
-        .col-md-6 { flex: 0 0 auto; width: 50%; }
-        .col-md-8 { flex: 0 0 auto; width: 66.666667%; }
-        .col-md-9 { flex: 0 0 auto; width: 75%; }
+        .col-md-3 {
+            flex: 0 0 auto;
+            width: 25%;
+        }
+
+        .col-md-4 {
+            flex: 0 0 auto;
+            width: 33.333333%;
+        }
+
+        .col-md-6 {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+
+        .col-md-8 {
+            flex: 0 0 auto;
+            width: 66.666667%;
+        }
+
+        .col-md-9 {
+            flex: 0 0 auto;
+            width: 75%;
+        }
     }
 
     @media (min-width: 64rem) {
