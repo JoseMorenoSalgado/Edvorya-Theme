@@ -55,6 +55,8 @@ It provides:
 
 Moodle continues to own navigation data, blocks, course-card markup, activity markup, progress data, completion data, editing behavior, and plugin integrations.
 
+The current page-experience acceptance run `29794968969` passes Dashboard, My Courses, and Course View at `390x844` and `1366x768`, including horizontal-containment assertions. The same functional checkpoint also passes the full browser gate (`29794968978`), bundled Moodle plugins (`29794968984`), Google Drive compatibility (`29794968976`), Axe accessibility (`29794968974`), and branding security (`29794969009`).
+
 ## Installation for Moodle 5.2 testing
 
 1. Copy the repository contents into:
