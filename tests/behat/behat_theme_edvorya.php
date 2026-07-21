@@ -99,11 +99,11 @@ class behat_theme_edvorya extends behat_base {
     }
 
     /**
-     * Create a deterministic Drive Resource fixture through Moodle's testing generator API.
+     * Create a deterministic Drive Resource fixture through Moodle's module creation API.
      *
-     * The installed third-party plugin does not currently ship its own testing generator,
-     * so Moodle provides the default activity-module generator which delegates to the
-     * plugin's normal add-instance callback and add_moduleinfo() flow.
+     * Drive Resource does not currently ship tests/generator/lib.php, so this compatibility
+     * fixture follows the same add_moduleinfo() path used by Moodle's generic module generator
+     * while supplying the standard course-module defaults explicitly.
      *
      * @Given /^I create an Edvorya Drive Resource named "(?P<name>[^"]+)" in course "(?P<shortname>[^"]+)"$/
      * @param string $name Activity name.
@@ -112,18 +112,34 @@ class behat_theme_edvorya extends behat_base {
     public function i_create_an_edvorya_drive_resource_named_in_course(string $name, string $shortname): void {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot . '/lib/testing/generator/lib.php');
+        require_once($CFG->dirroot . '/course/modlib.php');
 
         if (!\core_component::get_component_directory('mod_videoplayer')) {
             throw new \RuntimeException('mod_videoplayer must be installed before creating the compatibility fixture.');
         }
 
         $course = $DB->get_record('course', ['shortname' => $shortname], '*', MUST_EXIST);
-        $generator = \testing_util::get_data_generator()->get_plugin_generator('mod_videoplayer');
+        $moduleid = $DB->get_field('modules', 'id', ['name' => 'videoplayer'], MUST_EXIST);
 
-        $generator->create_instance([
+        $moduleinfo = (object) [
             'course' => $course->id,
+            'modulename' => 'videoplayer',
+            'module' => $moduleid,
             'section' => 1,
+            'visible' => 1,
+            'visibleoncoursepage' => 1,
+            'cmidnumber' => '',
+            'groupmode' => 0,
+            'groupingid' => 0,
+            'availability' => null,
+            'completion' => 0,
+            'completionview' => 0,
+            'completionexpected' => 0,
+            'completionpassgrade' => 0,
+            'conditiongradegroup' => [],
+            'conditionfieldgroup' => [],
+            'conditioncompletiongroup' => [],
+            'showdescription' => 0,
             'name' => $name,
             'intro' => 'Drive Resource compatibility fixture for the standalone Edvorya theme.',
             'introformat' => FORMAT_HTML,
@@ -137,7 +153,9 @@ class behat_theme_edvorya extends behat_base {
             'enablegamification' => 0,
             'pointsperpage' => 1,
             'completionpercentage' => 80,
-        ]);
+        ];
+
+        add_moduleinfo($moduleinfo, $course);
     }
 
     /**
