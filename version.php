@@ -9,8 +9,8 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.10 introduces intent-first student and teacher dashboard experiences aligned with Edvorya LMS.
- * The dashboard experience contract is documented in docs/DASHBOARD_EXPERIENCE.md.
+ * Alpha.11 fixes the standalone language selector by removing an invalid
+ * dependency on the non-existent core/language_menu Mustache partial.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -20,8 +20,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072010;
+$plugin->version = 2026072111;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.10';
+$plugin->release = '0.1.0-alpha.11';
