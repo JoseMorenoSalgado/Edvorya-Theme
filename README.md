@@ -28,24 +28,31 @@ Edvorya remains responsible for:
 
 The theme does not modify Moodle Core and does not depend on RemUI, Classic, Lambda or commercial themes.
 
-## Why Boost is a parent
+## Compatibility boundary
 
-The first standalone alpha proved that reconstructing Moodle Core presentation contracts inside Edvorya created avoidable duplication and compatibility risk. The current architecture delegates those generic contracts to Boost and keeps Edvorya focused on product-specific presentation.
+The original standalone alpha duplicated Moodle Core presentation contracts that Boost already maintains. Alpha.15 removes that duplication and delegates generic compatibility to Boost.
 
-This reduces:
+Removed from the Edvorya compatibility surface:
 
-- duplicated modal, dropdown and popover CSS;
-- duplicated Core utility classes;
-- custom technical layouts with no Edvorya product value;
-- maintenance burden across Moodle 5.0, 5.1 and 5.2.
+- standalone Core utility replicas;
+- standalone modal/dropdown/popover positioning contracts;
+- duplicate technical layouts for popup, embedded, maintenance, print, redirect and secure contexts;
+- obsolete standalone compatibility and accessibility sheets.
 
-Technical/minimal layouts such as popup, embedded, maintenance, print, redirect and secure contexts are delegated explicitly to Boost. Main application layouts continue to use Edvorya-owned `layout/drawers.php` and the Edvorya login layout.
+Retained by Edvorya because they define product identity:
+
+- custom application layouts for primary Moodle experiences;
+- custom login layout;
+- Edvorya shell and navigation;
+- dashboard and page-specific experiences;
+- Design System visual overrides;
+- branding settings and token pipeline.
 
 ## Runtime dependencies
 
 Production does not require Node.js, npm, React, Tailwind runtime, a Tailwind CDN, or external icon/font CDNs.
 
-Boost is a Moodle-shipped parent theme and is the compatibility base. Bootstrap is not the primary visual language of Edvorya; Edvorya overrides the visible product experience through its own Design System.
+Boost is shipped with Moodle and acts as the compatibility base. Bootstrap is not the primary visual language of Edvorya; Edvorya overrides the visible product experience through its own Design System.
 
 ## CSS architecture
 
@@ -61,7 +68,7 @@ Compiled production artifact:
 style/edvorya.css
 ```
 
-Additional focused runtime sheets:
+Focused runtime sheets:
 
 ```text
 style/edvorya-shell.css
@@ -70,7 +77,7 @@ style/edvorya-admin.css
 style/edvorya-context-nav.css
 ```
 
-`style/edvorya-shell.css` contains only Edvorya-owned shell refinements. Generic Moodle Core compatibility rules that were required by the standalone architecture were removed after adopting Boost.
+`style/edvorya-shell.css` contains only Edvorya-owned shell refinements. Generic Moodle Core compatibility rules are inherited from Boost.
 
 Tailwind is build-time only and Tailwind Preflight is intentionally not imported.
 
@@ -81,38 +88,29 @@ npm install --ignore-scripts --no-audit --no-fund
 npm run build:css
 ```
 
-The quality workflow rebuilds the CSS from the canonical source and synchronizes the committed production artifact when source CSS changes.
+The quality workflow rebuilds CSS from the canonical source and synchronizes the committed production artifact when source CSS changes.
 
 ## Moodle installation paths
 
-Moodle 5.0:
+Moodle 5.0 commonly uses:
 
 ```text
 <moodle-root>/theme/edvorya/
 ```
 
-Moodle 5.1 and 5.2 with the new public webroot structure:
+Moodle 5.1 and 5.2 may use the new public webroot structure:
 
 ```text
 <moodle-root>/public/theme/edvorya/
 ```
 
-Use the actual directory structure of the installed Moodle instance rather than assuming a path from the version alone.
+Always use the actual directory structure of the installed Moodle instance.
 
 After updating the theme, complete the Moodle plugin upgrade and purge caches.
 
 ## Compatibility target
 
-Automated compatibility is maintained for:
-
-- Moodle 5.0;
-- Moodle 5.1;
-- Moodle 5.2;
-- PHP 8.3 test runtime;
-- MariaDB 10.11 test runtime;
-- representative Moodle bundled activities and plugins;
-- the required Google Drive `mod_videoplayer` integration;
-- responsive Chrome/Selenium and Axe accessibility gates.
+Automated compatibility is maintained for Moodle 5.0, 5.1 and 5.2 with PHP 8.3 and MariaDB 10.11 test runtimes, representative Moodle bundled activities/plugins, the required Google Drive `mod_videoplayer` integration, responsive Chrome/Selenium and Axe accessibility gates.
 
 Environment-specific acceptance still includes true Safari/iPhone validation, representative SCORM packages and a deterministic LTI provider.
 
