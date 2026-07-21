@@ -9,7 +9,7 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.6 establishes the supported Moodle compatibility range from 5.0 through 5.2.
+ * Alpha.7 adds the first real-device mobile shell and standalone breadcrumb compatibility corrections.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -19,8 +19,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072006;
+$plugin->version = 2026072007;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.6';
+$plugin->release = '0.1.0-alpha.7';
