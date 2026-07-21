@@ -1,13 +1,14 @@
 /*
  * Unified Edvorya production CSS entrypoint.
+ *
+ * Boost is the compatibility parent. This bundle contains only Edvorya-owned
+ * design tokens, visual components, page experiences and targeted refinements.
  * Client colour-token overrides are appended by Moodle's cached csspostprocess callback.
  */
 @import "./tailwind.css";
-@import "./core-utilities.css";
 @import "./design-system.css";
 @import "./moodle-forms.css";
 @import "./filemanager.css";
-@import "./core-overlays.css";
 @import "./action-menu.css";
 @import "./page-experiences.css";
 @import "./learning-support-experiences.css";
