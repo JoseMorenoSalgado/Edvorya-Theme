@@ -43,7 +43,7 @@ if ($ADMIN->fulltree) {
     ));
 
     $imageoptions = [
-        'accepted_types' => ['.png', '.jpg', '.jpeg', '.webp', '.svg'],
+        'accepted_types' => ['.png', '.jpg', '.jpeg', '.webp'],
         'maxfiles' => 1,
     ];
 
@@ -59,7 +59,7 @@ if ($ADMIN->fulltree) {
     }
 
     $faviconoptions = [
-        'accepted_types' => ['.ico', '.png', '.svg'],
+        'accepted_types' => ['.ico', '.png'],
         'maxfiles' => 1,
     ];
     $addsetting(new admin_setting_configstoredfile(
