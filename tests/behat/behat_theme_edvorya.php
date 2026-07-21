@@ -97,4 +97,83 @@ class behat_theme_edvorya extends behat_base {
             ));
         }
     }
+
+    /**
+     * Create a deterministic Drive Resource fixture through Moodle's testing generator API.
+     *
+     * The installed third-party plugin does not currently ship its own testing generator,
+     * so Moodle provides the default activity-module generator which delegates to the
+     * plugin's normal add-instance callback and add_moduleinfo() flow.
+     *
+     * @Given /^I create an Edvorya Drive Resource named "(?P<name>[^"]+)" in course "(?P<shortname>[^"]+)"$/
+     * @param string $name Activity name.
+     * @param string $shortname Course shortname.
+     */
+    public function i_create_an_edvorya_drive_resource_named_in_course(string $name, string $shortname): void {
+        global $CFG, $DB;
+
+        require_once($CFG->dirroot . '/lib/testing/generator/lib.php');
+
+        if (!\core_component::get_component_directory('mod_videoplayer')) {
+            throw new \RuntimeException('mod_videoplayer must be installed before creating the compatibility fixture.');
+        }
+
+        $course = $DB->get_record('course', ['shortname' => $shortname], '*', MUST_EXIST);
+        $generator = \testing_util::get_data_generator()->get_plugin_generator('mod_videoplayer');
+
+        $generator->create_instance([
+            'course' => $course->id,
+            'section' => 1,
+            'name' => $name,
+            'intro' => 'Drive Resource compatibility fixture for the standalone Edvorya theme.',
+            'introformat' => FORMAT_HTML,
+            'source' => 'googledrive',
+            'videourl' => 'https://drive.google.com/file/d/edvoryaThemeCompatibility123/view',
+            'type' => 'file',
+            'displaymode' => 'standard',
+            'disabledownload' => 1,
+            'disablecontextmenu' => 1,
+            'enablewatermark' => 0,
+            'enablegamification' => 0,
+            'pointsperpage' => 1,
+            'completionpercentage' => 80,
+        ]);
+    }
+
+    /**
+     * Assert that a rendered element does not overflow the horizontal viewport.
+     *
+     * @Then /^the Edvorya element "(?P<selector>[^"]+)" should fit within the viewport horizontally$/
+     * @param string $selector CSS selector.
+     */
+    public function the_edvorya_element_should_fit_within_the_viewport_horizontally(string $selector): void {
+        if (!$this->running_javascript()) {
+            throw new DriverException('Viewport geometry assertions require a JavaScript-capable browser session.');
+        }
+
+        $script = sprintf(
+            <<<'JS'
+const element = document.querySelector(%s);
+if (!element) {
+    return 'missing';
+}
+const rect = element.getBoundingClientRect();
+const viewport = document.documentElement.clientWidth;
+if (rect.left >= -1 && rect.right <= viewport + 1) {
+    return 'ok';
+}
+return `${rect.left},${rect.right},${viewport}`;
+JS,
+            json_encode($selector, JSON_THROW_ON_ERROR)
+        );
+        $result = (string) $this->getSession()->evaluateScript($script);
+
+        if ($result !== 'ok') {
+            throw new \RuntimeException(sprintf(
+                'Expected element %s to fit within the horizontal viewport, geometry result: %s.',
+                $selector,
+                $result
+            ));
+        }
+    }
 }
