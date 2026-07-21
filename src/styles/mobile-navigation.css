@@ -121,7 +121,7 @@
     .edv-mobile-nav__link.is-active,
     .edv-mobile-nav__child-link.is-active {
         background: var(--edv-active-overlay);
-        color: var(--edv-color-primary);
+        color: var(--edv-color-foreground);
         font-weight: 650;
     }
 
