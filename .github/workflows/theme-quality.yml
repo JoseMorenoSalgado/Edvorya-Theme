@@ -1,0 +1,76 @@
+name: Theme quality checks
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - feature/theme-foundation
+    paths-ignore:
+      - 'docs/QUALITY_STATUS.md'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: feature/theme-foundation
+
+      - name: Validate PHP syntax
+        shell: bash
+        run: |
+          php -v
+          find . -type f -name '*.php' -not -path './node_modules/*' -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install CSS build dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Rebuild production CSS
+        run: npm run build:css
+
+      - name: Record static validation
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          cat > docs/QUALITY_STATUS.md <<'EOF'
+          # Theme static validation
+
+          This file is generated after the automated theme checks complete successfully.
+
+          - PHP syntax (`php -l`): PASS
+          - Tailwind production build from `src/styles/index.css`: PASS
+          - Compiled CSS at `style/edvorya.css` is generated from the canonical source entrypoint: PASS
+
+          Static checks complement, but do not replace, the Moodle 5.0-5.2 runtime and browser-level regression matrix.
+          EOF
+
+      - name: Synchronize generated CSS and validation record
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          git add style/edvorya.css docs/QUALITY_STATUS.md
+
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: synchronize compiled theme CSS"
+          git push origin HEAD:feature/theme-foundation
+
+      - name: Verify pull request CSS is reproducible
+        if: github.event_name == 'pull_request'
+        run: git diff --exit-code -- style/edvorya.css
