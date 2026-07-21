@@ -147,6 +147,116 @@
         inset-inline-start: auto;
     }
 
+    /*
+     * Moodle Core popover region contract.
+     * Core templates and AMD controllers own state and data attributes; Edvorya only
+     * provides the positioning/visibility primitives a standalone theme must supply.
+     */
+    .popover-region {
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .popover-region-toggle {
+        position: relative;
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .popover-region-toggle .icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        max-width: 1.25rem;
+        max-height: 1.25rem;
+    }
+
+    .popover-region .count-container {
+        position: absolute;
+        inset-block-start: 0.15rem;
+        inset-inline-end: 0.1rem;
+        min-width: 1rem;
+        min-height: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.1rem 0.25rem;
+        border-radius: var(--edv-radius-pill);
+        background: var(--edv-color-danger);
+        color: #ffffff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .popover-region-container {
+        position: absolute;
+        inset-block-start: calc(100% + 0.5rem);
+        inset-inline-end: 0;
+        z-index: 100;
+        width: min(24rem, calc(100vw - 1rem));
+        height: min(31.25rem, 80vh);
+        max-height: 80vh;
+        overflow: hidden;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity 120ms ease, visibility 120ms ease;
+    }
+
+    .popover-region.collapsed .popover-region-container {
+        width: min(24rem, calc(100vw - 1rem));
+        height: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .popover-region-content-container {
+        width: 100%;
+        height: calc(100% - 3rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .popover-region-header-container {
+        min-height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--edv-space-2);
+        padding: var(--edv-space-2) var(--edv-space-3);
+    }
+
+    .popover-region-header-text {
+        min-width: 0;
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.25;
+    }
+
+    .popover-region-header-actions {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: var(--edv-space-1);
+    }
+
+    .popover-region-header-actions > * {
+        min-width: 2rem;
+        min-height: 2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     @media (max-width: 35.999rem) {
         .modal-dialog {
             max-width: calc(100vw - 1rem);
@@ -158,11 +268,24 @@
             height: calc(100% - 1rem);
             min-height: calc(100% - 1rem);
         }
+
+        .popover-region-container {
+            position: fixed;
+            inset-block-start: calc(var(--edv-topbar-height) + 0.5rem);
+            inset-inline: 0.5rem;
+            width: auto;
+            max-width: none;
+        }
+
+        .popover-region.collapsed .popover-region-container {
+            width: auto;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
         .modal,
-        .modal-backdrop {
+        .modal-backdrop,
+        .popover-region-container {
             transition: none;
         }
     }
