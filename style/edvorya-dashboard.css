@@ -1,0 +1,272 @@
+/* Edvorya role-aware dashboard experience.
+ * This stylesheet changes hierarchy and presentation only. Moodle Core blocks
+ * remain the source of course, timeline, completion and calendar information.
+ */
+
+/* The dashboard page heading should introduce the page, not compete with the
+   intent panel as another large card. */
+.edv-layout-mydashboard .edv-content-header {
+    overflow: visible;
+    margin-bottom: 0.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.edv-layout-mydashboard .edv-content-header::before {
+    display: none;
+}
+
+.edv-layout-mydashboard #page-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    letter-spacing: -0.03em;
+}
+
+.edv-dashboard-focus {
+    width: min(100%, var(--edv-content-max-width));
+    margin: 0 auto var(--edv-space-6);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-xl);
+    background: #ffffff;
+}
+
+.edv-dashboard-focus__intro {
+    max-width: 46rem;
+}
+
+.edv-dashboard-focus__eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--edv-color-primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.edv-dashboard-focus__title {
+    margin: 0;
+    color: var(--edv-color-foreground);
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.edv-dashboard-focus__description {
+    max-width: 42rem;
+    margin: 0.45rem 0 0;
+    color: var(--edv-color-muted);
+    font-size: 0.925rem;
+    line-height: 1.55;
+}
+
+.edv-dashboard-focus__questions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.edv-dashboard-focus__question {
+    min-width: 0;
+    min-height: 4.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem;
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-lg);
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+    text-decoration: none;
+    transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.edv-dashboard-focus__question:hover {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 20%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 4%, #ffffff);
+    color: var(--edv-color-foreground);
+}
+
+.edv-dashboard-focus__question:active {
+    transform: scale(0.99);
+}
+
+.edv-dashboard-focus__question--primary {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 20%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 8%, #ffffff);
+}
+
+.edv-dashboard-focus__icon {
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: var(--edv-color-background);
+    color: var(--edv-color-primary);
+}
+
+.edv-dashboard-focus__question--primary .edv-dashboard-focus__icon {
+    background: var(--edv-color-primary);
+    color: #ffffff;
+}
+
+.edv-dashboard-focus__icon-svg.icon {
+    width: 1.1rem;
+    max-width: 1.1rem;
+    height: 1.1rem;
+    max-height: 1.1rem;
+    margin: 0;
+}
+
+.edv-dashboard-focus__question-copy {
+    min-width: 0;
+    display: grid;
+    gap: 0.15rem;
+}
+
+.edv-dashboard-focus__question-copy strong {
+    color: inherit;
+    font-size: 0.9rem;
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.edv-dashboard-focus__question-copy > span {
+    color: var(--edv-color-muted);
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+/* Let the native dashboard answer the questions in the same priority order.
+   No block is hidden; lower-priority or third-party blocks remain available. */
+.edv-layout-mydashboard #block-region-content,
+.edv-layout-mydashboard #region-main .block-region {
+    display: flex;
+    flex-direction: column;
+    gap: var(--edv-space-4);
+}
+
+.edv-layout-mydashboard #block-region-content > .block,
+.edv-layout-mydashboard #region-main .block-region > .block {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.edv-dashboard-persona-student .block_myoverview {
+    order: 1;
+}
+
+.edv-dashboard-persona-student .block_timeline {
+    order: 2;
+}
+
+.edv-dashboard-persona-student .block_calendar_upcoming {
+    order: 3;
+}
+
+.edv-dashboard-persona-student .block_recentlyaccessedcourses,
+.edv-dashboard-persona-student .block_recentlyaccesseditems {
+    order: 4;
+}
+
+.edv-dashboard-persona-teacher .block_timeline {
+    order: 1;
+}
+
+.edv-dashboard-persona-teacher .block_myoverview {
+    order: 2;
+}
+
+.edv-dashboard-persona-teacher .block_calendar_upcoming {
+    order: 3;
+}
+
+.edv-layout-mydashboard #block-region-content > .block:not(.block_myoverview):not(.block_timeline):not(.block_calendar_upcoming):not(.block_recentlyaccessedcourses):not(.block_recentlyaccesseditems),
+.edv-layout-mydashboard #region-main .block-region > .block:not(.block_myoverview):not(.block_timeline):not(.block_calendar_upcoming):not(.block_recentlyaccessedcourses):not(.block_recentlyaccesseditems) {
+    order: 10;
+}
+
+/* My overview already contains course cards. Remove the redundant outer card
+   treatment so the dashboard reads as one clear layer instead of nested boxes. */
+.edv-layout-mydashboard .block_myoverview.card,
+.edv-layout-mydashboard .block_myoverview.block,
+.edv-layout-mydashboard .block_recentlyaccessedcourses.card,
+.edv-layout-mydashboard .block_recentlyaccessedcourses.block {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+}
+
+.edv-layout-mydashboard .block_myoverview > .card-header,
+.edv-layout-mydashboard .block_recentlyaccessedcourses > .card-header {
+    padding-inline: 0;
+    border-bottom: 0;
+    background: transparent;
+}
+
+.edv-layout-mydashboard .block_myoverview > .card-body,
+.edv-layout-mydashboard .block_recentlyaccessedcourses > .card-body {
+    padding-inline: 0;
+}
+
+.edv-layout-mydashboard .block_myoverview .course-card {
+    box-shadow: none;
+}
+
+.edv-layout-mydashboard .block_myoverview .course-card:hover {
+    transform: none;
+    box-shadow: var(--edv-shadow-sm);
+}
+
+/* Secondary dashboard blocks use quieter surfaces. */
+.edv-layout-mydashboard .block_timeline,
+.edv-layout-mydashboard .block_calendar_upcoming {
+    box-shadow: none !important;
+}
+
+@media (max-width: 61.999rem) {
+    .edv-dashboard-focus__questions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .edv-dashboard-focus__question {
+        min-height: 3.75rem;
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .edv-dashboard-focus {
+        margin-bottom: var(--edv-space-4);
+        padding: 1rem;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    .edv-dashboard-focus__description {
+        font-size: 0.875rem;
+    }
+
+    .edv-dashboard-focus__questions {
+        gap: 0.5rem;
+        margin-top: 0.85rem;
+    }
+
+    .edv-dashboard-focus__question-copy > span {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edv-dashboard-focus__question {
+        transition: none;
+    }
+
+    .edv-dashboard-focus__question:active {
+        transform: none;
+    }
+}
