@@ -76,11 +76,48 @@ if (is_array($mobileprimarynav) && !empty($mobileprimarynav)) {
 $desktopprimarynav = is_array($mobileprimarynav) ? $mobileprimarynav : [];
 
 $secondarynavigation = false;
+$contextnavigationitems = [];
+$contextnavigationcurrent = '';
 $overflow = false;
 if ($PAGE->has_secondary_navigation()) {
     $tablistnav = $PAGE->has_tablist_secondary_navigation();
     $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
     $secondarynavigation = $moremenu->export_for_template($OUTPUT);
+
+    // Build a lightweight mobile representation from the same Core navigation tree.
+    // On small screens this replaces the full horizontal tab bar with one compact
+    // disclosure, preventing primary and secondary navigation from competing visually.
+    foreach ($PAGE->secondarynav->children as $node) {
+        if (isset($node->display) && !$node->display) {
+            continue;
+        }
+
+        $action = $node->action();
+        if (empty($action)) {
+            continue;
+        }
+
+        $url = $action instanceof \moodle_url ? $action->out(false) : (string) $action;
+        if ($url === '') {
+            continue;
+        }
+
+        $text = (string) $node->get_title();
+        $isactive = !empty($node->isactive);
+        $contextnavigationitems[] = [
+            'text' => $text,
+            'url' => $url,
+            'isactive' => $isactive,
+        ];
+
+        if ($isactive) {
+            $contextnavigationcurrent = $text;
+        }
+    }
+
+    if ($contextnavigationcurrent === '' && !empty($contextnavigationitems)) {
+        $contextnavigationcurrent = $contextnavigationitems[0]['text'];
+    }
 
     $overflowdata = $PAGE->secondarynav->get_overflow_menu_data();
     if (!is_null($overflowdata)) {
@@ -145,6 +182,9 @@ $templatecontext = [
     'editswitch' => $OUTPUT->edit_switch(),
     'pageheadingmenu' => $OUTPUT->page_heading_menu(),
     'secondarymoremenu' => $secondarynavigation,
+    'contextnavigationitems' => $contextnavigationitems,
+    'contextnavigationcurrent' => $contextnavigationcurrent,
+    'hascontextnavigation' => count($contextnavigationitems) > 1,
     'overflow' => $overflow,
     'regionmainsettingsmenu' => $regionmainsettingsmenu,
     'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
