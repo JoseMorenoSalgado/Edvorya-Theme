@@ -9,8 +9,8 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.13 adds the Edvorya desktop icon navigation and applies the Design System
- * to Moodle's core/settings_link_page administration directory and plugin installer.
+ * Alpha.14 removes competing full navigation layers on phone and tablet by
+ * collapsing Moodle secondary navigation into an Edvorya contextual selector.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -20,8 +20,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072113;
+$plugin->version = 2026072114;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.13';
+$plugin->release = '0.1.0-alpha.14';
