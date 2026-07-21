@@ -24,8 +24,7 @@ Feature: Edvorya contextual page experiences
 
   Scenario Outline: Dashboard uses the contextual Edvorya experience without horizontal overflow
     Given I log in as "student1"
-    And I am on site homepage
-    When I click on "Dashboard" "link" in the ".edv-primary-nav" "css_element"
+    When I visit the Edvorya Core path "/my/"
     And I set the Edvorya viewport to "<viewport>"
     Then "body.edv-layout-mydashboard" "css_element" should exist
     And ".edv-content-header" "css_element" should be visible
