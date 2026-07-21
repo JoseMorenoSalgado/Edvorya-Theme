@@ -71,6 +71,10 @@ if (is_array($mobileprimarynav) && !empty($mobileprimarynav)) {
     $mobileprimarynav = $decoratemobilenav($mobileprimarynav);
 }
 
+// The same Moodle-owned navigation model powers the desktop sidebar. This avoids a
+// second navigation query and keeps mobile/desktop URLs and active states identical.
+$desktopprimarynav = is_array($mobileprimarynav) ? $mobileprimarynav : [];
+
 $secondarynavigation = false;
 $overflow = false;
 if ($PAGE->has_secondary_navigation()) {
@@ -133,6 +137,8 @@ $templatecontext = [
     'primarymoremenu' => $primarymenu['moremenu'] ?? false,
     'mobileprimarynav' => $mobileprimarynav,
     'hasmobileprimarynav' => !empty($mobileprimarynav),
+    'desktopprimarynav' => $desktopprimarynav,
+    'hasdesktopprimarynav' => !empty($desktopprimarynav),
     'langmenu' => $primarymenu['lang'] ?? false,
     'usermenu' => $OUTPUT->user_menu(),
     'navbarpluginoutput' => $OUTPUT->navbar_plugin_output(),
