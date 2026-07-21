@@ -1,0 +1,19 @@
+/* Edvorya accessibility hardening.
+ *
+ * This sheet is loaded after the compatibility and dashboard layers so that
+ * accessibility-critical states cannot be weakened by later visual refinements.
+ * Keep overrides small, evidence-driven and independent of client branding.
+ */
+
+/*
+ * The mobile navigation active state uses a tinted primary background. The
+ * primary brand colour can sit just below WCAG AA contrast on that surface.
+ * Keep the icon/accent treatment branded while rendering the active label with
+ * the high-emphasis foreground token.
+ */
+.edv-mobile-nav__link.is-active,
+.edv-mobile-nav__child-link.is-active,
+.edv-mobile-nav__link.is-active .edv-mobile-nav__item-text,
+.edv-mobile-nav__child-link.is-active .edv-mobile-nav__item-text {
+    color: var(--edv-color-foreground);
+}
