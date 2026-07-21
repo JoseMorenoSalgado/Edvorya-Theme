@@ -17,7 +17,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072004;
+$plugin->version = 2026072005;
 $plugin->requires = 2026042000;
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.4';
+$plugin->release = '0.1.0-alpha.5';
