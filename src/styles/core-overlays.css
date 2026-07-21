@@ -36,22 +36,23 @@
 
     .modal-dialog {
         position: relative;
-        width: auto;
-        max-width: min(42rem, calc(100vw - 2rem));
+        box-sizing: border-box;
+        width: calc(100% - 2rem);
+        max-width: 42rem;
         margin: 1.75rem auto;
         pointer-events: none;
     }
 
     .modal-sm {
-        max-width: min(24rem, calc(100vw - 2rem));
+        max-width: 24rem;
     }
 
     .modal-lg {
-        max-width: min(56rem, calc(100vw - 2rem));
+        max-width: 56rem;
     }
 
     .modal-xl {
-        max-width: min(72rem, calc(100vw - 2rem));
+        max-width: 72rem;
     }
 
     .modal-dialog-scrollable {
@@ -366,7 +367,8 @@
         .modal-sm,
         .modal-lg,
         .modal-xl {
-            max-width: calc(100vw - 1rem);
+            width: calc(100% - 1rem);
+            max-width: calc(100% - 1rem);
             margin: 0.5rem auto;
         }
 
