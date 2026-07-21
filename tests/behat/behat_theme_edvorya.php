@@ -159,27 +159,6 @@ class behat_theme_edvorya extends behat_base {
     }
 
     /**
-     * Visit a local Moodle path while preserving the current authenticated session.
-     *
-     * Only root-relative Moodle paths are accepted so the step cannot navigate to an
-     * arbitrary external origin during compatibility tests.
-     *
-     * @When /^I visit the Edvorya path "(?P<path>\/[^"]*)"$/
-     * @param string $path Root-relative Moodle path.
-     */
-    public function i_visit_the_edvorya_path(string $path): void {
-        if (!str_starts_with($path, '/') || str_starts_with($path, '//')) {
-            throw new \InvalidArgumentException('Edvorya compatibility paths must be root-relative Moodle paths.');
-        }
-
-        $url = new \moodle_url($path);
-        $this->getSession()->visit($url->out(false));
-        if ($this->running_javascript()) {
-            $this->getSession()->wait(self::get_timeout() * 1000, self::PAGE_READY_JS);
-        }
-    }
-
-    /**
      * Assert that a rendered element does not overflow the horizontal viewport.
      *
      * @Then /^the Edvorya element "(?P<selector>[^"]+)" should fit within the viewport horizontally$/
