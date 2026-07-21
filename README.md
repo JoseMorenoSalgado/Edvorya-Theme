@@ -9,7 +9,7 @@
 - Target baseline: Moodle 5.2
 - Minimum Moodle version: `2026042000`
 - Parent themes: none (`$THEME->parents = []`)
-- Status: foundation alpha; static validation and isolated Moodle 5.2 + MariaDB 10.11 runtime validation pass; contextual Edvorya experiences for Dashboard, My Courses, Course View, Calendar, Grades, and Profile pass representative phone and desktop browser acceptance; representative Chrome/Selenium Behat acceptance also passes for Assignment, Quiz, Forum, H5P, Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, Feedback, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, responsive navigation, keyboard navigation, automated Axe accessibility smoke testing, and the required Google Drive `mod_videoplayer` integration; client colour tokens use Moodle's cached CSS post-processing pipeline instead of a theme-owned inline style block; administrator branding uploads are restricted to raster image types and legacy uploaded SVG branding is rejected at serving time
+- Status: foundation alpha; static validation and isolated Moodle 5.2 + MariaDB 10.11 runtime validation pass; contextual Edvorya experiences for Dashboard, My Courses, Course View, Calendar, Grades, Profile, Administration, Messaging, Notification Preferences, and Notification Popover pass representative browser acceptance; representative Chrome/Selenium Behat acceptance also passes for Assignment, Quiz, Forum, H5P, Moodle bundled plugins, blocks/editing mode, File Picker, TinyMCE, autocomplete, messaging, notifications, responsive navigation, keyboard navigation, automated Axe accessibility smoke testing, and the required Google Drive `mod_videoplayer` integration
 
 ## Runtime dependencies
 
@@ -26,9 +26,9 @@ The production theme does not require:
 
 The production CSS is committed at `style/edvorya.css`.
 
-## Contextual learning experiences
+## Contextual Edvorya experiences
 
-Edvorya adds its own presentation layer to Moodle's existing page contracts without replacing Core renderers or copying Core Mustache templates.
+Edvorya adds presentation layers to Moodle's existing page contracts without replacing Core renderers or copying Core Mustache templates.
 
 Stable theme-owned body hooks include:
 
@@ -36,9 +36,12 @@ Stable theme-owned body hooks include:
 edv-layout-mydashboard
 edv-layout-mycourses
 edv-layout-course
+edv-layout-admin
 edv-pagetype-calendar-view
 edv-pagetype-grade-report-user-index
 edv-pagetype-user-profile
+edv-pagetype-message-index
+edv-pagetype-message-notificationpreferences
 ```
 
 The contextual visual layers live in:
@@ -46,6 +49,7 @@ The contextual visual layers live in:
 ```text
 src/styles/page-experiences.css
 src/styles/learning-support-experiences.css
+src/styles/operational-experiences.css
 ```
 
 They provide:
@@ -58,11 +62,38 @@ They provide:
 - Calendar month-grid containment with internal responsive scrolling;
 - Grades report surfaces that preserve readable table width and contain horizontal scrolling;
 - Profile information cards built around Moodle's existing `.userprofile` and `.profile_tree` output;
+- Administration form and settings surfaces around Moodle's existing admin output;
+- responsive full-page Messaging treatment around `.message-app[data-region="message-index"]`;
+- Notification Preferences table containment;
+- Notification Popover presentation while preserving Moodle's Core controller and data attributes;
 - responsive spacing and horizontal containment.
 
-Moodle continues to own navigation data, blocks, course-card markup, activity markup, Calendar behavior, grade data and calculations, profile data, progress data, completion data, editing behavior, and plugin integrations.
+Moodle continues to own navigation data, blocks, course-card markup, activity markup, Calendar behavior, grade data and calculations, profile data, administration logic, messaging state, notification state, progress data, completion data, editing behavior, and plugin integrations.
 
-The current contextual page-experience acceptance run `29796915539` passes Dashboard, My Courses, Course View, Calendar, Grades, and Profile at `390x844` and `1366x768`, including horizontal-containment assertions. The same functional checkpoint also passes the full browser gate (`29796915496`), bundled Moodle plugins (`29796915497`), Google Drive compatibility (`29796915520`), Axe accessibility (`29796915484`), and branding security (`29796915514`).
+## Standalone Moodle Core compatibility primitives
+
+Because Edvorya has no parent theme, it must provide a small set of presentation primitives that Moodle Core templates expect a theme to supply.
+
+A browser regression discovered during Administration/Messaging/Notifications work exposed a missing `core/popover_region` CSS contract: the notification panel stayed in normal topbar flow and could cover activity links. The fix is theme-owned and does not modify Moodle Core:
+
+- `src/styles/core-overlays.css` provides the minimal popover-region positioning, collapsed visibility, pointer-event, z-index, scrolling, and mobile viewport contract;
+- `src/styles/core-utilities.css` provides stable base geometry for Moodle Core `.icon` pix icons.
+
+Moodle's `data-region` attributes, ARIA state, templates, and AMD controllers remain unchanged. After this fix, the unchanged Google Drive and Moodle bundled-plugin browser scenarios again pass activity-link navigation, confirming that the obstruction was corrected globally instead of hidden with plugin-specific overrides.
+
+## Current validation checkpoint
+
+Latest accepted automated runs:
+
+- Quality/PHP/reproducible CSS: `29798604566` — **PASS**;
+- responsive/contextual experiences: `29798604549` — **PASS**;
+- browser functional acceptance: `29798604527` — **PASS**;
+- bundled Moodle plugins: `29798604525` — **PASS**;
+- Google Drive `mod_videoplayer`: `29798604510` — **PASS**;
+- Axe accessibility: `29798604519` — **PASS**;
+- branding security: `29798604509` — **PASS**.
+
+Responsive contextual acceptance covers Dashboard, My Courses, Course View, Calendar, Grades, Profile, Administration, Messaging, Notification Preferences, and Notification Popover at representative phone and desktop widths. The notification regression scenario explicitly verifies that the collapsed Core popover is hidden, the topbar remains contained, and the opened panel fits within the viewport.
 
 ## Installation for Moodle 5.2 testing
 
@@ -151,7 +182,7 @@ Representative browser, contextual page-experience, bundled-plugin, responsive, 
 docs/MOODLE52_BROWSER_ACCEPTANCE.md
 ```
 
-The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. Dashboard, My Courses, Course View, Calendar, Grades, and Profile pass contextual layout and horizontal-containment checks at `390x844` and `1366x768`. The tested activity/Core/communication flows pass with `theme_edvorya` active. A dedicated bundled-plugin matrix passes for Book, Page, File/Resource, Folder, URL course integration, Choice, Database, Glossary, Lesson, Wiki, Workshop, and Feedback. The required real `mod_videoplayer` Google Drive repository also passes its dedicated mobile/desktop, overflow, and Axe compatibility gate without plugin-specific theme CSS overrides.
+The current browser gates use GitHub-hosted runners with Moodle 5.2, PHP 8.3, MariaDB 10.11, Moodle Docker, Selenium, and Chrome. The tested contextual page surfaces, activity/Core/communication flows, bundled-plugin matrix, and the required real `mod_videoplayer` Google Drive integration pass with `theme_edvorya` active.
 
 Theme-specific responsive navigation scenarios pass at `390x844`, `820x1180`, and `1366x768`, including keyboard opening and closing of the native mobile navigation. Representative Site Home, Dashboard, phone navigation, and tablet navigation states also pass Moodle's Axe-based automated accessibility smoke checks.
 
