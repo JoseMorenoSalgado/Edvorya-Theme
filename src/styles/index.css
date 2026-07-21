@@ -1,3 +1,7 @@
+/*
+ * Unified Edvorya production CSS entrypoint.
+ * Client colour-token overrides are appended by Moodle's cached csspostprocess callback.
+ */
 @import "./tailwind.css";
 @import "./core-utilities.css";
 @import "./moodle-forms.css";
