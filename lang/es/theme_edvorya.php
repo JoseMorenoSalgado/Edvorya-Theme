@@ -17,13 +17,32 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Edvorya';
-$string['choosereadme'] = 'Edvorya es un theme standalone para Moodle 5.2 construido sobre el Edvorya Design System.';
+$string['choosereadme'] = 'Edvorya es un theme standalone para Moodle 5.0, 5.1 y 5.2 construido sobre el Edvorya Design System.';
 $string['configtitle'] = 'Edvorya';
 $string['generalsettings'] = 'Configuración general';
 $string['generalsettings_desc'] = 'Configura la identidad institucional y los tokens visuales utilizados por Edvorya Theme.';
 $string['openmainnavigation'] = 'Abrir navegación principal';
 $string['primarynavigationlabel'] = 'Navegación principal';
 $string['secondarynavigationlabel'] = 'Navegación secundaria';
+
+$string['dashboardstudenteyebrow'] = 'Tu aprendizaje';
+$string['dashboardstudenttitle'] = 'Lo importante, primero';
+$string['dashboardstudentdescription'] = 'Continúa donde te quedaste, atiende lo pendiente y revisa tu avance sin perderte entre opciones.';
+$string['dashboardstudentcontinue'] = '¿Dónde continúo?';
+$string['dashboardstudentcontinue_desc'] = 'Retoma tus cursos activos y sigue con tu aprendizaje.';
+$string['dashboardstudentpending'] = '¿Qué tengo pendiente?';
+$string['dashboardstudentpending_desc'] = 'Revisa actividades y fechas próximas en tu calendario.';
+$string['dashboardstudentprogress'] = '¿Cómo voy?';
+$string['dashboardstudentprogress_desc'] = 'Consulta el progreso disponible en tus cursos.';
+$string['dashboardteachereyebrow'] = 'Tu trabajo docente';
+$string['dashboardteachertitle'] = 'Atiende lo que requiere acción';
+$string['dashboardteacherdescription'] = 'Entra a tus cursos para revisar actividades, acompañar el progreso y responder a tus estudiantes.';
+$string['dashboardteacherreview'] = '¿Qué debo revisar?';
+$string['dashboardteacherreview_desc'] = 'Abre tus cursos y atiende las actividades que requieren evaluación.';
+$string['dashboardteacherfollowup'] = '¿Quién necesita seguimiento?';
+$string['dashboardteacherfollowup_desc'] = 'Consulta progreso y finalización dentro de tus cursos.';
+$string['dashboardteachercommunication'] = '¿Hay algo por responder?';
+$string['dashboardteachercommunication_desc'] = 'Revisa mensajes y comunicación pendiente.';
 
 $string['brandingheading'] = 'Identidad institucional';
 $string['brandingheading_desc'] = 'Configura la identidad visual principal de la institución. Los archivos cargados se almacenan y sirven mediante la File API de Moodle.';
