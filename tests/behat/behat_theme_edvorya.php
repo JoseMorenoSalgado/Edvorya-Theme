@@ -268,6 +268,51 @@ class behat_theme_edvorya extends behat_base {
     }
 
     /**
+     * Visit a root-relative Moodle Core path without leaving the configured test origin.
+     *
+     * @When /^I visit the Edvorya Core path "(?P<path>\/[^"]*)"$/
+     * @param string $path Root-relative Moodle path with optional query string.
+     */
+    public function i_visit_the_edvorya_core_path(string $path): void {
+        if (!str_starts_with($path, '/') || str_starts_with($path, '//')) {
+            throw new \InvalidArgumentException('Edvorya Core test paths must be root-relative Moodle paths.');
+        }
+
+        $parts = parse_url($path);
+        if ($parts === false || empty($parts['path'])) {
+            throw new \InvalidArgumentException('Invalid Edvorya Core test path.');
+        }
+
+        $params = [];
+        if (!empty($parts['query'])) {
+            parse_str($parts['query'], $params);
+        }
+
+        $url = new \moodle_url($parts['path'], $params);
+        $this->getSession()->visit($url->out(false));
+        if ($this->running_javascript()) {
+            $this->getSession()->wait(self::get_timeout() * 1000, self::PAGE_READY_JS);
+        }
+    }
+
+    /**
+     * Visit the current user's Moodle grade report for a course identified by shortname.
+     *
+     * @When /^I visit Edvorya grades for course "(?P<shortname>[^"]+)"$/
+     * @param string $shortname Course shortname.
+     */
+    public function i_visit_edvorya_grades_for_course(string $shortname): void {
+        global $DB;
+
+        $course = $DB->get_record('course', ['shortname' => $shortname], 'id', MUST_EXIST);
+        $url = new \moodle_url('/grade/report/user/index.php', ['id' => $course->id]);
+        $this->getSession()->visit($url->out(false));
+        if ($this->running_javascript()) {
+            $this->getSession()->wait(self::get_timeout() * 1000, self::PAGE_READY_JS);
+        }
+    }
+
+    /**
      * Assert that a rendered element does not overflow the horizontal viewport.
      *
      * @Then /^the Edvorya element "(?P<selector>[^"]+)" should fit within the viewport horizontally$/
