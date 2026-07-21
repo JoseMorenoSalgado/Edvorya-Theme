@@ -1,0 +1,268 @@
+@layer components {
+    .edv-pagetype-calendar-view .edv-main__inner,
+    .edv-pagetype-grade-report-user-index .edv-main__inner,
+    .edv-pagetype-user-profile .edv-main__inner {
+        min-width: 0;
+        padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .edv-pagetype-calendar-view .edv-content-header,
+    .edv-pagetype-grade-report-user-index .edv-content-header,
+    .edv-pagetype-user-profile .edv-content-header {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: var(--edv-space-6);
+        padding: clamp(1.25rem, 3vw, 2rem);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-calendar-view .edv-content-header::before,
+    .edv-pagetype-grade-report-user-index .edv-content-header::before,
+    .edv-pagetype-user-profile .edv-content-header::before {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: 0;
+        width: 0.3rem;
+        background: var(--edv-color-primary);
+    }
+
+    .edv-pagetype-calendar-view #page-header,
+    .edv-pagetype-grade-report-user-index #page-header,
+    .edv-pagetype-user-profile #page-header {
+        width: 100%;
+        max-width: none;
+    }
+
+    .edv-pagetype-calendar-view #page-header h1,
+    .edv-pagetype-grade-report-user-index #page-header h1,
+    .edv-pagetype-user-profile #page-header h1 {
+        margin: 0;
+        color: var(--edv-color-foreground);
+        font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+        line-height: 1.15;
+        letter-spacing: -0.025em;
+    }
+
+    .edv-pagetype-calendar-view #region-main,
+    .edv-pagetype-grade-report-user-index #region-main,
+    .edv-pagetype-user-profile #region-main {
+        min-width: 0;
+    }
+
+    /* Calendar: retain Moodle's calendar semantics and JavaScript hooks while containing the dense month grid. */
+    .edv-pagetype-calendar-view .heightcontainer[data-calendar-type="main-block"] {
+        min-width: 0;
+    }
+
+    .edv-pagetype-calendar-view .calendarwrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+        scrollbar-width: thin;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth {
+        width: 100%;
+        min-width: 44rem;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth thead th {
+        padding: var(--edv-space-3);
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth td.day,
+    .edv-pagetype-calendar-view .calendarmonth td.dayblank {
+        min-width: 6rem;
+        height: 7rem;
+        padding: var(--edv-space-2);
+        border-inline-end: 1px solid var(--edv-color-border);
+        border-bottom: 1px solid var(--edv-color-border);
+        vertical-align: top;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth td.today {
+        background: var(--edv-active-overlay);
+        box-shadow: inset 0 0 0 2px var(--edv-color-primary);
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth .day-number-circle {
+        display: inline-grid;
+        place-items: center;
+        min-width: 2rem;
+        min-height: 2rem;
+        border-radius: var(--edv-radius-pill);
+        font-weight: 700;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth a[data-action="view-event"] {
+        display: flex;
+        align-items: center;
+        gap: var(--edv-space-2);
+        min-width: 0;
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth .eventname {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Grades: preserve readable tabular data and contain horizontal scrolling inside the report surface. */
+    .edv-pagetype-grade-report-user-index .user-report-container {
+        max-width: 100%;
+        overflow-x: auto;
+        margin: var(--edv-space-4) 0 var(--edv-space-6);
+        padding: 0;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+        scrollbar-width: thin;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade {
+        width: 100%;
+        min-width: 44rem;
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade thead th {
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade td,
+    .edv-pagetype-grade-report-user-index .user-grade th {
+        border-color: var(--edv-color-border);
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade td.item,
+    .edv-pagetype-grade-report-user-index .user-grade th.column-itemname,
+    .edv-pagetype-grade-report-user-index .user-grade th.category {
+        background: #ffffff;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade tbody tr:hover td,
+    .edv-pagetype-grade-report-user-index .user-grade tbody tr:hover th {
+        background: var(--edv-hover-overlay);
+    }
+
+    .edv-pagetype-grade-report-user-index .edv-tertiary-navigation,
+    .edv-pagetype-grade-report-user-index .tertiary-navigation {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Profile: turn Moodle's profile tree into responsive Edvorya information cards without replacing Core output. */
+    .edv-pagetype-user-profile .userprofile {
+        min-width: 0;
+        display: grid;
+        gap: var(--edv-space-6);
+    }
+
+    .edv-pagetype-user-profile .userprofile .page-context-header {
+        padding: var(--edv-space-4);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-user-profile .userprofile .userpicture {
+        border-radius: var(--edv-radius-pill);
+        box-shadow: 0 0 0 4px #ffffff, 0 0 0 5px var(--edv-color-border);
+    }
+
+    .edv-pagetype-user-profile .userprofile .description {
+        padding: var(--edv-space-4);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-user-profile .profile_tree {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+        gap: var(--edv-space-4);
+    }
+
+    .edv-pagetype-user-profile .profile_tree section {
+        min-width: 0;
+        overflow: hidden;
+        margin: 0;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-user-profile .profile_tree section h3 {
+        margin: 0;
+        padding: var(--edv-space-3) var(--edv-space-4);
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-background);
+        color: var(--edv-color-foreground);
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .edv-pagetype-user-profile .profile_tree section ul {
+        margin: 0;
+        padding: var(--edv-space-4);
+    }
+
+    .edv-pagetype-user-profile #region-main > .block,
+    .edv-pagetype-user-profile #region-main .block.card {
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-pagetype-calendar-view .edv-content-header,
+        .edv-pagetype-grade-report-user-index .edv-content-header,
+        .edv-pagetype-user-profile .edv-content-header {
+            margin-bottom: var(--edv-space-4);
+            padding: var(--edv-space-4);
+            border-radius: var(--edv-radius-lg);
+        }
+
+        .edv-pagetype-calendar-view .calendarwrapper,
+        .edv-pagetype-grade-report-user-index .user-report-container {
+            border-radius: var(--edv-radius-md);
+        }
+
+        .edv-pagetype-user-profile .profile_tree {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
