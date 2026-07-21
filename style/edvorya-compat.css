@@ -1,10 +1,10 @@
-/* Edvorya standalone Moodle Core compatibility refinements.
- * Kept separate from the generated design-system bundle so urgent runtime
- * compatibility fixes can ship without modifying Moodle Core or depending on
- * a parent theme. These rules remain intentionally small and cache-friendly.
+/* Edvorya standalone Moodle Core compatibility and runtime visual refinements.
+ * Moodle Core keeps ownership of navigation, menus, ARIA and interaction state.
+ * This layer supplies the missing standalone presentation contracts without a
+ * parent theme or a runtime visual framework dependency.
  */
 
-/* Moodle breadcrumb markup relies on parent-theme presentation contracts. */
+/* Breadcrumb. */
 .breadcrumb {
     display: flex;
     flex-wrap: wrap;
@@ -36,9 +36,7 @@
     white-space: nowrap;
 }
 
-/* Moodle Settings and Navigation blocks expose semantic tree markup whose
-   presentation is normally supplied by a parent theme. Keep Core markup and
-   JS untouched while providing Edvorya's own compact, touch-friendly tree. */
+/* Moodle Settings and Navigation trees. */
 .block_navigation .block_tree,
 .block_settings .block_tree {
     margin: 0;
@@ -61,9 +59,9 @@
 
 .block_navigation .block_tree ul ul,
 .block_settings .block_tree ul ul {
-    margin-top: 0.25rem;
-    margin-inline-start: 0.75rem;
-    padding-inline-start: 0.75rem;
+    margin-top: 0.3rem;
+    margin-inline-start: 0.85rem;
+    padding-inline-start: 0.85rem;
     border-inline-start: 1px solid var(--edv-color-border);
 }
 
@@ -81,26 +79,30 @@
 .block_settings .block_tree a {
     display: flex;
     align-items: center;
+    gap: 0.625rem;
     min-width: 0;
     min-height: 2.75rem;
     padding: 0.625rem 0.75rem;
-    border-radius: var(--edv-radius-sm);
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
     color: var(--edv-color-foreground);
     line-height: 1.35;
     text-decoration: none;
     overflow-wrap: anywhere;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
 .block_navigation .block_tree a:hover,
 .block_settings .block_tree a:hover {
-    background: var(--edv-hover-overlay);
+    border-color: color-mix(in srgb, var(--edv-color-primary) 12%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 6%, #ffffff);
     color: var(--edv-color-foreground);
 }
 
 .block_navigation .block_tree a:focus-visible,
 .block_settings .block_tree a:focus-visible {
-    background: var(--edv-hover-overlay);
-    outline: 3px solid var(--edv-color-primary);
+    background: color-mix(in srgb, var(--edv-color-primary) 7%, #ffffff);
+    outline: 3px solid color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
     outline-offset: 2px;
 }
 
@@ -118,25 +120,24 @@
 .block_settings .block_tree .active_tree_node > a,
 .block_navigation .block_tree a[aria-current="page"],
 .block_settings .block_tree a[aria-current="page"] {
-    background: var(--edv-active-overlay);
+    border-color: color-mix(in srgb, var(--edv-color-primary) 16%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
     color: var(--edv-color-primary);
     font-weight: 700;
 }
 
 .block_navigation .block_tree .icon,
 .block_settings .block_tree .icon {
-    margin-inline-end: 0.5rem;
+    margin-inline-end: 0.1rem;
 }
 
-/* Blocks that land below the main content on compact layouts should still
-   read as intentional navigation surfaces rather than raw document lists. */
 .edv-sidebar .block_navigation,
 .edv-sidebar .block_settings {
     overflow: hidden;
     border: 1px solid var(--edv-color-border);
     border-radius: var(--edv-radius-lg);
     background: #ffffff;
-    box-shadow: var(--edv-shadow-sm);
+    box-shadow: 0 8px 28px rgb(15 23 42 / 0.06);
 }
 
 .edv-sidebar .block_navigation .card-body,
@@ -146,14 +147,448 @@
     padding: var(--edv-space-3);
 }
 
-/* Keep the application topbar a single compact row on phones. */
+.edv-sidebar .block_navigation .card-title,
+.edv-sidebar .block_settings .card-title,
+.edv-sidebar .block_navigation .header h5,
+.edv-sidebar .block_settings .header h5 {
+    color: var(--edv-color-muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Edvorya LMS-inspired mobile drawer. Core still supplies all navigation data. */
+.edv-mobile-nav {
+    z-index: 70;
+}
+
+.edv-mobile-nav__toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--edv-color-border);
+    border-radius: 0.85rem;
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.edv-mobile-nav__toggle:hover,
+.edv-mobile-nav[open] > .edv-mobile-nav__toggle {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 20%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 7%, #ffffff);
+    color: var(--edv-color-primary);
+    box-shadow: 0 5px 14px rgb(15 23 42 / 0.08);
+}
+
+.edv-mobile-nav__toggle:active {
+    transform: scale(0.96);
+}
+
+.edv-mobile-nav__icon svg,
+.edv-mobile-nav__toggle .icon {
+    width: 1.35rem;
+    max-width: 1.35rem;
+    height: 1.35rem;
+    max-height: 1.35rem;
+}
+
+.edv-mobile-nav[open]::before {
+    content: "";
+    position: fixed;
+    z-index: 55;
+    top: var(--edv-topbar-height);
+    inset-inline: 0;
+    bottom: 0;
+    background: rgb(15 23 42 / 0.42);
+    backdrop-filter: blur(2px);
+}
+
+.edv-mobile-nav__panel {
+    position: fixed;
+    z-index: 60;
+    top: var(--edv-topbar-height);
+    bottom: 0;
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+    width: min(22rem, calc(100vw - 3rem));
+    max-height: none;
+    overflow-y: auto;
+    border: 0;
+    border-inline-end: 1px solid var(--edv-color-border);
+    border-radius: 0 1.5rem 1.5rem 0;
+    background: #ffffff;
+    box-shadow: 24px 0 48px rgb(15 23 42 / 0.18);
+    overscroll-behavior: contain;
+    animation: edv-drawer-enter 170ms ease-out;
+}
+
+.edv-mobile-nav__panel-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: grid;
+    gap: 0.65rem;
+    padding: 1rem 1rem 0.9rem;
+    border-bottom: 1px solid var(--edv-color-border);
+    background: rgb(255 255 255 / 0.96);
+    backdrop-filter: blur(12px);
+}
+
+.edv-mobile-nav__panel-brand .edv-brand {
+    width: 100%;
+    gap: 0.7rem;
+}
+
+.edv-mobile-nav__panel-brand .edv-brand__mark {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 7px 18px color-mix(in srgb, var(--edv-color-primary) 22%, transparent);
+}
+
+.edv-mobile-nav__panel-brand .edv-brand__logo {
+    max-width: 9rem;
+    height: 2.25rem;
+}
+
+.edv-mobile-nav__panel-brand .edv-brand__name {
+    display: block !important;
+    min-width: 0;
+    color: var(--edv-color-foreground);
+    font-size: 0.95rem;
+    font-weight: 750;
+}
+
+.edv-mobile-nav__panel-label {
+    color: var(--edv-color-muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.edv-mobile-nav__content {
+    width: 100%;
+    margin: 0;
+    padding: 0.75rem 0.75rem 1.5rem;
+}
+
+.edv-mobile-nav__list {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.edv-mobile-nav__item-main {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.edv-mobile-nav__item-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.edv-mobile-nav__link,
+.edv-mobile-nav__child-link {
+    width: 100%;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid transparent;
+    border-radius: 0.9rem;
+    color: var(--edv-color-foreground);
+    font-weight: 650;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.edv-mobile-nav__group > .edv-mobile-nav__link {
+    justify-content: space-between;
+}
+
+.edv-mobile-nav__link:hover,
+.edv-mobile-nav__child-link:hover,
+.edv-mobile-nav__group > .edv-mobile-nav__link:hover {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 12%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 6%, #ffffff);
+    color: var(--edv-color-foreground);
+}
+
+.edv-mobile-nav__link:active,
+.edv-mobile-nav__child-link:active {
+    transform: scale(0.99);
+}
+
+.edv-mobile-nav__link:focus-visible,
+.edv-mobile-nav__child-link:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
+    outline-offset: 2px;
+}
+
+.edv-mobile-nav__link.is-active,
+.edv-mobile-nav__child-link.is-active {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 16%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
+    color: var(--edv-color-primary);
+    font-weight: 750;
+}
+
+.edv-mobile-nav__item-icon {
+    flex: 0 0 auto;
+    width: 2.1rem;
+    height: 2.1rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.edv-mobile-nav__item-icon-svg.icon {
+    width: 1.1rem;
+    max-width: 1.1rem;
+    height: 1.1rem;
+    max-height: 1.1rem;
+    margin: 0;
+}
+
+.edv-mobile-nav__link.is-active .edv-mobile-nav__item-icon,
+.edv-mobile-nav__child-link.is-active .edv-mobile-nav__item-icon {
+    background: color-mix(in srgb, var(--edv-color-primary) 14%, #ffffff);
+}
+
+.edv-mobile-nav__item-icon--child {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.6rem;
+}
+
+.edv-mobile-nav__children {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.25rem 0 0.35rem 1rem;
+    padding: 0.15rem 0 0.15rem 0.75rem;
+    border-inline-start: 1px solid var(--edv-color-border);
+}
+
+.edv-mobile-nav__child-link {
+    min-height: 2.7rem;
+    color: #475569;
+    font-size: 0.925rem;
+    font-weight: 600;
+}
+
+.edv-mobile-nav__chevron {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.55rem;
+    color: var(--edv-color-muted);
+}
+
+.edv-mobile-nav__chevron svg,
+.edv-mobile-nav__chevron .icon {
+    width: 0.95rem;
+    max-width: 0.95rem;
+    height: 0.95rem;
+    max-height: 0.95rem;
+}
+
+.edv-mobile-nav__group[open] > summary .edv-mobile-nav__chevron {
+    background: color-mix(in srgb, var(--edv-color-primary) 8%, #ffffff);
+    color: var(--edv-color-primary);
+}
+
+@keyframes edv-drawer-enter {
+    from {
+        opacity: 0.7;
+        transform: translateX(-1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Topbar actions: one visual language for Moodle Core output. */
+.edv-topbar__actions .popover-region-toggle,
+.edv-topbar__actions .userbutton,
+.edv-topbar__actions .dropdown-toggle {
+    border-radius: 0.8rem;
+}
+
+.edv-topbar__actions .popover-region-toggle {
+    position: relative;
+    width: 2.6rem;
+    min-width: 2.6rem;
+    height: 2.6rem;
+    min-height: 2.6rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--edv-color-foreground);
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.edv-topbar__actions .popover-region-toggle:hover,
+.edv-topbar__actions .popover-region-toggle:focus-visible {
+    border-color: var(--edv-color-border);
+    background: #f8fafc;
+    color: var(--edv-color-primary);
+}
+
+/* Replace mixed Core glyph shapes visually while retaining the original
+   accessible buttons, labels, badges and JavaScript controllers. */
+.edv-topbar__actions .popover-region-notifications .popover-region-toggle > .icon,
+.edv-topbar__actions .popover-region-messages .popover-region-toggle > .icon {
+    display: none;
+}
+
+.edv-topbar__actions .popover-region-notifications .popover-region-toggle::before,
+.edv-topbar__actions .popover-region-messages .popover-region-toggle::before {
+    content: "";
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+    background: currentColor;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+.edv-topbar__actions .popover-region-notifications .popover-region-toggle::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.268 21a2 2 0 0 0 3.464 0'/%3E%3Cpath d='M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.268 21a2 2 0 0 0 3.464 0'/%3E%3Cpath d='M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326'/%3E%3C/svg%3E");
+}
+
+.edv-topbar__actions .popover-region-messages .popover-region-toggle::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z'/%3E%3C/svg%3E");
+}
+
+.edv-topbar__actions .count-container {
+    min-width: 1.2rem;
+    height: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.28rem;
+    border: 2px solid #ffffff;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgb(15 23 42 / 0.16);
+}
+
+.edv-topbar__actions .usermenu .userbutton {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.35rem;
+    border: 1px solid var(--edv-color-border);
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.edv-topbar__actions .usermenu .userbutton:hover {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
+    background: #f8fafc;
+}
+
+.edv-topbar__actions .usermenu .avatars img,
+.edv-topbar__actions .usermenu .userpicture {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 0.7rem;
+    object-fit: cover;
+}
+
+/* Compact Edvorya switch for Moodle editing mode. */
+.edv-topbar__actions .editmode-switch-form .form-check-input,
+.edv-topbar__actions .form-switch .form-check-input {
+    position: relative;
+    width: 2.25rem;
+    height: 1.25rem;
+    min-width: 2.25rem;
+    margin: 0;
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    background: #cbd5e1;
+    box-shadow: inset 0 0 0 1px rgb(15 23 42 / 0.06);
+    cursor: pointer;
+    transition: background-color 160ms ease;
+}
+
+.edv-topbar__actions .editmode-switch-form .form-check-input::after,
+.edv-topbar__actions .form-switch .form-check-input::after {
+    content: "";
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    width: 0.95rem;
+    height: 0.95rem;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgb(15 23 42 / 0.22);
+    transition: transform 160ms ease;
+}
+
+.edv-topbar__actions .editmode-switch-form .form-check-input:checked,
+.edv-topbar__actions .form-switch .form-check-input:checked {
+    background: var(--edv-color-primary);
+}
+
+.edv-topbar__actions .editmode-switch-form .form-check-input:checked::after,
+.edv-topbar__actions .form-switch .form-check-input:checked::after {
+    transform: translateX(1rem);
+}
+
+/* Phone composition. */
 @media (max-width: 47.999rem) {
+    :root {
+        --edv-topbar-height: 4.5rem;
+    }
+
+    .edv-topbar {
+        box-shadow: 0 1px 0 rgb(15 23 42 / 0.04);
+    }
+
     .edv-topbar__inner {
         width: 100%;
         min-width: 0;
         justify-content: flex-start;
-        gap: 0.375rem;
+        gap: 0.45rem;
         padding-inline: 0.75rem;
+    }
+
+    .edv-topbar__inner > .edv-brand {
+        flex: 0 0 auto;
+    }
+
+    .edv-topbar__inner > .edv-brand .edv-brand__mark {
+        width: 2.65rem;
+        height: 2.65rem;
+        border-radius: 0.85rem;
+        box-shadow: 0 7px 18px color-mix(in srgb, var(--edv-color-primary) 20%, transparent);
     }
 
     .edv-brand,
@@ -164,7 +599,7 @@
     .edv-topbar__actions {
         min-width: 0;
         margin-inline-start: auto;
-        gap: 0.25rem;
+        gap: 0.15rem;
         flex-wrap: nowrap;
         white-space: nowrap;
     }
@@ -174,15 +609,11 @@
         flex: 0 0 auto;
     }
 
-    /* The avatar remains the mobile identity affordance; the full name is
-       available from the user menu and would otherwise force the header tall. */
     .edv-topbar__actions .usermenu .usertext,
     .edv-topbar__actions .usertext {
         display: none !important;
     }
 
-    /* Preserve the edit switch and its accessible label while visually
-       removing the long label from the constrained phone header. */
     .edv-topbar__actions .editmode-switch-form label,
     .edv-topbar__actions .form-switch > label,
     .edv-topbar__actions .form-switch .form-check-label {
@@ -199,24 +630,35 @@
 
     .edv-topbar__actions .editmode-switch-form,
     .edv-topbar__actions .form-switch {
+        min-width: 2.7rem;
+        min-height: 2.6rem;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 2.5rem;
         margin: 0;
         padding: 0;
-    }
-
-    .edv-topbar__actions .form-switch .form-check-input {
-        flex: 0 0 auto;
-        margin: 0;
+        border-radius: 0.8rem;
     }
 
     .edv-topbar__actions .popover-region-toggle,
     .edv-topbar__actions .dropdown-toggle,
     .edv-topbar__actions .userbutton {
-        min-width: 2.5rem;
-        min-height: 2.5rem;
+        min-width: 2.6rem;
+        min-height: 2.6rem;
+    }
+
+    .edv-topbar__actions .usermenu .userbutton {
+        padding: 0.15rem 0.25rem;
+        border-color: transparent;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .edv-topbar__actions .usermenu .avatars img,
+    .edv-topbar__actions .usermenu .userpicture {
+        width: 2.55rem;
+        height: 2.55rem;
+        border-radius: 0.8rem;
     }
 
     .edv-sidebar .block_navigation,
@@ -232,6 +674,28 @@
     }
 
     .edv-topbar__actions {
-        gap: 0.125rem;
+        gap: 0.05rem;
+    }
+
+    .edv-topbar__actions .popover-region-toggle,
+    .edv-topbar__actions .dropdown-toggle,
+    .edv-topbar__actions .userbutton {
+        min-width: 2.35rem;
+        width: 2.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edv-mobile-nav__panel {
+        animation: none;
+    }
+
+    .edv-mobile-nav__toggle,
+    .edv-mobile-nav__link,
+    .edv-mobile-nav__child-link,
+    .edv-topbar__actions .popover-region-toggle,
+    .edv-topbar__actions .form-check-input,
+    .edv-topbar__actions .form-check-input::after {
+        transition: none;
     }
 }
