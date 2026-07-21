@@ -1,0 +1,139 @@
+/* Source counterpart for style/edvorya-context-nav.css.
+ * Kept separate while the standalone compatibility layers remain independently deployable.
+ */
+
+.edv-context-nav {
+    display: block;
+    width: 100%;
+    margin: 0 0 var(--edv-space-4);
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--edv-shadow-sm);
+    overflow: hidden;
+}
+
+.edv-context-nav__summary {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.15rem 0.75rem;
+    align-items: center;
+    min-height: 3.5rem;
+    padding: 0.7rem 3rem 0.7rem 1rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+.edv-context-nav__summary::-webkit-details-marker {
+    display: none;
+}
+
+.edv-context-nav__summary-label {
+    grid-column: 1;
+    color: var(--edv-color-muted);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.edv-context-nav__summary-current {
+    grid-column: 1;
+    min-width: 0;
+    color: var(--edv-color-foreground);
+    font-size: 1rem;
+    font-weight: 750;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.edv-context-nav__chevron {
+    position: absolute;
+    inset-inline-end: 1.1rem;
+    top: 50%;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    color: var(--edv-color-muted);
+    transform: translateY(-65%) rotate(45deg);
+    transition: transform 140ms ease;
+}
+
+.edv-context-nav[open] .edv-context-nav__chevron {
+    transform: translateY(-35%) rotate(225deg);
+}
+
+.edv-context-nav__summary:hover {
+    background: var(--edv-hover-overlay);
+}
+
+.edv-context-nav__summary:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
+    outline-offset: -3px;
+}
+
+.edv-context-nav__panel {
+    border-top: 1px solid var(--edv-color-border);
+    padding: 0.5rem;
+}
+
+.edv-context-nav__list {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edv-context-nav__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: var(--edv-radius-md);
+    color: var(--edv-color-foreground);
+    font-weight: 650;
+    line-height: 1.3;
+    text-decoration: none;
+}
+
+.edv-context-nav__link:hover,
+.edv-context-nav__link:focus-visible {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 14%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 6%, #ffffff);
+    color: var(--edv-color-foreground);
+}
+
+.edv-context-nav__link.is-active {
+    background: color-mix(in srgb, var(--edv-color-primary) 9%, #ffffff);
+    color: #1746b0;
+    font-weight: 750;
+}
+
+.edv-context-nav__active-dot {
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--edv-color-primary);
+}
+
+@media (max-width: 63.999rem) {
+    .edv-secondary-nav {
+        display: none !important;
+    }
+}
+
+@media (min-width: 64rem) {
+    .edv-context-nav {
+        display: none;
+    }
+}
