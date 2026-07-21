@@ -111,18 +111,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bin/moodle-docker-compose exec -T webserver php -r '
-            if (PHP_VERSION_ID < 80300) {
-                fwrite(STDERR, "PHP 8.3+ required, got " . PHP_VERSION . PHP_EOL);
-                exit(1);
-            }
-            if ((int) ini_get("max_input_vars") < 5000) {
-                fwrite(STDERR, "max_input_vars must be >= 5000" . PHP_EOL);
-                exit(1);
-            }
-            echo "PHP=" . PHP_VERSION . PHP_EOL;
-          '
-          bin/moodle-docker-compose exec -T db mysql -uroot -proot -Nse 'SELECT VERSION();'
+          bin/moodle-docker-compose exec -T webserver php -r 'echo "PHP=" . PHP_VERSION . PHP_EOL; if (version_compare(PHP_VERSION, "8.3.0", "<")) {exit(1);}'
+          bin/moodle-docker-compose exec -T db mariadb --version
+          bin/moodle-docker-compose exec -T webserver php -r 'if ((int) ini_get("max_input_vars") < 5000) {fwrite(STDERR, "max_input_vars must be >= 5000\n"); exit(1);} echo "max_input_vars=" . ini_get("max_input_vars") . PHP_EOL;'
 
       - name: Initialize Behat with Edvorya
         working-directory: moodle-docker
