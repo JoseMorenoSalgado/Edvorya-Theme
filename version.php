@@ -9,9 +9,9 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.15 adopts Boost as the Moodle Core compatibility parent, removes
- * duplicated standalone compatibility layers and delegates technical layouts
- * that do not add Edvorya product value to Boost.
+ * Alpha.16 surgically reduces the remaining component CSS after the Boost-parent
+ * migration. Generic form, File Manager, Action Menu and Bootstrap mechanics stay
+ * owned by Boost; Edvorya keeps only visual identity and proven containment rules.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -21,8 +21,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072115;
+$plugin->version = 2026072116;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.15';
+$plugin->release = '0.1.0-alpha.16';
