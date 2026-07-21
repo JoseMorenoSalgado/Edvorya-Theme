@@ -1,8 +1,8 @@
 @theme_edvorya @javascript
 Feature: Edvorya contextual page experiences
-  In order to provide a coherent standalone learning experience
-  As an authenticated learner
-  I need key Moodle learning and support surfaces to remain responsive and functional
+  In order to provide a coherent standalone Moodle experience
+  As an authenticated user
+  I need key learning, support, administration, and communication surfaces to remain responsive and functional
 
   Background:
     Given the following config values are set as admin:
@@ -106,6 +106,62 @@ Feature: Edvorya contextual page experiences
     And I should see "Edvorya Learner"
     And the Edvorya element ".userprofile" should fit within the viewport horizontally
     And the Edvorya element ".edv-main__inner" should fit within the viewport horizontally
+
+    Examples:
+      | viewport |
+      | 390x844  |
+      | 1366x768 |
+
+  Scenario Outline: Administration keeps Moodle admin output inside the Edvorya operational shell
+    Given I am on the "Admin notifications" page logged in as "admin"
+    And I set the Edvorya viewport to "<viewport>"
+    Then "body.edv-layout-admin" "css_element" should exist
+    And ".edv-content-header" "css_element" should be visible
+    And "#region-main" "css_element" should be visible
+    And the Edvorya element ".edv-main__inner" should fit within the viewport horizontally
+
+    Examples:
+      | viewport |
+      | 390x844  |
+      | 1366x768 |
+
+  Scenario Outline: Messaging preserves the Moodle message application inside a responsive Edvorya surface
+    Given I log in as "student1"
+    When I visit the Edvorya Core path "/message/index.php"
+    And I set the Edvorya viewport to "<viewport>"
+    Then "body.edv-pagetype-message-index" "css_element" should exist
+    And ".message-app[data-region='message-index']" "css_element" should exist
+    And ".conversationcontainer" "css_element" should exist
+    And the Edvorya element ".message-app[data-region='message-index']" should fit within the viewport horizontally
+    And the Edvorya element ".edv-main__inner" should fit within the viewport horizontally
+
+    Examples:
+      | viewport |
+      | 390x844  |
+      | 1366x768 |
+
+  Scenario Outline: Notification preferences keeps processor settings readable without page-level overflow
+    Given I log in as "student1"
+    When I visit the Edvorya Core path "/message/notificationpreferences.php"
+    And I set the Edvorya viewport to "<viewport>"
+    Then "body.edv-pagetype-message-notificationpreferences" "css_element" should exist
+    And ".preferences-page-container" "css_element" should exist
+    And ".preference-table" "css_element" should exist
+    And the Edvorya element ".preferences-page-container" should fit within the viewport horizontally
+    And the Edvorya element ".edv-main__inner" should fit within the viewport horizontally
+
+    Examples:
+      | viewport |
+      | 390x844  |
+      | 1366x768 |
+
+  Scenario Outline: Notification popover remains contained in the Edvorya topbar
+    Given I log in as "student1"
+    And I am on site homepage
+    And I set the Edvorya viewport to "<viewport>"
+    When I click on ".popover-region-notifications [data-region='popover-region-toggle']" "css_element"
+    Then ".popover-region-notifications .popover-region-container" "css_element" should be visible
+    And the Edvorya element ".popover-region-notifications .popover-region-container" should fit within the viewport horizontally
 
     Examples:
       | viewport |
