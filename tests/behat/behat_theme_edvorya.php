@@ -159,6 +159,115 @@ class behat_theme_edvorya extends behat_base {
     }
 
     /**
+     * Create representative fixtures for activity/resource plugins bundled with Moodle 5.2.
+     *
+     * The fixtures use Moodle's own plugin testing generators. The URL resource is created so
+     * its course-page integration can be asserted without navigating away from the test site.
+     * SCORM and LTI are intentionally excluded because meaningful acceptance requires an actual
+     * SCORM package or LTI provider rather than a synthetic empty instance.
+     *
+     * @Given /^I create Edvorya Moodle bundled activity fixtures in course "(?P<shortname>[^"]+)"$/
+     * @param string $shortname Course shortname.
+     */
+    public function i_create_edvorya_moodle_bundled_activity_fixtures(string $shortname): void {
+        global $DB, $USER;
+
+        $course = $DB->get_record('course', ['shortname' => $shortname], '*', MUST_EXIST);
+        $datagenerator = \testing_util::get_data_generator();
+        $previoususer = $USER;
+        $admin = get_admin();
+        \core\session\manager::set_user($admin);
+
+        try {
+            $common = [
+                'course' => $course->id,
+                'section' => 1,
+                'visible' => 1,
+            ];
+
+            $pagegenerator = $datagenerator->get_plugin_generator('mod_page');
+            $pagegenerator->create_instance($common + [
+                'name' => 'Moodle Page',
+                'content' => '<p>Edvorya bundled Page compatibility content.</p>',
+                'contentformat' => FORMAT_HTML,
+            ]);
+
+            $resourcegenerator = $datagenerator->get_plugin_generator('mod_resource');
+            $resourcegenerator->create_instance($common + [
+                'name' => 'Moodle File',
+                'defaultfilename' => 'edvorya-moodle-file.txt',
+                'display' => 1,
+            ]);
+
+            $foldergenerator = $datagenerator->get_plugin_generator('mod_folder');
+            $foldergenerator->create_instance($common + [
+                'name' => 'Moodle Folder',
+                'showexpanded' => 1,
+            ]);
+
+            $urlgenerator = $datagenerator->get_plugin_generator('mod_url');
+            $urlgenerator->create_instance($common + [
+                'name' => 'Moodle URL',
+                'externalurl' => 'https://moodle.org/',
+            ]);
+
+            $choicegenerator = $datagenerator->get_plugin_generator('mod_choice');
+            $choicegenerator->create_instance($common + [
+                'name' => 'Moodle Choice',
+            ]);
+
+            $databasenerator = $datagenerator->get_plugin_generator('mod_data');
+            $databasenerator->create_instance($common + [
+                'name' => 'Moodle Database',
+            ]);
+
+            $glossarygenerator = $datagenerator->get_plugin_generator('mod_glossary');
+            $glossary = $glossarygenerator->create_instance($common + [
+                'name' => 'Moodle Glossary',
+            ]);
+            $glossarygenerator->create_content($glossary, [
+                'concept' => 'Edvorya',
+                'definition' => 'Bundled Moodle Glossary compatibility entry.',
+                'definitionformat' => FORMAT_HTML,
+            ]);
+
+            $lessongenerator = $datagenerator->get_plugin_generator('mod_lesson');
+            $lessongenerator->create_instance($common + [
+                'name' => 'Moodle Lesson',
+            ]);
+
+            $wikigenerator = $datagenerator->get_plugin_generator('mod_wiki');
+            $wiki = $wikigenerator->create_instance($common + [
+                'name' => 'Moodle Wiki',
+                'firstpagetitle' => 'Edvorya Wiki Home',
+            ]);
+            $wikigenerator->create_first_page($wiki);
+
+            $workshopgenerator = $datagenerator->get_plugin_generator('mod_workshop');
+            $workshopgenerator->create_instance($common + [
+                'name' => 'Moodle Workshop',
+            ]);
+
+            $feedbackgenerator = $datagenerator->get_plugin_generator('mod_feedback');
+            $feedbackgenerator->create_instance($common + [
+                'name' => 'Moodle Feedback',
+            ]);
+
+            $bookgenerator = $datagenerator->get_plugin_generator('mod_book');
+            $book = $bookgenerator->create_instance($common + [
+                'name' => 'Moodle Book',
+            ]);
+            $bookgenerator->create_content($book, [
+                'title' => 'Edvorya Book Chapter',
+                'content' => '<p>Bundled Moodle Book compatibility chapter.</p>',
+                'contentformat' => FORMAT_HTML,
+            ]);
+        } finally {
+            \core\session\manager::set_user($previoususer);
+        }
+    }
+
+    /**
      * Assert that a rendered element does not overflow the horizontal viewport.
      *
      * @Then /^the Edvorya element "(?P<selector>[^"]+)" should fit within the viewport horizontally$/
