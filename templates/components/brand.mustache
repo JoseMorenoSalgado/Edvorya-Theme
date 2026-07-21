@@ -1,14 +1,18 @@
 {{!
     @template theme_edvorya/components/brand
 
-    Reusable institutional brand. Expected context is theme_edvorya\output\branding.
+    Reusable Edvorya product + institution lockup. The institution remains
+    tenant-specific while the product identity stays consistent with Edvorya LMS.
 }}
-<a class="edv-brand" href="{{{ homeurl }}}" aria-label="{{institutionname}}">
+<a class="edv-brand" href="{{{ homeurl }}}" aria-label="Edvorya LMS - {{institutionname}}">
     {{#logourl}}
         <img class="edv-brand__logo" src="{{{ logourl }}}" alt="" decoding="async">
     {{/logourl}}
     {{^logourl}}
         <span class="edv-brand__mark" aria-hidden="true">E</span>
     {{/logourl}}
-    <span class="edv-brand__name">{{institutionname}}</span>
+    <span class="edv-brand__copy">
+        <span class="edv-brand__name">Edvorya LMS</span>
+        <span class="edv-brand__meta">{{institutionname}}</span>
+    </span>
 </a>
