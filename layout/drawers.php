@@ -25,6 +25,52 @@ $primary = new \core\navigation\output\primary($PAGE);
 $primarymenu = $primary->export_for_template($corerenderer);
 $mobileprimarynav = $primarymenu['mobileprimarynav'] ?? false;
 
+// Decorate Moodle-owned navigation data with lightweight Edvorya presentation metadata.
+// Keys come from Core navigation nodes, so icon selection remains stable across languages.
+$decoratemobilenav = function(array $items) use (&$decoratemobilenav, $OUTPUT): array {
+    foreach ($items as &$item) {
+        if (is_object($item)) {
+            $item = (array) $item;
+        }
+
+        if (!empty($item['divider'])) {
+            continue;
+        }
+
+        $key = strtolower((string) ($item['key'] ?? ''));
+        $icon = 'link';
+
+        if ($key === 'myhome' || str_contains($key, 'dashboard')) {
+            $icon = 'layout-dashboard';
+        } else if ($key === 'home' || str_contains($key, 'sitehome')) {
+            $icon = 'home';
+        } else if ($key === 'mycourses' || str_contains($key, 'course')) {
+            $icon = 'book-open';
+        } else if ($key === 'siteadminnode' || str_contains($key, 'admin') || str_contains($key, 'setting')) {
+            $icon = 'settings';
+        }
+
+        $item['edvkey'] = preg_replace('/[^a-z0-9_-]+/', '-', $key ?: 'custom');
+        $item['edviconhtml'] = $OUTPUT->pix_icon(
+            'icons/' . $icon,
+            '',
+            'theme_edvorya',
+            ['class' => 'edv-mobile-nav__item-icon-svg']
+        );
+
+        if (!empty($item['children']) && is_array($item['children'])) {
+            $item['children'] = $decoratemobilenav($item['children']);
+        }
+    }
+    unset($item);
+
+    return $items;
+};
+
+if (is_array($mobileprimarynav) && !empty($mobileprimarynav)) {
+    $mobileprimarynav = $decoratemobilenav($mobileprimarynav);
+}
+
 $secondarynavigation = false;
 $overflow = false;
 if ($PAGE->has_secondary_navigation()) {
