@@ -5,6 +5,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
 /**
  * English language strings for theme_edvorya.
@@ -17,7 +22,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Edvorya';
-$string['choosereadme'] = 'Edvorya is a standalone theme for Moodle 5.0, 5.1 and 5.2 built around the Edvorya Design System.';
+$string['choosereadme'] = 'Edvorya is a Moodle 5.0, 5.1 and 5.2 theme with its own Design System and application shell, using Boost only as the Moodle Core compatibility parent.';
 $string['configtitle'] = 'Edvorya';
 $string['generalsettings'] = 'General settings';
 $string['generalsettings_desc'] = 'Configure the institutional identity and visual tokens used by the Edvorya theme.';
