@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.28`
+- Release: `0.1.0-alpha.29`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -39,8 +39,9 @@ Evolution of the current foundation:
 - Alpha.24 aligned persisted branding defaults with the current Edvorya LMS neutral palette.
 - Alpha.25 consolidated canonical token ownership.
 - Alpha.26 consolidated reusable Design System primitive ownership.
-- Alpha.27 removed the historical first-generation page visual layer from `page-experiences.css`, leaving structure and containment there while `identity.css` remains the final visual composition layer.
-- Alpha.28 makes branding configuration truthful: every exposed colour setting must have a cached CSS token, a canonical default and at least one semantic CSS consumer. The unused historical `accent` option is removed end-to-end.
+- Alpha.27 removed the historical first-generation page visual layer from `page-experiences.css`.
+- Alpha.28 made branding configuration truthful and auditable and removed the unused historical `accent` option.
+- Alpha.29 removes another 164 obsolete source CSS lines from learning-support and operational experience modules. Those modules now focus on containment, scroll, dense-table geometry, administration forms and the Core message-app layout while `identity.css` remains the final Edvorya LMS visual composition layer.
 
 Translated visual patterns include:
 
@@ -102,8 +103,6 @@ Cross-course grading queues, risk scoring and recommendation logic remain outsid
 
 ## Compatibility boundary
 
-The original standalone alpha duplicated Moodle Core presentation contracts that Boost already maintains. Those responsibilities have been progressively delegated or removed.
-
 Boost owns mechanics for:
 
 - generic Bootstrap behavior;
@@ -118,7 +117,7 @@ Edvorya retains:
 - custom application and login layouts;
 - shell and navigation composition;
 - Design System visual primitives and tokens;
-- dashboard and page-specific experiences;
+- dashboard and page-specific visual composition;
 - minimum touch targets and responsive containment;
 - branding settings and cached token pipeline.
 
@@ -132,7 +131,7 @@ Canonical build entrypoint:
 src/styles/index.css
 ```
 
-Canonical Design System tokens:
+Canonical tokens and base shell contracts:
 
 ```text
 src/styles/tailwind.css
@@ -148,7 +147,11 @@ Structural page contracts:
 
 ```text
 src/styles/page-experiences.css
+src/styles/learning-support-experiences.css
+src/styles/operational-experiences.css
 ```
+
+These structural modules own grid, min-width, overflow, scrolling, dense table geometry, administration form containment, notification preference tables and message-app layout. They do not own the final Edvorya page skin.
 
 Final product composition:
 
@@ -223,7 +226,7 @@ Always use the actual directory structure of the installed Moodle instance. Afte
 
 Automated compatibility is maintained for Moodle 5.0, 5.1 and 5.2 with PHP 8.3 and MariaDB 10.11 test runtimes, representative Moodle bundled activities/plugins, the required Google Drive `mod_videoplayer` integration, responsive Chrome/Selenium and Axe accessibility gates.
 
-Alpha.28 must pass the same runtime gates plus the branding-consumer audit before the next phase is considered stable.
+Alpha.29 must pass the same runtime gates plus the static ownership and branding audits before the next phase is considered stable.
 
 Environment-specific acceptance still includes true Safari/iPhone validation, representative SCORM packages and a deterministic LTI provider.
 
