@@ -106,8 +106,7 @@
         font-size: 0.8125rem;
     }
 
-    /* Surfaces use the same quiet white + slate border contract as Edvorya LMS. */
-    .card,
+    /* Page-specific surfaces use the shared Design System card contract. */
     .edv-layout-mydashboard #region-main > .block,
     .edv-layout-mycourses #region-main > .block,
     .edv-layout-course .course-content .course-section,
@@ -116,47 +115,6 @@
         border-radius: var(--edv-radius-xl);
         background: var(--edv-color-surface);
         box-shadow: var(--edv-shadow-sm);
-    }
-
-    .card-header,
-    .card-footer {
-        background: var(--edv-color-surface);
-    }
-
-    /* Moodle buttons keep Boost mechanics but use the compact Edvorya action scale. */
-    .btn {
-        min-height: 2.5rem;
-        border-radius: var(--edv-radius-lg);
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
-
-    .btn-sm {
-        min-height: 2.25rem;
-        border-radius: var(--edv-radius-md);
-    }
-
-    .btn-secondary,
-    .btn-outline-secondary {
-        border-color: var(--edv-color-border);
-        background: #ffffff;
-        color: #334155;
-        box-shadow: none;
-    }
-
-    .btn-secondary:hover,
-    .btn-outline-secondary:hover {
-        border-color: var(--edv-color-border);
-        background: var(--edv-color-subtle);
-        color: var(--edv-color-foreground);
-    }
-
-    /* Compact pills mirror metadata and status treatments used by the LMS. */
-    .badge,
-    .edv-info-pill {
-        border-radius: var(--edv-radius-pill);
-        font-size: 0.75rem;
-        font-weight: 500;
     }
 
     /* The main content follows the max-w-7xl rhythm of Edvorya LMS. */

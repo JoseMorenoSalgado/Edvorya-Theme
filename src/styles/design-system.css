@@ -9,8 +9,9 @@
     .btn {
         min-width: 0;
         min-height: 2.5rem;
-        border-radius: var(--edv-radius-sm);
-        font-weight: 650;
+        border-radius: var(--edv-radius-lg);
+        font-size: 0.875rem;
+        font-weight: 600;
         transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
     }
 
@@ -30,30 +31,30 @@
     }
 
     .btn-primary {
-        border-color: var(--edv-color-primary);
-        background: var(--edv-color-primary);
+        border-color: var(--edv-color-button);
+        background: var(--edv-color-button);
         color: #ffffff;
     }
 
     .btn-primary:hover,
     .btn-primary:focus-visible {
-        border-color: var(--edv-color-primary);
-        background: color-mix(in srgb, var(--edv-color-primary) 88%, #000000);
+        border-color: var(--edv-color-button);
+        background: color-mix(in srgb, var(--edv-color-button) 88%, #000000);
         color: #ffffff;
     }
 
     .btn-secondary {
         border-color: var(--edv-color-border);
         background: #ffffff;
-        color: var(--edv-color-foreground);
-        box-shadow: var(--edv-shadow-sm);
+        color: #334155;
+        box-shadow: none;
     }
 
     .btn-secondary:hover,
     .btn-secondary:focus-visible {
-        border-color: var(--edv-color-primary);
-        background: var(--edv-hover-overlay);
-        color: var(--edv-color-primary);
+        border-color: var(--edv-color-border);
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-foreground);
     }
 
     .btn-success,
@@ -121,14 +122,16 @@
 
     .btn-outline-secondary {
         border-color: var(--edv-color-border);
-        color: var(--edv-color-foreground);
+        background: #ffffff;
+        color: #334155;
+        box-shadow: none;
     }
 
     .btn-outline-secondary:hover,
     .btn-outline-secondary:focus-visible {
-        border-color: var(--edv-color-primary);
-        background: var(--edv-hover-overlay);
-        color: var(--edv-color-primary);
+        border-color: var(--edv-color-border);
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-foreground);
     }
 
     .btn-outline-success {
@@ -164,7 +167,8 @@
     }
 
     .btn-sm {
-        min-height: 2rem;
+        min-height: 2.25rem;
+        border-radius: var(--edv-radius-md);
     }
 
     .btn-lg {
@@ -176,8 +180,8 @@
     .card {
         min-width: 0;
         border-color: var(--edv-color-border);
-        border-radius: var(--edv-radius-lg);
-        background: #ffffff;
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-surface);
         color: var(--edv-color-foreground);
         box-shadow: var(--edv-shadow-sm);
     }
@@ -185,7 +189,7 @@
     .card-header,
     .card-footer {
         border-color: var(--edv-color-border);
-        background: var(--edv-color-background);
+        background: var(--edv-color-surface);
     }
 
     .card-title {
@@ -238,10 +242,12 @@
     }
 
     /* Badges and compact status indicators. */
-    .badge {
+    .badge,
+    .edv-info-pill {
         max-width: 100%;
-        border-radius: var(--edv-radius-sm);
-        font-weight: 700;
+        border-radius: var(--edv-radius-pill);
+        font-size: 0.75rem;
+        font-weight: 500;
         white-space: normal;
         overflow-wrap: anywhere;
     }
