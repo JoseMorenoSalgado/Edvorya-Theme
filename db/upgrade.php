@@ -44,5 +44,13 @@ function xmldb_theme_edvorya_upgrade($oldversion): bool {
         upgrade_plugin_savepoint(true, 2026072124, 'theme', 'edvorya');
     }
 
+    if ($oldversion < 2026072128) {
+        // Accent was exposed by early alphas but had no semantic consumer in the
+        // final Edvorya LMS identity. Remove the dead persisted setting so the
+        // administration UI and cached token pipeline share one truthful contract.
+        unset_config('accent', 'theme_edvorya');
+        upgrade_plugin_savepoint(true, 2026072128, 'theme', 'edvorya');
+    }
+
     return true;
 }
