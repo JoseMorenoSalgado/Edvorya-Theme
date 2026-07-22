@@ -51,10 +51,17 @@ final class dashboard_experience implements renderable, templatable {
             1
         );
         $isteacher = !empty($teachercourses);
-        $persona = $isteacher ? 'teacher' : 'student';
+        $teachercourseid = 0;
+        if ($isteacher) {
+            $teachercourse = reset($teachercourses);
+            if (is_object($teachercourse) && !empty($teachercourse->id)) {
+                $teachercourseid = (int) $teachercourse->id;
+            }
+        }
 
+        $persona = $isteacher ? 'teacher' : 'student';
         $questions = $isteacher
-            ? $this->teacher_questions($output)
+            ? $this->teacher_questions($output, $teachercourseid)
             : $this->student_questions($output);
 
         return [
@@ -104,16 +111,28 @@ final class dashboard_experience implements renderable, templatable {
     /**
      * Teacher dashboard intents, ordered by intervention priority.
      *
+     * The already-resolved teacher course is reused to make the first two
+     * actions concrete without introducing another course query. Aggregate
+     * cross-course queues remain the responsibility of local_edvorya.
+     *
      * @param renderer_base $output Renderer instance.
+     * @param int $courseid One course where the user can manage activities.
      * @return array<int, array<string, mixed>>
      */
-    private function teacher_questions(renderer_base $output): array {
+    private function teacher_questions(renderer_base $output, int $courseid): array {
+        $reviewurl = $courseid > 0
+            ? new moodle_url('/course/view.php', ['id' => $courseid])
+            : new moodle_url('/my/courses.php');
+        $followupurl = $courseid > 0
+            ? new moodle_url('/user/index.php', ['id' => $courseid])
+            : new moodle_url('/my/courses.php');
+
         return [
             $this->question(
                 $output,
                 'dashboardteacherreview',
                 'dashboardteacherreview_desc',
-                new moodle_url('/my/courses.php'),
+                $reviewurl,
                 'book-open',
                 true
             ),
@@ -121,7 +140,7 @@ final class dashboard_experience implements renderable, templatable {
                 $output,
                 'dashboardteacherfollowup',
                 'dashboardteacherfollowup_desc',
-                new moodle_url('/my/courses.php'),
+                $followupurl,
                 'layout-dashboard'
             ),
             $this->question(
