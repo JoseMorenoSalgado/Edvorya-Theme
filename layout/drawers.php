@@ -75,10 +75,13 @@ if (is_array($mobileprimarynav) && !empty($mobileprimarynav)) {
 // second navigation query and keeps mobile/desktop URLs and active states identical.
 $desktopprimarynav = is_array($mobileprimarynav) ? $mobileprimarynav : [];
 
+$isadminsearch = $PAGE->pagetype === 'admin-search';
 $secondarynavigation = false;
 $contextnavigationitems = [];
 $contextnavigationcurrent = '';
+$adminnavigationitems = [];
 $overflow = false;
+
 if ($PAGE->has_secondary_navigation()) {
     $tablistnav = $PAGE->has_tablist_secondary_navigation();
     $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
@@ -119,6 +122,71 @@ if ($PAGE->has_secondary_navigation()) {
         $contextnavigationcurrent = $contextnavigationitems[0]['text'];
     }
 
+    // Moodle's site-administration landing page is a special tab contract. Core
+    // intentionally gives these nodes an anchor target instead of a URL and expects
+    // Bootstrap's tab plugin to switch the matching #link... panel without reloading.
+    // Export that contract explicitly so Edvorya can style it without replacing it.
+    if ($isadminsearch && $tablistnav) {
+        $hasactiveadmintab = false;
+
+        foreach ($PAGE->secondarynav->children as $node) {
+            if (isset($node->display) && !$node->display) {
+                continue;
+            }
+
+            $tab = isset($node->tab) ? (string) $node->tab : '';
+            if ($tab === '' || !str_starts_with($tab, '#link')) {
+                continue;
+            }
+
+            $key = strtolower((string) ($node->key ?? 'admin'));
+            $icon = 'settings';
+
+            if (str_contains($key, 'user')) {
+                $icon = 'users';
+            } else if (str_contains($key, 'course')) {
+                $icon = 'book-open';
+            } else if (str_contains($key, 'grade')) {
+                $icon = 'graduation-cap';
+            } else if (str_contains($key, 'plugin')) {
+                $icon = 'link';
+            } else if (str_contains($key, 'appearance')) {
+                $icon = 'palette';
+            } else if (str_contains($key, 'server')) {
+                $icon = 'server';
+            } else if (str_contains($key, 'report')) {
+                $icon = 'chart-column';
+            } else if (str_contains($key, 'develop')) {
+                $icon = 'code-2';
+            }
+
+            $isactive = !empty($node->isactive) && !$hasactiveadmintab;
+            if ($isactive) {
+                $hasactiveadmintab = true;
+            }
+
+            $adminnavigationitems[] = [
+                'key' => preg_replace('/[^a-z0-9_-]+/', '-', $key ?: 'admin'),
+                'text' => (string) $node->get_title(),
+                'tab' => $tab,
+                'panelid' => ltrim($tab, '#'),
+                'isactive' => $isactive,
+                'edviconhtml' => $OUTPUT->pix_icon(
+                    'icons/' . $icon,
+                    '',
+                    'theme_edvorya',
+                    ['class' => 'edv-admin-tabs__icon-svg']
+                ),
+            ];
+        }
+
+        // Core's settings_link_page marks the first panel active on initial render.
+        // Mirror that state if the navigation tree does not expose an active tab yet.
+        if (!$hasactiveadmintab && !empty($adminnavigationitems)) {
+            $adminnavigationitems[0]['isactive'] = true;
+        }
+    }
+
     $overflowdata = $PAGE->secondarynav->get_overflow_menu_data();
     if (!is_null($overflowdata)) {
         $selectmenu = new \core\output\select_menu(
@@ -138,7 +206,6 @@ $headercontent = $PAGE->activityheader->export_for_template($corerenderer);
 $branding = (new \theme_edvorya\output\branding())->export_for_template($OUTPUT);
 
 $authenticated = isloggedin() && !isguestuser();
-$isadminsearch = $PAGE->pagetype === 'admin-search';
 $bodyclasses = [$authenticated ? 'edv-context-authenticated' : 'edv-context-public'];
 
 // Add stable Edvorya-owned context classes without depending on Core body-class naming conventions.
@@ -174,10 +241,10 @@ if ($authenticated && $PAGE->pagelayout === 'mydashboard') {
     }
 }
 
-// Site administration search is a special Core contract: core/settings_link_page
-// deliberately omits its internal category tabs when secondary navigation is enabled.
-// Keep Core's more-menu visible for this page instead of replacing it with the compact
-// disclosure, otherwise administration categories disappear on phone/tablet layouts.
+$hasadminnavigation = !empty($adminnavigationitems);
+
+// Site administration uses the dedicated Core-compatible tab representation above.
+// Other phone/tablet contexts may use the compact disclosure when real URLs exist.
 $hascontextnavigation = !$isadminsearch && count($contextnavigationitems) > 1;
 
 $templatecontext = [
@@ -203,6 +270,8 @@ $templatecontext = [
     'contextnavigationitems' => $contextnavigationitems,
     'contextnavigationcurrent' => $contextnavigationcurrent,
     'hascontextnavigation' => $hascontextnavigation,
+    'adminnavigationitems' => $adminnavigationitems,
+    'hasadminnavigation' => $hasadminnavigation,
     'isadminsearch' => $isadminsearch,
     'overflow' => $overflow,
     'regionmainsettingsmenu' => $regionmainsettingsmenu,
