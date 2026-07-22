@@ -69,11 +69,17 @@
                     {{> theme_edvorya/components/context_navigation }}
                 {{/hascontextnavigation}}
 
-                {{#secondarymoremenu}}
-                    <nav class="edv-secondary-nav {{#hascontextnavigation}}edv-secondary-nav--context-replaced{{/hascontextnavigation}} {{#isadminsearch}}edv-secondary-nav--admin{{/isadminsearch}}" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
-                        {{> core/moremenu }}
-                    </nav>
-                {{/secondarymoremenu}}
+                {{#hasadminnavigation}}
+                    {{> theme_edvorya/components/admin_navigation }}
+                {{/hasadminnavigation}}
+
+                {{^hasadminnavigation}}
+                    {{#secondarymoremenu}}
+                        <nav class="edv-secondary-nav {{#hascontextnavigation}}edv-secondary-nav--context-replaced{{/hascontextnavigation}} {{#isadminsearch}}edv-secondary-nav--admin{{/isadminsearch}}" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
+                            {{> core/moremenu }}
+                        </nav>
+                    {{/secondarymoremenu}}
+                {{/hasadminnavigation}}
 
                 <div id="page-content" class="edv-content">
                     <div id="region-main-box">
