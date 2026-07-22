@@ -1,31 +1,13 @@
 @layer components {
-    /* Administration: apply a consistent Edvorya shell without replacing Moodle admin forms or navigation data. */
+    /*
+     * Structural contracts for Administration, Messaging and Notifications.
+     * identity.css owns final Edvorya LMS visual composition; this module keeps
+     * form containment, message-app layout, preference tables and popover bounds.
+     */
     .edv-layout-admin .edv-main__inner,
     .edv-pagetype-message-index .edv-main__inner {
         min-width: 0;
         padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
-    }
-
-    .edv-layout-admin .edv-content-header,
-    .edv-pagetype-message-index .edv-content-header {
-        position: relative;
-        overflow: hidden;
-        margin-bottom: var(--edv-space-6);
-        padding: clamp(1.25rem, 3vw, 2rem);
-        border: 1px solid var(--edv-color-border);
-        border-radius: var(--edv-radius-xl);
-        background: #ffffff;
-        box-shadow: var(--edv-shadow-sm);
-    }
-
-    .edv-layout-admin .edv-content-header::before,
-    .edv-pagetype-message-index .edv-content-header::before {
-        content: "";
-        position: absolute;
-        inset-block: 0;
-        inset-inline-start: 0;
-        width: 0.3rem;
-        background: var(--edv-color-primary);
     }
 
     .edv-layout-admin #page-header,
@@ -34,20 +16,12 @@
         max-width: none;
     }
 
-    .edv-layout-admin #page-header h1,
-    .edv-pagetype-message-index #page-header h1 {
-        margin: 0;
-        color: var(--edv-color-foreground);
-        font-size: clamp(1.6rem, 2.6vw, 2.35rem);
-        line-height: 1.15;
-        letter-spacing: -0.025em;
-    }
-
     .edv-layout-admin #region-main,
     .edv-pagetype-message-index #region-main {
         min-width: 0;
     }
 
+    /* Administration: Core owns forms and settings data; Edvorya contains them. */
     .edv-layout-admin #adminsettings,
     .edv-layout-admin .settingsform {
         min-width: 0;
@@ -83,16 +57,14 @@
         max-width: 100%;
     }
 
-    /* Full messaging page: preserve the Core message-app/data-region contract and improve visual structure. */
+    /* Messaging: preserve the Core message-app/data-region contract and layout. */
     .edv-pagetype-message-index .message-app[data-region="message-index"] {
         width: 100%;
         max-width: 100%;
         min-height: min(42rem, calc(100dvh - 12rem));
         overflow: hidden;
         border: 1px solid var(--edv-color-border) !important;
-        border-radius: var(--edv-radius-xl);
         background: #ffffff !important;
-        box-shadow: var(--edv-shadow-md);
     }
 
     .edv-pagetype-message-index .message-app > .container-fluid {
@@ -116,7 +88,6 @@
 
     .edv-pagetype-message-index .message-app .conversationcontainer {
         border-inline-end: 1px solid var(--edv-color-border);
-        background: var(--edv-color-background);
     }
 
     .edv-pagetype-message-index .message-app .conversationcontainer > .border-end {
@@ -126,7 +97,6 @@
     .edv-pagetype-message-index .message-app [data-region="panel-header-container"],
     .edv-pagetype-message-index .message-app [data-region="header-container"] {
         border-bottom: 1px solid var(--edv-color-border);
-        background: #ffffff;
     }
 
     .edv-pagetype-message-index .message-app [data-region="panel-body-container"],
@@ -144,20 +114,9 @@
     .edv-pagetype-message-index .message-app textarea {
         max-width: 100%;
         border-color: var(--edv-color-border);
-        border-radius: var(--edv-radius-md);
     }
 
-    .edv-pagetype-message-index .message-app .list-group-item,
-    .edv-pagetype-message-index .message-app [data-region="conversation"] {
-        border-color: var(--edv-color-border);
-    }
-
-    .edv-pagetype-message-index .message-app .list-group-item:hover,
-    .edv-pagetype-message-index .message-app [data-region="conversation"]:hover {
-        background: var(--edv-hover-overlay);
-    }
-
-    /* Notification preferences: keep the Core table and JS data attributes while containing wide processor columns. */
+    /* Notification preferences: keep Core data attributes and contain wide processor columns. */
     .edv-pagetype-message-notificationpreferences .preferences-page-container {
         min-width: 0;
         padding: clamp(1rem, 2vw, 1.5rem);
@@ -210,14 +169,12 @@
         vertical-align: middle;
     }
 
-    /* Global notification popover: visual refinement only; Core owns focus, state, and controllers. */
+    /* Global notification popover: Core owns state/focus/controllers; contain it within the viewport. */
     .popover-region-notifications .popover-region-container {
         max-width: min(26rem, calc(100vw - 1rem));
         overflow: hidden;
         border: 1px solid var(--edv-color-border);
-        border-radius: var(--edv-radius-lg);
         background: #ffffff;
-        box-shadow: var(--edv-shadow-lg);
     }
 
     .popover-region-notifications .popover-region-header-container {
@@ -236,13 +193,6 @@
     }
 
     @media (max-width: 47.999rem) {
-        .edv-layout-admin .edv-content-header,
-        .edv-pagetype-message-index .edv-content-header {
-            margin-bottom: var(--edv-space-4);
-            padding: var(--edv-space-4);
-            border-radius: var(--edv-radius-lg);
-        }
-
         .edv-layout-admin .settingsform,
         .edv-pagetype-message-notificationpreferences .preferences-page-container {
             padding: var(--edv-space-4);
@@ -251,7 +201,6 @@
 
         .edv-pagetype-message-index .message-app[data-region="message-index"] {
             min-height: calc(100dvh - 10rem);
-            border-radius: var(--edv-radius-lg);
         }
 
         .edv-pagetype-message-index .message-app > .container-fluid > .row {
