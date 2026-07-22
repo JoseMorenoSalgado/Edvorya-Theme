@@ -13,48 +13,59 @@
     :root {
         color-scheme: light;
 
+        /* Brand and semantic colours. Client settings may override the configurable tokens at runtime. */
         --edv-color-primary: #2563eb;
         --edv-color-secondary: #0f172a;
         --edv-color-accent: #06b6d4;
-        --edv-color-background: #f8fafc;
-        --edv-color-foreground: #0f172a;
+        --edv-color-background: #ffffff;
+        --edv-color-surface: #ffffff;
+        --edv-color-subtle: #f8fafc;
+        --edv-color-foreground: #020617;
         --edv-color-muted: #64748b;
         --edv-color-border: #e2e8f0;
         --edv-color-success: #16a34a;
         --edv-color-warning: #d97706;
         --edv-color-danger: #dc2626;
         --edv-color-info: #0284c7;
-        --edv-color-sidebar: #ffffff;
+        --edv-color-sidebar: #fafafa;
         --edv-color-topbar: #ffffff;
         --edv-color-button: #2563eb;
         --edv-color-link: #2563eb;
         --edv-color-loginbackground: #f8fafc;
 
-        --edv-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        /* Typography and spacing. */
+        --edv-font-sans: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         --edv-space-1: 0.25rem;
         --edv-space-2: 0.5rem;
         --edv-space-3: 0.75rem;
         --edv-space-4: 1rem;
         --edv-space-6: 1.5rem;
         --edv-space-8: 2rem;
+
+        /* Shape and elevation. */
         --edv-radius-sm: 0.5rem;
-        --edv-radius-md: 0.75rem;
-        --edv-radius-lg: 1rem;
-        --edv-radius-xl: 1.5rem;
+        --edv-radius-md: 0.625rem;
+        --edv-radius-lg: 0.75rem;
+        --edv-radius-xl: 1rem;
+        --edv-radius-2xl: 1.5rem;
         --edv-radius-pill: 999px;
-        --edv-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
-        --edv-shadow-md: 0 8px 24px rgb(15 23 42 / 0.08);
-        --edv-shadow-lg: 0 20px 45px rgb(15 23 42 / 0.12);
+        --edv-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.05);
+        --edv-shadow-md: 0 2px 6px rgb(15 23 42 / 0.07);
+        --edv-shadow-lg: 0 8px 24px rgb(15 23 42 / 0.10);
+
+        /* Interaction and shell dimensions. */
         --edv-focus-ring: 0 0 0 3px var(--edv-color-primary);
         --edv-hover-overlay: var(--edv-color-primary);
         --edv-active-overlay: var(--edv-color-primary);
         --edv-disabled-opacity: 0.55;
         --edv-topbar-height: 4rem;
-        --edv-sidebar-width: 17rem;
-        --edv-content-max-width: 90rem;
+        --edv-sidebar-width: 16rem;
+        --edv-content-max-width: 80rem;
 
-        /* Bridge Edvorya brand tokens into Bootstrap 5 CSS variables used by Boost. */
+        /* Bridge Edvorya tokens into Bootstrap 5 variables consumed by Boost. */
         --bs-primary: var(--edv-color-primary);
+        --bs-body-bg: var(--edv-color-background);
+        --bs-body-color: var(--edv-color-foreground);
         --bs-border-color: var(--edv-color-border);
     }
 
