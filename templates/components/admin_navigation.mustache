@@ -1,0 +1,28 @@
+{{!
+    @template theme_edvorya/components/admin_navigation
+
+    Site administration category tabs. Moodle Core remains the source of category labels
+    and tab targets; Edvorya only owns the visual composition. Bootstrap/Core tab mechanics
+    handle the active panel through data-bs-toggle="tab".
+}}
+<nav class="edv-admin-tabs" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
+    <div class="edv-admin-tabs__scroller">
+        <ul class="edv-admin-tabs__list" role="tablist">
+            {{#adminnavigationitems}}
+                <li class="edv-admin-tabs__item" role="presentation">
+                    <a class="edv-admin-tabs__link {{#isactive}}active{{/isactive}}"
+                       href="{{tab}}"
+                       role="tab"
+                       data-bs-toggle="tab"
+                       data-edv-admin-tab="{{key}}"
+                       aria-controls="{{panelid}}"
+                       aria-selected="{{#isactive}}true{{/isactive}}{{^isactive}}false{{/isactive}}"
+                       {{^isactive}}tabindex="-1"{{/isactive}}>
+                        <span class="edv-admin-tabs__icon" aria-hidden="true">{{{edviconhtml}}}</span>
+                        <span class="edv-admin-tabs__text">{{text}}</span>
+                    </a>
+                </li>
+            {{/adminnavigationitems}}
+        </ul>
+    </div>
+</nav>
