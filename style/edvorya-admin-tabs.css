@@ -1,0 +1,204 @@
+/* Edvorya site-administration tab navigation and visual polish.
+ * Moodle Core owns tab targets and Bootstrap tab mechanics; this file owns presentation only.
+ */
+
+.edv-pagetype-admin-search .edv-admin-tabs {
+    margin: 0 0 1.25rem;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__scroller {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.25rem;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__list {
+    width: max-content;
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0.375rem;
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-xl);
+    background: color-mix(in srgb, var(--edv-color-sidebar) 72%, #ffffff);
+    list-style: none;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__item {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__link {
+    min-height: 3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid transparent;
+    border-radius: var(--edv-radius-lg);
+    background: transparent;
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 650;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__icon {
+    width: 1.875rem;
+    height: 1.875rem;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: var(--edv-radius-md);
+    background: #ffffff;
+    color: #64748b;
+    box-shadow: inset 0 0 0 1px var(--edv-color-border);
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__icon .icon,
+.edv-pagetype-admin-search .edv-admin-tabs__icon svg,
+.edv-pagetype-admin-search .edv-admin-tabs__icon img {
+    width: 1rem;
+    max-width: 1rem;
+    height: 1rem;
+    max-height: 1rem;
+    margin: 0;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__link:hover,
+.edv-pagetype-admin-search .edv-admin-tabs__link:focus-visible {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 14%, var(--edv-color-border));
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__link:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--edv-color-primary) 24%, transparent);
+    outline-offset: 2px;
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__link.active,
+.edv-pagetype-admin-search .edv-admin-tabs__link[aria-selected="true"] {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+    box-shadow: var(--edv-shadow-sm);
+}
+
+.edv-pagetype-admin-search .edv-admin-tabs__link.active .edv-admin-tabs__icon,
+.edv-pagetype-admin-search .edv-admin-tabs__link[aria-selected="true"] .edv-admin-tabs__icon {
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
+    color: var(--edv-color-primary);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
+}
+
+/* Refine the administration landing page without replacing Core output. */
+.edv-pagetype-admin-search .edv-content-header {
+    margin-bottom: 1.25rem;
+}
+
+.edv-pagetype-admin-search .edv-content-header #page-header h1 {
+    max-width: 18ch;
+}
+
+.edv-pagetype-admin-search .alert {
+    border-radius: var(--edv-radius-xl);
+    padding: 0.875rem 1rem;
+    box-shadow: none;
+}
+
+.edv-pagetype-admin-search .tab-content > .tab-pane.active {
+    animation: edv-admin-tab-enter 140ms ease-out;
+}
+
+.edv-pagetype-admin-search .tab-content .container-fluid > .row {
+    transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.edv-pagetype-admin-search .tab-content .container-fluid > .row:hover {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 12%, var(--edv-color-border));
+    box-shadow: 0 8px 22px rgb(15 23 42 / 0.055);
+}
+
+.edv-pagetype-admin-search .tab-content h4::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    display: inline-block;
+    margin-inline-end: 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--edv-color-primary) 75%, #ffffff);
+    vertical-align: 0.08em;
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a {
+    position: relative;
+    padding-inline-end: 2rem;
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: 0.875rem;
+    top: 50%;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    opacity: 0.4;
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a:hover::after,
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a:focus-visible::after {
+    opacity: 0.8;
+}
+
+@keyframes edv-admin-tab-enter {
+    from {
+        opacity: 0.72;
+        transform: translateY(0.2rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .edv-pagetype-admin-search .edv-admin-tabs__link {
+        min-height: 3.25rem;
+        padding-inline: 0.75rem;
+        font-size: 0.9375rem;
+    }
+
+    .edv-pagetype-admin-search .edv-admin-tabs__icon {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .edv-pagetype-admin-search .tab-content .container-fluid > .row:hover {
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edv-pagetype-admin-search .edv-admin-tabs__link,
+    .edv-pagetype-admin-search .tab-content .container-fluid > .row {
+        transition: none;
+    }
+
+    .edv-pagetype-admin-search .tab-content > .tab-pane.active {
+        animation: none;
+    }
+}
