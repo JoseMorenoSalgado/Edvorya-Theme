@@ -1,0 +1,58 @@
+@layer components {
+    /* Teacher dashboard: emphasize action surfaces without inventing aggregate
+       metrics that belong in a future local_edvorya service layer. */
+    .edv-dashboard-focus--teacher .edv-dashboard-focus__question--primary {
+        background: color-mix(in srgb, var(--edv-color-primary) 4%, #ffffff);
+    }
+
+    .edv-dashboard-focus--teacher .edv-dashboard-focus__question--primary .edv-dashboard-focus__icon {
+        background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
+    }
+
+    .edv-dashboard-persona-teacher .block_timeline,
+    .edv-dashboard-persona-teacher .block_calendar_upcoming {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-dashboard-persona-teacher .block_timeline .card-header,
+    .edv-dashboard-persona-teacher .block_calendar_upcoming .card-header {
+        border-bottom: 1px solid var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .edv-dashboard-persona-teacher .block_timeline .card-header h2,
+    .edv-dashboard-persona-teacher .block_calendar_upcoming .card-header h2 {
+        font-size: 0.9375rem;
+        font-weight: 650;
+    }
+
+    /* Teacher grading views should feel like a workspace rather than a dense
+       administration table while preserving Core controls and data regions. */
+    .path-mod-assign [data-region="grading-navigation-panel"],
+    .path-mod-assign .gradingnavigation {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-subtle);
+        box-shadow: none;
+    }
+
+    .path-mod-assign [data-region="grade-actions-panel"],
+    .path-mod-assign [data-region="grade-panel"] {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+    }
+
+    .path-mod-assign [data-region="user-info"] .userpicture {
+        border-radius: 999px;
+    }
+
+    @media (max-width: 61.999rem) {
+        .edv-dashboard-focus--teacher .edv-dashboard-focus__questions {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
