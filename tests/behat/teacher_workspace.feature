@@ -19,10 +19,14 @@ Feature: Edvorya teacher course workspace
       | teacher1 | ETW1 | editingteacher |
       | teacher2 | ETW1 | teacher |
 
-  Scenario: Editing teacher receives the course workspace context
+  Scenario: Editing teacher receives the course and participants workspace context
     Given I log in as "teacher1"
     When I am on "Edvorya Teacher Workspace" course homepage
     Then "body.edv-course-role-teacher" "css_element" should exist
+    And the Edvorya element "#page" should fit within the viewport horizontally
+    When I click on "Participants" "link" in the ".edv-secondary-nav" "css_element"
+    Then "body.edv-course-role-teacher.edv-pagetype-course-view-participants" "css_element" should exist
+    And ".userlist" "css_element" should exist
     And the Edvorya element "#page" should fit within the viewport horizontally
 
   Scenario: Non-editing teacher receives the academic workspace without edit capabilities
