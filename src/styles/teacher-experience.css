@@ -29,30 +29,196 @@
         font-weight: 650;
     }
 
-    /* Teacher grading views should feel like a workspace rather than a dense
-       administration table while preserving Core controls and data regions. */
-    .path-mod-assign [data-region="grading-navigation-panel"],
-    .path-mod-assign .gradingnavigation {
+    /* Course-level teacher workspace. The capability-derived body class is added
+       by layout/drawers.php; Core still owns navigation, URLs and edit actions. */
+    .edv-course-role-teacher .edv-secondary-nav {
         border-color: var(--edv-color-border);
+        background: var(--edv-color-subtle);
+        box-shadow: none;
+    }
+
+    .edv-course-role-teacher .edv-secondary-nav .nav-link {
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .edv-course-role-teacher .edv-secondary-nav .nav-link.active,
+    .edv-course-role-teacher .edv-secondary-nav .nav-link[aria-current="page"] {
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    /* Editing mode should expose structure without turning every activity into a
+       heavy card. The row itself remains the primary interaction surface. */
+    .edv-course-role-teacher.editing .activity-item,
+    .edv-course-role-teacher.editing .course-section-header {
+        border-color: transparent;
+    }
+
+    .edv-course-role-teacher.editing .activity-item:hover {
+        background: var(--edv-color-subtle);
+    }
+
+    .edv-course-role-teacher .activity-item .action-menu .dropdown-toggle,
+    .edv-course-role-teacher .course-section-header .action-menu .dropdown-toggle {
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    /* Participants / follow-up: preserve Moodle's user table and filters while
+       presenting the roster as a quiet, scannable academic workspace. */
+    .edv-course-role-teacher.edv-pagetype-user-index #participants,
+    .edv-course-role-teacher.edv-pagetype-user-index .userlist,
+    .edv-course-role-teacher.edv-pagetype-user-index .table-responsive {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-index .table-responsive {
+        overflow-x: auto;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+        scrollbar-width: thin;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-index .generaltable {
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-index .generaltable thead th {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.035em;
+        text-transform: uppercase;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-index .generaltable tbody tr:hover > * {
+        background: var(--edv-color-subtle);
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-index .userpicture {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        object-fit: cover;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-index .initialbar,
+    .edv-course-role-teacher.edv-pagetype-user-index .pagination {
+        margin-block: 1rem;
+    }
+
+    /* Gradebook: dense data remains a table, but the table lives inside one clear
+       report surface rather than inheriting multiple nested panel treatments. */
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index .gradeparent,
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index .table-responsive {
+        max-width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+        scrollbar-width: thin;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index table {
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index thead th,
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index .heading {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+    }
+
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index tbody tr:hover td,
+    .edv-course-role-teacher.edv-pagetype-grade-report-grader-index tbody tr:hover th {
+        background: var(--edv-color-subtle);
+    }
+
+    /* Assignment review and grading: same visual hierarchy as the Edvorya academic
+       workspace, with Core data regions and form controls left untouched. */
+    .edv-course-role-teacher.path-mod-assign [data-region="grading-navigation-panel"],
+    .edv-course-role-teacher.path-mod-assign .gradingnavigation {
+        padding: 0.5rem;
+        border: 1px solid var(--edv-color-border);
         border-radius: var(--edv-radius-xl);
         background: var(--edv-color-subtle);
         box-shadow: none;
     }
 
-    .path-mod-assign [data-region="grade-actions-panel"],
-    .path-mod-assign [data-region="grade-panel"] {
+    .edv-course-role-teacher.path-mod-assign [data-region="grade-actions-panel"],
+    .edv-course-role-teacher.path-mod-assign [data-region="grade-panel"],
+    .edv-course-role-teacher.path-mod-assign [data-region="assignment-info"],
+    .edv-course-role-teacher.path-mod-assign [data-region="user-info"] {
         border-color: var(--edv-color-border);
         border-radius: var(--edv-radius-xl);
         background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
     }
 
-    .path-mod-assign [data-region="user-info"] .userpicture {
+    .edv-course-role-teacher.path-mod-assign [data-region="user-info"] .userpicture {
         border-radius: 999px;
+        outline: 1px solid var(--edv-color-border);
+        outline-offset: 2px;
+    }
+
+    .edv-course-role-teacher.path-mod-assign .gradingtable,
+    .edv-course-role-teacher.path-mod-assign .submissionsummarytable,
+    .edv-course-role-teacher.path-mod-assign .submissionstatustable,
+    .edv-course-role-teacher.path-mod-assign .gradingsummarytable,
+    .edv-course-role-teacher.path-mod-assign .feedbacktable {
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-course-role-teacher.path-mod-assign .generaltable thead th {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.035em;
+        text-transform: uppercase;
+    }
+
+    .edv-course-role-teacher.path-mod-assign .generaltable tbody tr:hover > * {
+        background: var(--edv-color-subtle);
+    }
+
+    /* Student follow-up opened in a course context keeps the same compact identity
+       language already used by the global profile experience. */
+    .edv-course-role-teacher.edv-pagetype-user-profile .userprofile .page-context-header {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-course-role-teacher.edv-pagetype-user-profile .profile_tree section {
+        border-color: var(--edv-color-border);
+        box-shadow: var(--edv-shadow-sm);
     }
 
     @media (max-width: 61.999rem) {
         .edv-dashboard-focus--teacher .edv-dashboard-focus__questions {
             grid-template-columns: minmax(0, 1fr);
+        }
+
+        .edv-course-role-teacher.edv-pagetype-user-index .table-responsive,
+        .edv-course-role-teacher.edv-pagetype-grade-report-grader-index .gradeparent,
+        .edv-course-role-teacher.path-mod-assign .gradingtable,
+        .edv-course-role-teacher.path-mod-assign .submissionsummarytable,
+        .edv-course-role-teacher.path-mod-assign .submissionstatustable,
+        .edv-course-role-teacher.path-mod-assign .gradingsummarytable {
+            border-radius: var(--edv-radius-lg);
         }
     }
 }
