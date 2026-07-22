@@ -80,7 +80,6 @@ if ($ADMIN->fulltree) {
     $colours = [
         'primary' => '#2563eb',
         'secondary' => '#0f172a',
-        'accent' => '#06b6d4',
         'background' => '#ffffff',
         'foreground' => '#020617',
         'muted' => '#64748b',
