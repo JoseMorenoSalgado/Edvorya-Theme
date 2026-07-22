@@ -14,7 +14,8 @@
  * use. Core secondary navigation remains visible whenever Edvorya cannot safely
  * replace it with its compact context disclosure. Tablet topbar controls are
  * compacted without reducing touch targets, and administration category/link
- * surfaces now adapt through the full drawer breakpoint up to 1024px.
+ * surfaces now adapt through the full drawer breakpoint up to 1024px. This
+ * marker anchors the complete regression suite to the final alpha.30 source.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
