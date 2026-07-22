@@ -24,6 +24,19 @@
         display: none;
     }
 
+    /* Tablet widths keep the product name but remove secondary institution metadata
+     * from the topbar. The drawer always retains the complete two-level lockup.
+     */
+    @media (max-width: 63.999rem) {
+        .edv-topbar__inner > .edv-brand .edv-brand__meta {
+            display: none;
+        }
+
+        .edv-mobile-nav__panel-brand .edv-brand__meta {
+            display: block;
+        }
+    }
+
     @media (max-width: 47.999rem) {
         .edv-topbar__inner > .edv-brand .edv-brand__name {
             display: none;
