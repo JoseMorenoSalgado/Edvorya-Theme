@@ -6,6 +6,7 @@
 
 .edv-topbar {
     background: var(--edv-color-topbar);
+    background: color-mix(in srgb, var(--edv-color-topbar) 95%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 }
