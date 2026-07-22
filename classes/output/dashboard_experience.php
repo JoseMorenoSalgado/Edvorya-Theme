@@ -21,12 +21,6 @@ use templatable;
 /**
  * Exports a lightweight role-aware dashboard experience.
  *
- * The theme deliberately does not calculate aggregate learning analytics. It
- * identifies whether the current user has teacher-level grade visibility in at
- * least one course and then exposes a small set of intent-based navigation
- * prompts. Core Moodle blocks remain the source of course, timeline, calendar
- * and progress data. Rich aggregate teacher analytics belong in local_edvorya.
- *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -45,10 +39,6 @@ final class dashboard_experience implements renderable, templatable {
             return [];
         }
 
-        // moodle/grade:viewall is granted by Core to both teacher and editingteacher
-        // archetypes. A bounded two-course lookup identifies the teacher persona and
-        // distinguishes a single-course teacher from a multi-course teacher without
-        // role-name assumptions, an unbounded query, or a fabricated priority ranking.
         $teachercourses = get_user_capability_course(
             'moodle/grade:viewall',
             $USER->id,
@@ -57,6 +47,13 @@ final class dashboard_experience implements renderable, templatable {
             '',
             2
         );
+
+        // Core returns false when the user has no matching capability courses.
+        // Normalise before count()/reset() so student dashboards remain type-safe.
+        if (!is_array($teachercourses)) {
+            $teachercourses = [];
+        }
+
         $isteacher = !empty($teachercourses);
         $singleteachercourseid = 0;
 
@@ -118,11 +115,6 @@ final class dashboard_experience implements renderable, templatable {
 
     /**
      * Teacher dashboard intents, ordered by intervention priority.
-     *
-     * A direct course destination is used only when the bounded capability lookup
-     * proves that exactly one teacher-visible course exists. With multiple courses
-     * the teacher chooses from My courses; the theme does not fabricate a cross-course
-     * priority queue. Aggregate review/risk ranking belongs in local_edvorya.
      *
      * @param renderer_base $output Renderer instance.
      * @param int $singlecourseid The sole teacher-visible course, or zero when there are multiple.
