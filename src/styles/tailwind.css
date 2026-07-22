@@ -16,7 +16,6 @@
         /* Brand and semantic colours. Client settings may override the configurable tokens at runtime. */
         --edv-color-primary: #2563eb;
         --edv-color-secondary: #0f172a;
-        --edv-color-accent: #06b6d4;
         --edv-color-background: #ffffff;
         --edv-color-surface: #ffffff;
         --edv-color-subtle: #f8fafc;
