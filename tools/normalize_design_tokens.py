@@ -17,6 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 TAILWIND = ROOT / "src/styles/tailwind.css"
 IDENTITY = ROOT / "src/styles/identity.css"
 
+CANONICAL_THEME = """@theme {
+    --font-sans: \"Geist\", \"Inter\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;
+}"""
+
 CANONICAL_ROOT = """    :root {
         color-scheme: light;
 
@@ -114,8 +118,10 @@ def balanced_block(text: str, marker: str) -> tuple[int, int]:
 
 
 def normalize_tailwind(text: str) -> str:
-    start, end = balanced_block(text, "    :root {")
-    return text[:start] + CANONICAL_ROOT + text[end:]
+    theme_start, theme_end = balanced_block(text, "@theme {")
+    normalized = text[:theme_start] + CANONICAL_THEME + text[theme_end:]
+    root_start, root_end = balanced_block(normalized, "    :root {")
+    return normalized[:root_start] + CANONICAL_ROOT + normalized[root_end:]
 
 
 def normalize_identity(text: str) -> str:
