@@ -67,16 +67,16 @@
         border-radius: var(--edv-radius-lg);
     }
 
-    /* Participants / follow-up: preserve Moodle's user table and filters while
-       presenting the roster as a quiet, scannable academic workspace. */
-    .edv-course-role-teacher.edv-pagetype-user-index #participants,
-    .edv-course-role-teacher.edv-pagetype-user-index .userlist,
-    .edv-course-role-teacher.edv-pagetype-user-index .table-responsive {
+    /* Participants / follow-up. Moodle 5.2 explicitly sets the page type to
+       course-view-participants in public/user/index.php. Keep Core filters and
+       table mechanics intact while presenting one contained academic roster. */
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .userlist,
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .table-responsive {
         max-width: 100%;
         min-width: 0;
     }
 
-    .edv-course-role-teacher.edv-pagetype-user-index .table-responsive {
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .table-responsive {
         overflow-x: auto;
         border: 1px solid var(--edv-color-border);
         border-radius: var(--edv-radius-xl);
@@ -85,12 +85,12 @@
         scrollbar-width: thin;
     }
 
-    .edv-course-role-teacher.edv-pagetype-user-index .generaltable {
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .generaltable {
         margin: 0;
         background: #ffffff;
     }
 
-    .edv-course-role-teacher.edv-pagetype-user-index .generaltable thead th {
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .generaltable thead th {
         background: var(--edv-color-subtle);
         color: var(--edv-color-muted);
         font-size: 0.75rem;
@@ -99,19 +99,19 @@
         text-transform: uppercase;
     }
 
-    .edv-course-role-teacher.edv-pagetype-user-index .generaltable tbody tr:hover > * {
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .generaltable tbody tr:hover > * {
         background: var(--edv-color-subtle);
     }
 
-    .edv-course-role-teacher.edv-pagetype-user-index .userpicture {
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .userpicture {
         width: 2rem;
         height: 2rem;
         border-radius: 999px;
         object-fit: cover;
     }
 
-    .edv-course-role-teacher.edv-pagetype-user-index .initialbar,
-    .edv-course-role-teacher.edv-pagetype-user-index .pagination {
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .initialbar,
+    .edv-course-role-teacher.edv-pagetype-course-view-participants .pagination {
         margin-block: 1rem;
     }
 
@@ -212,7 +212,7 @@
             grid-template-columns: minmax(0, 1fr);
         }
 
-        .edv-course-role-teacher.edv-pagetype-user-index .table-responsive,
+        .edv-course-role-teacher.edv-pagetype-course-view-participants .table-responsive,
         .edv-course-role-teacher.edv-pagetype-grade-report-grader-index .gradeparent,
         .edv-course-role-teacher.path-mod-assign .gradingtable,
         .edv-course-role-teacher.path-mod-assign .submissionsummarytable,
