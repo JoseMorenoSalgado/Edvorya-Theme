@@ -1,0 +1,51 @@
+{{!
+    @template theme_edvorya/layout/login
+
+    Public Edvorya login layout. Authentication forms remain owned by Moodle Core.
+}}
+{{{ output.doctype }}}
+<html {{{ output.htmlattributes }}}>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{{ output.page_title }}}</title>
+    {{#branding}}
+        {{> theme_edvorya/components/branding_head }}
+    {{/branding}}
+    {{{ output.standard_head_html }}}
+</head>
+<body {{{ bodyattributes }}}>
+{{{ output.standard_top_of_body_html }}}
+{{> core/local/toast/wrapper}}
+
+<div id="page-wrapper" class="edv-login-shell">
+    <main id="page" data-region="mainpage" data-usertour="scroller" class="edv-login">
+        <div id="topofscroll" class="edv-login__inner{{#hasloginimage}} edv-login__inner--with-visual{{/hasloginimage}}">
+            {{#branding}}
+                {{#loginimageurl}}
+                    <div class="edv-login__visual" aria-hidden="true">
+                        <img src="{{{ loginimageurl }}}" alt="" decoding="async">
+                    </div>
+                {{/loginimageurl}}
+            {{/branding}}
+
+            <section class="edv-login__panel">
+                {{#branding}}
+                    {{> theme_edvorya/components/brand }}
+                {{/branding}}
+
+                <div id="page-content" class="edv-login__content">
+                    <div id="region-main-box">
+                        <div id="region-main">
+                            {{{ maincontent }}}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+{{{ output.standard_after_main_region_html }}}
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>

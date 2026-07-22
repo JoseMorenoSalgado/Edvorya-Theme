@@ -1,0 +1,530 @@
+/*
+ * Edvorya LMS visual identity translated to Moodle.
+ *
+ * This layer intentionally contains visual composition only. Boost owns generic
+ * Moodle mechanics; Edvorya experience modules own page structure. Canonical
+ * Design System tokens live in tailwind.css; the rules below translate the
+ * Edvorya LMS product language onto Moodle surfaces and page experiences.
+ */
+
+@layer components {
+    /* Product + institution lockup used by the protected Edvorya LMS shell. */
+    .edv-brand {
+        gap: 0.75rem;
+        font-weight: 600;
+    }
+
+    .edv-brand__mark {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: var(--edv-radius-lg);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-brand__logo {
+        max-width: 7rem;
+        height: 2.25rem;
+    }
+
+    .edv-brand__copy {
+        min-width: 0;
+        display: grid;
+        gap: 0.125rem;
+        line-height: 1.1;
+    }
+
+    .edv-brand__name,
+    .edv-brand__meta {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .edv-brand__name {
+        color: var(--edv-color-foreground);
+        font-size: 0.9375rem;
+        font-weight: 650;
+    }
+
+    .edv-brand__meta {
+        max-width: 12rem;
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+
+    .edv-sidebar {
+        padding: 0.75rem;
+        background: var(--edv-color-sidebar);
+    }
+
+    /* Edvorya LMS uses plain page intros with a quiet divider instead of hero cards. */
+    .edv-layout-mydashboard .edv-content-header,
+    .edv-layout-mycourses .edv-content-header,
+    .edv-layout-course .edv-content-header,
+    .edv-layout-admin .edv-content-header,
+    .edv-pagetype-calendar-view .edv-content-header,
+    .edv-pagetype-grade-report-user-index .edv-content-header,
+    .edv-pagetype-user-profile .edv-content-header,
+    .edv-pagetype-message-index .edv-content-header,
+    .edv-pagetype-message-notificationpreferences .edv-content-header {
+        position: relative;
+        overflow: visible;
+        margin-bottom: var(--edv-space-6);
+        padding: 0 0 var(--edv-space-6);
+        border: 0;
+        border-bottom: 1px solid var(--edv-color-border);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .edv-layout-mydashboard .edv-content-header::before,
+    .edv-layout-mycourses .edv-content-header::before,
+    .edv-layout-course .edv-content-header::before,
+    .edv-layout-admin .edv-content-header::before,
+    .edv-pagetype-calendar-view .edv-content-header::before,
+    .edv-pagetype-grade-report-user-index .edv-content-header::before,
+    .edv-pagetype-user-profile .edv-content-header::before,
+    .edv-pagetype-message-index .edv-content-header::before,
+    .edv-pagetype-message-notificationpreferences .edv-content-header::before {
+        display: none;
+    }
+
+    .edv-content-header #page-header h1 {
+        color: var(--edv-color-foreground);
+        font-size: clamp(1.875rem, 3vw, 2.25rem);
+        font-weight: 650;
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+    }
+
+    .edv-content-header .breadcrumb {
+        margin-bottom: 0.625rem;
+        color: var(--edv-color-muted);
+        font-size: 0.8125rem;
+    }
+
+    /* Page-specific surfaces use the shared Design System card contract. */
+    .edv-layout-mydashboard #region-main > .block,
+    .edv-layout-mycourses #region-main > .block,
+    .edv-layout-course .course-content .course-section,
+    .edv-layout-course .course-content li.section {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-surface);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    /* The main content follows the max-w-7xl rhythm of Edvorya LMS. */
+    .edv-main__inner {
+        padding-inline: clamp(1rem, 2vw, 2rem);
+    }
+
+    /* My Courses: translate the LMS student-course-card hierarchy onto Core course cards. */
+    .edv-layout-mydashboard .block_myoverview .course-card,
+    .edv-layout-mycourses .block_myoverview .course-card {
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-surface);
+        box-shadow: var(--edv-shadow-sm);
+        transform: none;
+    }
+
+    .edv-layout-mydashboard .block_myoverview .course-card:hover,
+    .edv-layout-mycourses .block_myoverview .course-card:hover {
+        border-color: color-mix(in srgb, var(--edv-color-primary) 22%, var(--edv-color-border));
+        box-shadow: var(--edv-shadow-md);
+        transform: none;
+    }
+
+    .edv-layout-mydashboard .course-card .card-img-top,
+    .edv-layout-mycourses .course-card .card-img-top {
+        aspect-ratio: 16 / 8;
+        min-height: 8.5rem;
+        border: 0;
+        background-color: color-mix(in srgb, var(--edv-color-primary) 6%, var(--edv-color-subtle));
+    }
+
+    .edv-layout-mydashboard .course-card .course-info-container,
+    .edv-layout-mycourses .course-card .course-info-container {
+        padding: 1.25rem;
+    }
+
+    .edv-layout-mydashboard .course-card .coursename,
+    .edv-layout-mycourses .course-card .coursename {
+        color: var(--edv-color-foreground);
+        font-size: 1.0625rem;
+        font-weight: 650;
+        line-height: 1.45;
+    }
+
+    .edv-layout-mydashboard .course-card .categoryname,
+    .edv-layout-mycourses .course-card .categoryname {
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.045em;
+        text-transform: uppercase;
+    }
+
+    .edv-layout-mydashboard .course-card .card-footer,
+    .edv-layout-mycourses .course-card .card-footer {
+        padding: 0.875rem 1.25rem 1.25rem;
+        border-top: 0;
+        background: #ffffff;
+    }
+
+    .edv-layout-mydashboard .course-card .progress,
+    .edv-layout-mycourses .course-card .progress {
+        height: 0.5rem;
+        background: #f1f5f9;
+    }
+
+    /* Course view: quiet segmented navigation and content sections inspired by the LMS player. */
+    .edv-layout-course .edv-secondary-nav {
+        margin-top: 0;
+        padding: 0.25rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-subtle);
+        box-shadow: none;
+    }
+
+    .edv-layout-course .edv-secondary-nav .nav-link {
+        min-height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        border: 0;
+        border-radius: var(--edv-radius-lg);
+        color: #475569;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .edv-layout-course .edv-secondary-nav .nav-link:hover {
+        background: rgb(255 255 255 / 0.72);
+        color: var(--edv-color-foreground);
+    }
+
+    .edv-layout-course .edv-secondary-nav .nav-link.active,
+    .edv-layout-course .edv-secondary-nav .nav-link[aria-current="page"] {
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-layout-course .course-content {
+        gap: 1rem;
+    }
+
+    .edv-layout-course .course-content .course-section,
+    .edv-layout-course .course-content li.section {
+        overflow: hidden;
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-layout-course .course-content .course-section-header {
+        padding: 1.125rem 1.25rem;
+        background: #ffffff;
+    }
+
+    .edv-layout-course .course-content .sectionname {
+        font-size: 1rem;
+        font-weight: 650;
+    }
+
+    .edv-layout-course .activity-item {
+        min-height: 3rem;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    .edv-layout-course .activity-item:hover {
+        background: var(--edv-color-subtle);
+    }
+
+    .edv-layout-course .activityname a,
+    .edv-layout-course .activity-instance a {
+        font-weight: 600;
+    }
+
+    /* Calendar: retain Core semantics while matching Edvorya event surfaces. */
+    .edv-pagetype-calendar-view .calendarwrapper {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth thead th {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth td.day,
+    .edv-pagetype-calendar-view .calendarmonth td.dayblank {
+        background: #ffffff;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth td.today {
+        background: color-mix(in srgb, var(--edv-color-primary) 6%, #ffffff);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--edv-color-primary) 30%, var(--edv-color-border));
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth td.today .day-number-circle {
+        background: var(--edv-color-primary);
+        color: #ffffff;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth a[data-action="view-event"] {
+        border-radius: var(--edv-radius-md);
+        font-size: 0.8125rem;
+        font-weight: 500;
+    }
+
+    /* Grades: dense academic data, framed like an Edvorya report surface. */
+    .edv-pagetype-grade-report-user-index .user-report-container {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade thead th {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.035em;
+        text-transform: uppercase;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade tbody tr:hover td,
+    .edv-pagetype-grade-report-user-index .user-grade tbody tr:hover th {
+        background: var(--edv-color-subtle);
+    }
+
+    /* Profile: a compact identity header followed by quiet information surfaces. */
+    .edv-pagetype-user-profile .userprofile {
+        gap: 1rem;
+    }
+
+    .edv-pagetype-user-profile .userprofile .page-context-header {
+        padding: 1.25rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-user-profile .userprofile .userpicture {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: none;
+        outline: 1px solid var(--edv-color-border);
+        outline-offset: 2px;
+    }
+
+    .edv-pagetype-user-profile .userprofile .description {
+        padding: 1rem 1.25rem;
+        border-radius: var(--edv-radius-xl);
+        box-shadow: none;
+    }
+
+    .edv-pagetype-user-profile .profile_tree {
+        gap: 1rem;
+    }
+
+    .edv-pagetype-user-profile .profile_tree section {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-user-profile .profile_tree section h3 {
+        padding: 0.875rem 1rem;
+        background: #ffffff;
+        font-size: 0.9375rem;
+        font-weight: 650;
+    }
+
+    .edv-pagetype-user-profile .profile_tree section ul {
+        padding: 1rem;
+    }
+
+    /* Messaging: preserve Core message-app behavior, adopt Edvorya communication density. */
+    .edv-pagetype-message-index .message-app[data-region="message-index"] {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-message-index .message-app .conversationcontainer {
+        background: var(--edv-color-subtle);
+    }
+
+    .edv-pagetype-message-index .message-app [data-region="panel-header-container"],
+    .edv-pagetype-message-index .message-app [data-region="header-container"] {
+        min-height: 3.75rem;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-message-index .message-app .list-group-item,
+    .edv-pagetype-message-index .message-app [data-region="conversation"] {
+        border-color: transparent;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    .edv-pagetype-message-index .message-app .list-group-item:hover,
+    .edv-pagetype-message-index .message-app [data-region="conversation"]:hover {
+        background: #ffffff;
+    }
+
+    .edv-pagetype-message-index .message-app input,
+    .edv-pagetype-message-index .message-app textarea {
+        min-height: 2.75rem;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    .popover-region-notifications .popover-region-container {
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-lg);
+    }
+
+    /* Login: translate Edvorya's unified authentication shell without replacing Core forms. */
+    .edv-login-shell,
+    .edv-login {
+        background:
+            radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--edv-color-primary) 9%, transparent), transparent 28rem),
+            radial-gradient(circle at 88% 82%, rgb(148 163 184 / 0.12), transparent 30rem),
+            var(--edv-color-loginbackground);
+    }
+
+    .edv-login {
+        position: relative;
+        padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    .edv-login__inner {
+        width: min(100%, 72rem);
+        align-items: stretch;
+        gap: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .edv-login__visual {
+        min-height: 32rem;
+        border: 1px solid rgb(255 255 255 / 0.7);
+        border-radius: var(--edv-radius-2xl);
+        background: var(--edv-color-subtle);
+        box-shadow: var(--edv-shadow-lg);
+    }
+
+    .edv-login__visual img {
+        filter: saturate(0.94) contrast(0.98);
+    }
+
+    .edv-login__panel {
+        max-width: 30rem;
+        align-self: center;
+        padding: clamp(1.5rem, 4vw, 2rem);
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-2xl);
+        box-shadow: 0 20px 50px rgb(15 23 42 / 0.10);
+    }
+
+    .edv-login__panel > .edv-brand {
+        margin-bottom: 2rem;
+    }
+
+    .edv-login__content .form-control,
+    .edv-login__content input[type="text"],
+    .edv-login__content input[type="email"],
+    .edv-login__content input[type="password"] {
+        min-height: 3rem;
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        font-size: 0.875rem;
+    }
+
+    .edv-login__content .form-control:focus,
+    .edv-login__content input:focus {
+        border-color: var(--edv-color-primary);
+        box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--edv-color-primary) 10%, transparent);
+    }
+
+    .edv-login__content .btn-primary,
+    .edv-login__content #loginbtn {
+        width: 100%;
+        min-height: 3rem;
+        border-radius: var(--edv-radius-lg);
+        font-weight: 650;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-login__content .login-divider {
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-topbar__inner > .edv-brand .edv-brand__copy {
+            display: none;
+        }
+
+        .edv-mobile-nav__panel-brand .edv-brand__copy {
+            display: grid;
+        }
+
+        .edv-layout-mydashboard .edv-content-header,
+        .edv-layout-mycourses .edv-content-header,
+        .edv-layout-course .edv-content-header,
+        .edv-layout-admin .edv-content-header,
+        .edv-pagetype-calendar-view .edv-content-header,
+        .edv-pagetype-grade-report-user-index .edv-content-header,
+        .edv-pagetype-user-profile .edv-content-header,
+        .edv-pagetype-message-index .edv-content-header,
+        .edv-pagetype-message-notificationpreferences .edv-content-header {
+            margin-bottom: var(--edv-space-4);
+            padding: 0 0 var(--edv-space-4);
+            border-radius: 0;
+        }
+
+        .edv-content-header #page-header h1 {
+            font-size: 1.875rem;
+        }
+
+        .edv-layout-mydashboard .course-card .course-info-container,
+        .edv-layout-mycourses .course-card .course-info-container {
+            padding: 1rem;
+        }
+
+        .edv-layout-course .edv-secondary-nav {
+            border-radius: var(--edv-radius-lg);
+        }
+
+        .edv-pagetype-user-profile .userprofile .page-context-header,
+        .edv-pagetype-user-profile .userprofile .description,
+        .edv-pagetype-user-profile .profile_tree section {
+            border-radius: var(--edv-radius-lg);
+        }
+
+        .edv-pagetype-message-index .message-app[data-region="message-index"] {
+            border-radius: var(--edv-radius-lg);
+        }
+
+        .edv-login {
+            padding: 1rem;
+        }
+
+        .edv-login__visual {
+            display: none;
+        }
+
+        .edv-login__panel {
+            max-width: 32rem;
+            padding: 1.5rem;
+            border-radius: var(--edv-radius-xl);
+            box-shadow: var(--edv-shadow-md);
+        }
+    }
+}

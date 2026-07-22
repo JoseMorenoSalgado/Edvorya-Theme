@@ -1,0 +1,364 @@
+@layer components {
+    /*
+     * Boost owns Bootstrap component mechanics. Edvorya only applies the visual
+     * language, density, touch targets and responsive containment used by the
+     * product experience.
+     */
+
+    /* Buttons. */
+    .btn {
+        min-width: 0;
+        min-height: 2.5rem;
+        border-radius: var(--edv-radius-lg);
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+    }
+
+    .btn:active:not(:disabled):not(.disabled) {
+        transform: translateY(1px);
+    }
+
+    .btn:focus-visible {
+        outline: 3px solid var(--edv-color-primary);
+        outline-offset: 2px;
+    }
+
+    .btn:disabled,
+    .btn.disabled,
+    fieldset:disabled .btn {
+        opacity: var(--edv-disabled-opacity);
+    }
+
+    .btn-primary {
+        border-color: var(--edv-color-button);
+        background: var(--edv-color-button);
+        color: #ffffff;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+        border-color: var(--edv-color-button);
+        background: color-mix(in srgb, var(--edv-color-button) 88%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-secondary {
+        border-color: var(--edv-color-border);
+        background: #ffffff;
+        color: #334155;
+        box-shadow: none;
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+        border-color: var(--edv-color-border);
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-foreground);
+    }
+
+    .btn-success,
+    .btn-outline-success:hover,
+    .btn-outline-success:focus-visible {
+        border-color: var(--edv-color-success);
+        background: color-mix(in srgb, var(--edv-color-success) 80%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-danger,
+    .btn-outline-danger:hover,
+    .btn-outline-danger:focus-visible {
+        border-color: var(--edv-color-danger);
+        background: var(--edv-color-danger);
+        color: #ffffff;
+    }
+
+    .btn-warning,
+    .btn-outline-warning:hover,
+    .btn-outline-warning:focus-visible {
+        border-color: var(--edv-color-warning);
+        background: color-mix(in srgb, var(--edv-color-warning) 80%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-info,
+    .btn-outline-info:hover,
+    .btn-outline-info:focus-visible {
+        border-color: var(--edv-color-info);
+        background: color-mix(in srgb, var(--edv-color-info) 80%, #000000);
+        color: #ffffff;
+    }
+
+    .btn-success:hover,
+    .btn-success:focus-visible {
+        background: color-mix(in srgb, var(--edv-color-success) 75%, #000000);
+    }
+
+    .btn-danger:hover,
+    .btn-danger:focus-visible {
+        background: color-mix(in srgb, var(--edv-color-danger) 86%, #000000);
+    }
+
+    .btn-warning:hover,
+    .btn-warning:focus-visible {
+        background: color-mix(in srgb, var(--edv-color-warning) 75%, #000000);
+    }
+
+    .btn-info:hover,
+    .btn-info:focus-visible {
+        background: color-mix(in srgb, var(--edv-color-info) 75%, #000000);
+    }
+
+    .btn-outline-primary {
+        border-color: var(--edv-color-primary);
+        color: var(--edv-color-primary);
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus-visible {
+        background: var(--edv-color-primary);
+        color: #ffffff;
+    }
+
+    .btn-outline-secondary {
+        border-color: var(--edv-color-border);
+        background: #ffffff;
+        color: #334155;
+        box-shadow: none;
+    }
+
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary:focus-visible {
+        border-color: var(--edv-color-border);
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-foreground);
+    }
+
+    .btn-outline-success {
+        border-color: var(--edv-color-success);
+        color: var(--edv-color-success);
+    }
+
+    .btn-outline-danger {
+        border-color: var(--edv-color-danger);
+        color: var(--edv-color-danger);
+    }
+
+    .btn-outline-warning {
+        border-color: var(--edv-color-warning);
+        color: var(--edv-color-warning);
+    }
+
+    .btn-outline-info {
+        border-color: var(--edv-color-info);
+        color: var(--edv-color-info);
+    }
+
+    .btn-link {
+        min-height: auto;
+        color: var(--edv-color-link);
+        font-weight: 600;
+    }
+
+    .btn-link:hover,
+    .btn-link:focus-visible {
+        background: var(--edv-hover-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .btn-sm {
+        min-height: 2.25rem;
+        border-radius: var(--edv-radius-md);
+    }
+
+    .btn-lg {
+        min-height: 3rem;
+        border-radius: var(--edv-radius-md);
+    }
+
+    /* Cards and reusable surfaces. */
+    .card {
+        min-width: 0;
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-surface);
+        color: var(--edv-color-foreground);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .card-header,
+    .card-footer {
+        border-color: var(--edv-color-border);
+        background: var(--edv-color-surface);
+    }
+
+    .card-title {
+        color: var(--edv-color-foreground);
+        font-weight: 700;
+    }
+
+    .card-subtitle {
+        color: var(--edv-color-muted);
+    }
+
+    /* Alerts and Moodle notifications. */
+    .alert {
+        min-width: 0;
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-md);
+        color: var(--edv-color-foreground);
+        box-shadow: var(--edv-shadow-sm);
+        overflow-wrap: anywhere;
+    }
+
+    .alert-heading {
+        font-weight: 700;
+    }
+
+    .alert-success {
+        border-inline-start: 0.3rem solid var(--edv-color-success);
+        background: color-mix(in srgb, var(--edv-color-success) 8%, #ffffff);
+    }
+
+    .alert-info {
+        border-inline-start: 0.3rem solid var(--edv-color-info);
+        background: color-mix(in srgb, var(--edv-color-info) 8%, #ffffff);
+    }
+
+    .alert-warning {
+        border-inline-start: 0.3rem solid var(--edv-color-warning);
+        background: color-mix(in srgb, var(--edv-color-warning) 9%, #ffffff);
+    }
+
+    .alert-danger,
+    .alert-error {
+        border-inline-start: 0.3rem solid var(--edv-color-danger);
+        background: color-mix(in srgb, var(--edv-color-danger) 8%, #ffffff);
+    }
+
+    .alert-secondary {
+        border-inline-start: 0.3rem solid var(--edv-color-muted);
+        background: var(--edv-color-background);
+    }
+
+    /* Badges and compact status indicators. */
+    .badge,
+    .edv-info-pill {
+        max-width: 100%;
+        border-radius: var(--edv-radius-pill);
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .badge.rounded-pill,
+    .rounded-pill.badge {
+        border-radius: var(--edv-radius-pill);
+    }
+
+    .badge.bg-primary {
+        background: var(--edv-color-primary) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-secondary {
+        background: var(--edv-color-secondary) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-success {
+        background: color-mix(in srgb, var(--edv-color-success) 80%, #000000) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-warning {
+        background: color-mix(in srgb, var(--edv-color-warning) 80%, #000000) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-danger {
+        background: var(--edv-color-danger) !important;
+        color: #ffffff;
+    }
+
+    .badge.bg-info {
+        background: color-mix(in srgb, var(--edv-color-info) 80%, #000000) !important;
+        color: #ffffff;
+    }
+
+    /* Tables: Boost owns table mechanics; Edvorya owns tone and containment. */
+    .table {
+        border-color: var(--edv-color-border);
+        color: var(--edv-color-foreground);
+    }
+
+    .table > :not(caption) > * > * {
+        padding: 0.7rem 0.75rem;
+        border-color: var(--edv-color-border);
+    }
+
+    .table > thead > tr > th {
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+        font-size: 0.8rem;
+        font-weight: 750;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) > * {
+        background: color-mix(in srgb, var(--edv-color-background) 75%, #ffffff);
+    }
+
+    .table-hover > tbody > tr:hover > * {
+        background: var(--edv-hover-overlay);
+    }
+
+    .table-responsive {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    caption {
+        color: var(--edv-color-muted);
+        text-align: start;
+    }
+
+    /* Progress indicators. */
+    .progress {
+        height: 0.65rem;
+        border-radius: var(--edv-radius-pill);
+        background: var(--edv-color-border);
+    }
+
+    .progress-bar {
+        background: var(--edv-color-primary);
+        color: #ffffff;
+        transition: width 180ms ease;
+    }
+
+    @media (max-width: 47.999rem) {
+        .btn {
+            max-width: 100%;
+        }
+
+        .card,
+        .alert {
+            border-radius: var(--edv-radius-md);
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 0.6rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .btn,
+        .progress-bar {
+            transition: none;
+        }
+    }
+}

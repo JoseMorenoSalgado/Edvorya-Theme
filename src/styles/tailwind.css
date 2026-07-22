@@ -1,0 +1,327 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@source "../../templates/**/*.mustache";
+@source "../../layout/**/*.php";
+@source "../../classes/**/*.php";
+
+@theme {
+    --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@layer base {
+    :root {
+        color-scheme: light;
+
+        /* Brand and semantic colours. Client settings may override the configurable tokens at runtime. */
+        --edv-color-primary: #2563eb;
+        --edv-color-secondary: #0f172a;
+        --edv-color-background: #ffffff;
+        --edv-color-surface: #ffffff;
+        --edv-color-subtle: #f8fafc;
+        --edv-color-foreground: #020617;
+        --edv-color-muted: #64748b;
+        --edv-color-border: #e2e8f0;
+        --edv-color-success: #16a34a;
+        --edv-color-warning: #d97706;
+        --edv-color-danger: #dc2626;
+        --edv-color-info: #0284c7;
+        --edv-color-sidebar: #fafafa;
+        --edv-color-topbar: #ffffff;
+        --edv-color-button: #2563eb;
+        --edv-color-link: #2563eb;
+        --edv-color-loginbackground: #f8fafc;
+
+        /* Typography and spacing. */
+        --edv-font-sans: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --edv-space-1: 0.25rem;
+        --edv-space-2: 0.5rem;
+        --edv-space-3: 0.75rem;
+        --edv-space-4: 1rem;
+        --edv-space-6: 1.5rem;
+        --edv-space-8: 2rem;
+
+        /* Shape and elevation. */
+        --edv-radius-sm: 0.5rem;
+        --edv-radius-md: 0.625rem;
+        --edv-radius-lg: 0.75rem;
+        --edv-radius-xl: 1rem;
+        --edv-radius-2xl: 1.5rem;
+        --edv-radius-pill: 999px;
+        --edv-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.05);
+        --edv-shadow-md: 0 2px 6px rgb(15 23 42 / 0.07);
+        --edv-shadow-lg: 0 8px 24px rgb(15 23 42 / 0.10);
+
+        /* Interaction and shell dimensions. */
+        --edv-focus-ring: 0 0 0 3px var(--edv-color-primary);
+        --edv-hover-overlay: var(--edv-color-primary);
+        --edv-active-overlay: var(--edv-color-primary);
+        --edv-disabled-opacity: 0.55;
+        --edv-topbar-height: 4rem;
+        --edv-sidebar-width: 16rem;
+        --edv-content-max-width: 80rem;
+
+        /* Bridge Edvorya tokens into Bootstrap 5 variables consumed by Boost. */
+        --bs-primary: var(--edv-color-primary);
+        --bs-body-bg: var(--edv-color-background);
+        --bs-body-color: var(--edv-color-foreground);
+        --bs-border-color: var(--edv-color-border);
+    }
+
+    @supports (color: color-mix(in srgb, black, white)) {
+        :root {
+            --edv-focus-ring: 0 0 0 3px color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
+            --edv-hover-overlay: color-mix(in srgb, var(--edv-color-primary) 8%, transparent);
+            --edv-active-overlay: color-mix(in srgb, var(--edv-color-primary) 14%, transparent);
+        }
+    }
+
+    html,
+    body {
+        background: var(--edv-color-background);
+        color: var(--edv-color-foreground);
+        font-family: var(--edv-font-sans);
+    }
+
+    body {
+        min-width: 20rem;
+    }
+
+    .edv-shell,
+    .edv-shell *,
+    .edv-login-shell,
+    .edv-login-shell * {
+        box-sizing: border-box;
+    }
+
+    a {
+        text-underline-offset: 0.18em;
+    }
+
+    .edv-shell :focus-visible,
+    .edv-login-shell :focus-visible {
+        outline: 3px solid var(--edv-color-primary);
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    .edv-shell {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--edv-color-background);
+    }
+
+    .edv-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        min-height: var(--edv-topbar-height);
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-topbar);
+    }
+
+    .edv-topbar__inner {
+        min-height: var(--edv-topbar-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--edv-space-4);
+        padding-inline: clamp(1rem, 3vw, 2rem);
+    }
+
+    .edv-topbar__actions {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: var(--edv-space-2);
+    }
+
+    .edv-brand {
+        min-width: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--edv-space-3);
+        color: var(--edv-color-foreground);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .edv-brand__mark {
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: var(--edv-radius-md);
+        background: var(--edv-color-primary);
+        color: #ffffff;
+        font-weight: 800;
+    }
+
+    .edv-brand__logo {
+        display: block;
+        width: auto;
+        max-width: 10rem;
+        height: 2.5rem;
+        object-fit: contain;
+    }
+
+    .edv-brand__name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .edv-page {
+        width: 100%;
+        flex: 1 1 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .edv-sidebar {
+        min-width: 0;
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-sidebar);
+        padding: var(--edv-space-4);
+    }
+
+    .edv-primary-nav {
+        margin-bottom: var(--edv-space-4);
+    }
+
+    .edv-block-region {
+        display: grid;
+        gap: var(--edv-space-4);
+    }
+
+    .edv-main {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .edv-main__inner {
+        min-width: 0;
+        padding: clamp(1rem, 3vw, 2rem);
+    }
+
+    .edv-content-header,
+    .edv-secondary-nav,
+    .edv-content {
+        width: min(100%, var(--edv-content-max-width));
+        margin-inline: auto;
+    }
+
+    .edv-secondary-nav {
+        margin-bottom: var(--edv-space-4);
+        border-bottom: 1px solid var(--edv-color-border);
+    }
+
+    #region-main {
+        min-width: 0;
+    }
+
+    .edv-footer {
+        border-top: 1px solid var(--edv-color-border);
+        background: var(--edv-color-topbar);
+        padding: var(--edv-space-6) clamp(1rem, 3vw, 2rem);
+    }
+
+    .edv-footer__text,
+    .edv-footer__copyright {
+        margin: 0 0 var(--edv-space-2);
+        color: var(--edv-color-muted);
+    }
+
+    .edv-footer__social {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--edv-space-4);
+    }
+
+    .edv-login-shell {
+        min-height: 100dvh;
+        background: var(--edv-color-loginbackground);
+    }
+
+    .edv-login {
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: clamp(1rem, 4vw, 2rem);
+    }
+
+    .edv-login__inner {
+        width: min(100%, 72rem);
+        display: grid;
+        gap: var(--edv-space-6);
+    }
+
+    .edv-login__visual {
+        min-height: 16rem;
+        overflow: hidden;
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-secondary);
+        box-shadow: var(--edv-shadow-md);
+    }
+
+    .edv-login__visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .edv-login__panel {
+        width: 100%;
+        max-width: 32rem;
+        justify-self: center;
+        padding: clamp(1.25rem, 4vw, 2rem);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-md);
+    }
+
+    .edv-login__panel > .edv-brand {
+        margin-bottom: var(--edv-space-6);
+    }
+
+    @media (min-width: 64rem) {
+        .edv-page {
+            grid-template-columns: var(--edv-sidebar-width) minmax(0, 1fr);
+        }
+
+        .edv-sidebar {
+            min-height: calc(100dvh - var(--edv-topbar-height));
+            border-right: 1px solid var(--edv-color-border);
+            border-bottom: 0;
+        }
+
+        .edv-login__inner--with-visual {
+            grid-template-columns: minmax(0, 1.2fr) minmax(24rem, 0.8fr);
+        }
+    }
+
+    @media print {
+        .edv-topbar,
+        .edv-sidebar,
+        .edv-footer {
+            display: none !important;
+        }
+
+        .edv-page,
+        .edv-main,
+        .edv-main__inner,
+        .edv-content {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+        }
+    }
+}

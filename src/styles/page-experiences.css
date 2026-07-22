@@ -1,0 +1,226 @@
+@layer components {
+    /*
+     * Structural contracts for Dashboard, My courses and Course pages.
+     * Final Edvorya LMS visual composition belongs in identity.css; this file
+     * keeps only layout, containment, scrolling and responsive behaviour that
+     * Moodle Core and Boost do not provide for the Edvorya application shell.
+     */
+
+    .edv-layout-mydashboard .edv-main__inner,
+    .edv-layout-mycourses .edv-main__inner,
+    .edv-layout-course .edv-main__inner {
+        padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .edv-layout-mydashboard #page-header,
+    .edv-layout-mycourses #page-header,
+    .edv-layout-course #page-header {
+        width: 100%;
+        max-width: none;
+    }
+
+    .edv-layout-mydashboard #region-main,
+    .edv-layout-mycourses #region-main,
+    .edv-layout-course #region-main {
+        min-width: 0;
+    }
+
+    .edv-layout-mydashboard #region-main > .block,
+    .edv-layout-mydashboard #region-main .block.card,
+    .edv-layout-mycourses #region-main > .block,
+    .edv-layout-mycourses #region-main .block.card {
+        overflow: hidden;
+    }
+
+    .edv-layout-mydashboard #region-main .block + .block,
+    .edv-layout-mycourses #region-main .block + .block {
+        margin-top: var(--edv-space-6);
+    }
+
+    .edv-layout-mydashboard .block .card-header,
+    .edv-layout-mycourses .block .card-header {
+        border-bottom: 1px solid var(--edv-color-border);
+    }
+
+    .edv-layout-mydashboard .block .card-header h2,
+    .edv-layout-mycourses .block .card-header h2 {
+        margin: 0;
+        color: var(--edv-color-foreground);
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .edv-layout-mydashboard .block_myoverview .card-grid,
+    .edv-layout-mycourses .block_myoverview .card-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--edv-space-4);
+        margin: 0;
+    }
+
+    .edv-layout-mydashboard .block_myoverview .card-grid > .col,
+    .edv-layout-mycourses .block_myoverview .card-grid > .col {
+        width: 100%;
+        min-width: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    .edv-layout-mydashboard .course-card,
+    .edv-layout-mycourses .course-card {
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        margin: 0;
+        transition: box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .edv-layout-mydashboard .course-card .card-img-top,
+    .edv-layout-mycourses .course-card .card-img-top {
+        width: 100%;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .edv-layout-mydashboard .course-card .course-info-container,
+    .edv-layout-mycourses .course-card .course-info-container,
+    .edv-layout-mydashboard .course-card .card-footer,
+    .edv-layout-mycourses .course-card .card-footer {
+        min-width: 0;
+    }
+
+    .edv-layout-mydashboard .course-card .coursename,
+    .edv-layout-mycourses .course-card .coursename {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--edv-space-1);
+        text-decoration: none;
+    }
+
+    .edv-layout-mydashboard .course-card .coursename:hover,
+    .edv-layout-mycourses .course-card .coursename:hover {
+        color: var(--edv-color-link);
+    }
+
+    /* List-mode course summaries are not duplicated by identity.css and keep
+       their own compact page-specific presentation here. */
+    .edv-layout-mydashboard .course-summaryitem,
+    .edv-layout-mycourses .course-summaryitem {
+        margin-bottom: var(--edv-space-3);
+        padding: var(--edv-space-4);
+        border: 1px solid var(--edv-color-border) !important;
+        border-radius: var(--edv-radius-lg) !important;
+        background: var(--edv-color-surface);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-layout-mydashboard .course-summaryitem .summary-image,
+    .edv-layout-mycourses .course-summaryitem .summary-image {
+        min-height: 7rem;
+        border-radius: var(--edv-radius-md);
+        background-position: center;
+        background-size: cover;
+    }
+
+    .edv-layout-mydashboard .block_myoverview [data-region="filter"],
+    .edv-layout-mycourses .block_myoverview [data-region="filter"] {
+        gap: var(--edv-space-2);
+        margin-bottom: var(--edv-space-4);
+    }
+
+    .edv-layout-course .edv-secondary-nav {
+        overflow-x: auto;
+        margin-bottom: var(--edv-space-6);
+        scrollbar-width: thin;
+    }
+
+    .edv-layout-course .edv-secondary-nav .nav {
+        flex-wrap: nowrap;
+        min-width: max-content;
+        border: 0;
+    }
+
+    .edv-layout-course .edv-secondary-nav .nav-link {
+        white-space: nowrap;
+    }
+
+    .edv-layout-course .edv-content {
+        width: min(100%, var(--edv-content-max-width));
+    }
+
+    .edv-layout-course .course-content {
+        min-width: 0;
+        display: grid;
+    }
+
+    .edv-layout-course .course-content .course-section,
+    .edv-layout-course .course-content li.section {
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+    }
+
+    .edv-layout-course .course-content .course-section-header {
+        border-bottom: 1px solid var(--edv-color-border);
+    }
+
+    .edv-layout-course .course-content .sectionname {
+        color: var(--edv-color-foreground);
+    }
+
+    .edv-layout-course .course-content .content,
+    .edv-layout-course .course-content .course-section-body,
+    .edv-layout-course .activity-item,
+    .edv-layout-course .activity {
+        min-width: 0;
+    }
+
+    .edv-layout-course .activityname a,
+    .edv-layout-course .activity-instance a {
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .edv-layout-course .activityname a:hover,
+    .edv-layout-course .activity-instance a:hover {
+        color: var(--edv-color-link);
+    }
+
+    .edv-layout-course .completion-info,
+    .edv-layout-course .activity-completion {
+        color: var(--edv-color-muted);
+        font-size: 0.875rem;
+    }
+
+    @media (min-width: 40rem) {
+        .edv-layout-mydashboard .block_myoverview .card-grid,
+        .edv-layout-mycourses .block_myoverview .card-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 72rem) {
+        .edv-layout-mydashboard .block_myoverview .card-grid,
+        .edv-layout-mycourses .block_myoverview .card-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-layout-course .edv-secondary-nav {
+            margin-bottom: var(--edv-space-4);
+        }
+
+        .edv-layout-mydashboard .course-summaryitem,
+        .edv-layout-mycourses .course-summaryitem {
+            padding: var(--edv-space-3);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .edv-layout-mydashboard .course-card,
+        .edv-layout-mycourses .course-card {
+            transition: none;
+        }
+    }
+}

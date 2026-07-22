@@ -1,0 +1,133 @@
+{{!
+    @template theme_edvorya/layout/drawers
+
+    Primary Edvorya application shell. Moodle Core owns navigation data and functional output;
+    Edvorya owns the visual composition.
+}}
+{{{ output.doctype }}}
+<html {{{ output.htmlattributes }}}>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{{ output.page_title }}}</title>
+    {{#branding}}
+        {{> theme_edvorya/components/branding_head }}
+    {{/branding}}
+    {{{ output.standard_head_html }}}
+</head>
+<body {{{ bodyattributes }}}>
+{{{ output.standard_top_of_body_html }}}
+{{> core/local/toast/wrapper}}
+
+<div id="page-wrapper" class="edv-shell">
+    <header class="edv-topbar" role="banner">
+        <div class="edv-topbar__inner">
+            {{#hasmobileprimarynav}}
+                {{> theme_edvorya/components/mobile_navigation }}
+            {{/hasmobileprimarynav}}
+
+            {{#branding}}
+                {{> theme_edvorya/components/brand }}
+            {{/branding}}
+
+            <div class="edv-topbar__actions">
+                {{{ navbarpluginoutput }}}
+                {{{ pageheadingmenu }}}
+                {{{ editswitch }}}
+                {{#langmenu}}
+                    {{> theme_edvorya/components/language_menu }}
+                {{/langmenu}}
+                {{{ usermenu }}}
+            </div>
+        </div>
+    </header>
+
+    <div class="edv-page">
+        <aside class="edv-sidebar {{^hasblocks}}edv-sidebar--navigation-only{{/hasblocks}}">
+            {{#hasdesktopprimarynav}}
+                {{> theme_edvorya/components/desktop_navigation }}
+            {{/hasdesktopprimarynav}}
+
+            {{#hasblocks}}
+                <div class="edv-block-region" data-region="blocks-column">
+                    {{{ addblockbutton }}}
+                    {{{ sidepreblocks }}}
+                </div>
+            {{/hasblocks}}
+        </aside>
+
+        <main id="page" data-region="mainpage" data-usertour="scroller" class="edv-main drag-container">
+            <div id="topofscroll" class="edv-main__inner">
+                <div class="edv-content-header">
+                    {{{ fullheader }}}
+                </div>
+
+                {{#dashboardexperience}}
+                    {{> theme_edvorya/components/dashboard_focus }}
+                {{/dashboardexperience}}
+
+                {{#hascontextnavigation}}
+                    {{> theme_edvorya/components/context_navigation }}
+                {{/hascontextnavigation}}
+
+                {{#secondarymoremenu}}
+                    <nav class="edv-secondary-nav {{#hascontextnavigation}}edv-secondary-nav--context-replaced{{/hascontextnavigation}} {{#isadminsearch}}edv-secondary-nav--admin{{/isadminsearch}}" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
+                        {{> core/moremenu }}
+                    </nav>
+                {{/secondarymoremenu}}
+
+                <div id="page-content" class="edv-content">
+                    <div id="region-main-box">
+                        {{#hasregionmainsettingsmenu}}
+                            <div id="region-main-settings-menu">
+                                {{{ regionmainsettingsmenu }}}
+                            </div>
+                        {{/hasregionmainsettingsmenu}}
+
+                        <section id="region-main">
+                            {{#hasregionmainsettingsmenu}}
+                                <div class="region_main_settings_menu_proxy"></div>
+                            {{/hasregionmainsettingsmenu}}
+
+                            {{{ output.course_content_header }}}
+
+                            {{#headercontent}}
+                                {{> core/activity_header }}
+                            {{/headercontent}}
+
+                            {{#overflow}}
+                                <div class="edv-tertiary-navigation">
+                                    <div class="edv-tertiary-navigation__item">
+                                        {{> core/tertiary_navigation_selector }}
+                                    </div>
+                                </div>
+                            {{/overflow}}
+
+                            {{{ maincontent }}}
+                            {{{ output.activity_navigation }}}
+                            {{{ output.course_content_footer }}}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="edv-footer" role="contentinfo">
+        {{#branding}}
+            {{#footertext}}<p class="edv-footer__text">{{footertext}}</p>{{/footertext}}
+            {{#copyright}}<p class="edv-footer__copyright">{{copyright}}</p>{{/copyright}}
+            <nav class="edv-footer__social" aria-label="{{#str}}footerheading, theme_edvorya{{/str}}">
+                {{#facebookurl}}<a href="{{{ facebookurl }}}" rel="noopener noreferrer">Facebook</a>{{/facebookurl}}
+                {{#instagramurl}}<a href="{{{ instagramurl }}}" rel="noopener noreferrer">Instagram</a>{{/instagramurl}}
+                {{#linkedinurl}}<a href="{{{ linkedinurl }}}" rel="noopener noreferrer">LinkedIn</a>{{/linkedinurl}}
+                {{#youtubeurl}}<a href="{{{ youtubeurl }}}" rel="noopener noreferrer">YouTube</a>{{/youtubeurl}}
+            </nav>
+        {{/branding}}
+        {{{ output.standard_footer_html }}}
+    </footer>
+</div>
+
+{{{ output.standard_after_main_region_html }}}
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>

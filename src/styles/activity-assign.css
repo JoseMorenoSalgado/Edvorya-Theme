@@ -1,0 +1,97 @@
+@layer components {
+    .path-mod-assign .gradingtable,
+    .path-mod-assign .submissionsummarytable,
+    .path-mod-assign .submissionstatustable,
+    .path-mod-assign .gradingsummarytable,
+    .path-mod-assign .feedbacktable {
+        max-width: 100%;
+        overflow-x: auto;
+        border-color: var(--edv-color-border);
+        background: #ffffff;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .path-mod-assign .submissionstatustable,
+    .path-mod-assign .gradingsummarytable,
+    .path-mod-assign .submissionsummarytable,
+    .path-mod-assign .feedbacktable {
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .path-mod-assign .submissionstatustable th,
+    .path-mod-assign .gradingsummarytable th,
+    .path-mod-assign .submissionsummarytable th,
+    .path-mod-assign .feedbacktable th {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .path-mod-assign .submissionstatustable td,
+    .path-mod-assign .gradingsummarytable td,
+    .path-mod-assign .submissionsummarytable td,
+    .path-mod-assign .feedbacktable td {
+        border-color: var(--edv-color-border);
+    }
+
+    .path-mod-assign [data-region="assignment-info"],
+    .path-mod-assign [data-region="user-info"] {
+        min-width: 0;
+    }
+
+    .path-mod-assign [data-region="assignment-info"] {
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .path-mod-assign [data-region="configure-filters"] {
+        max-width: calc(100vw - 2rem);
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-lg);
+    }
+
+    .path-mod-assign .gradingnavigation {
+        padding: 0.75rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-subtle);
+    }
+
+    @media (max-width: 47.999rem) {
+        .path-mod-assign div.gradingnavigation div {
+            float: none;
+            margin-left: 0;
+            margin-inline-start: 0;
+        }
+
+        .path-mod-assign [data-region="user-selector"] .alignment {
+            float: none;
+            width: 100%;
+            max-width: 20rem;
+            margin-inline: auto;
+        }
+
+        .path-mod-assign [data-region="configure-filters"] {
+            right: 0;
+            left: auto;
+            width: min(30rem, calc(100vw - 2rem));
+            margin-left: 0;
+            margin-inline-start: 0;
+        }
+
+        .path-mod-assign .submissionsummarytable .c0,
+        .path-mod-assign .gradingsummarytable .c0,
+        .path-mod-assign .mod-assign-history-panel .c0 {
+            width: auto;
+            min-width: 8rem;
+        }
+    }
+}

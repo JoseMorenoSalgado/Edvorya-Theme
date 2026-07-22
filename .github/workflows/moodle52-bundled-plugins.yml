@@ -1,0 +1,163 @@
+name: Moodle 5.2 bundled plugins compatibility
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/moodle52-bundled-plugins.yml'
+      - 'classes/**'
+      - 'config.php'
+      - 'lang/**'
+      - 'layout/**'
+      - 'lib.php'
+      - 'src/styles/**'
+      - 'style/**'
+      - 'templates/**'
+      - 'tests/behat/**'
+      - 'version.php'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: edvorya-theme-moodle52-bundled-plugins-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundled-plugins:
+    name: Moodle bundled activities/resources + Edvorya
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      MOODLE_DOCKER_DB: mariadb
+      MOODLE_DOCKER_DB_VERSION: '10.11'
+      MOODLE_DOCKER_PHP_VERSION: '8.3'
+      MOODLE_DOCKER_BROWSER: chrome
+      MOODLE_DOCKER_TIMEOUT_FACTOR: '2'
+      MOODLE_DOCKER_WEB_HOST: localhost
+      MOODLE_DOCKER_WEB_PORT: '127.0.0.1:18058'
+
+    steps:
+      - name: Checkout Edvorya Theme
+        uses: actions/checkout@v4
+        with:
+          path: theme-source
+
+      - name: Checkout Moodle 5.2
+        uses: actions/checkout@v4
+        with:
+          repository: moodle/moodle
+          ref: MOODLE_502_STABLE
+          path: moodle
+
+      - name: Checkout Moodle Docker
+        uses: actions/checkout@v4
+        with:
+          repository: moodlehq/moodle-docker
+          path: moodle-docker
+
+      - name: Configure isolated bundled-plugin environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "MOODLE_DOCKER_WWWROOT=${GITHUB_WORKSPACE}/moodle" >> "$GITHUB_ENV"
+          echo "MOODLE_DOCKER_BEHAT_FAILDUMP=${GITHUB_WORKSPACE}/behat-faildumps" >> "$GITHUB_ENV"
+          echo "COMPOSE_PROJECT_NAME=edvorya-bundled-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
+          mkdir -p "${GITHUB_WORKSPACE}/behat-faildumps"
+          chmod 0777 "${GITHUB_WORKSPACE}/behat-faildumps"
+
+      - name: Install Edvorya into Moodle 5.2 codebase
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf moodle/public/theme/edvorya
+          mkdir -p moodle/public/theme/edvorya
+          rsync -a --delete --exclude='.git' theme-source/ moodle/public/theme/edvorya/
+          test -f moodle/public/theme/edvorya/version.php
+          test -f moodle/public/theme/edvorya/tests/behat/moodle_bundled_plugins.feature
+          test -f moodle/public/theme/edvorya/tests/behat/behat_theme_edvorya.php
+
+      - name: Prepare Moodle configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp moodle-docker/config.docker-template.php moodle/config.php
+          sed -i "/require_once(__DIR__ . '\/lib\/setup.php');/i\\\$CFG->theme = 'edvorya';" moodle/config.php
+
+          cat > moodle-docker/moodle52-runtime.ini <<'INI'
+          max_input_vars=5000
+          INI
+
+          cat > moodle-docker/local.yml <<'YAML'
+          services:
+            webserver:
+              volumes:
+                - ./moodle52-runtime.ini:/usr/local/etc/php/conf.d/zz-moodle52-runtime.ini:ro
+          YAML
+
+      - name: Start Moodle, MariaDB and Selenium
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose up -d
+          bin/moodle-docker-wait-for-db
+
+      - name: Verify Moodle runtime versions
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver php -r 'echo "PHP=" . PHP_VERSION . PHP_EOL; if (version_compare(PHP_VERSION, "8.3.0", "<")) {exit(1);}'
+          bin/moodle-docker-compose exec -T db mariadb --version
+          bin/moodle-docker-compose exec -T webserver php -r 'if ((int) ini_get("max_input_vars") < 5000) {fwrite(STDERR, "max_input_vars must be >= 5000\n"); exit(1);} echo "max_input_vars=" . ini_get("max_input_vars") . PHP_EOL;'
+
+      - name: Initialize Behat with Edvorya
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver \
+            php public/admin/tool/behat/cli/init.php --disable-composer --no-axe \
+            2>&1 | tee "${GITHUB_WORKSPACE}/bundled-plugins-behat-init.log"
+
+      - name: Run Moodle bundled plugin compatibility matrix
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver \
+            php public/admin/tool/behat/cli/run.php \
+            --tags='@theme_edvorya_bundled_plugins' \
+            --format=progress \
+            2>&1 | tee "${GITHUB_WORKSPACE}/bundled-plugins.log"
+
+      - name: Upload bundled-plugin diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moodle52-edvorya-bundled-plugins-diagnostics
+          path: |
+            bundled-plugins-behat-init.log
+            bundled-plugins.log
+            behat-faildumps
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Collect container logs on failure
+        if: failure()
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          bin/moodle-docker-compose ps || true
+          bin/moodle-docker-compose logs --no-color --tail=300 || true
+
+      - name: Destroy isolated bundled-plugin environment
+        if: always()
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          bin/moodle-docker-compose down --volumes --remove-orphans || true

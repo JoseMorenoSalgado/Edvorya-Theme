@@ -1,0 +1,219 @@
+@layer components {
+    /*
+     * Structural contracts for Administration, Messaging and Notifications.
+     * identity.css owns final Edvorya LMS visual composition; this module keeps
+     * form containment, message-app layout, preference tables and popover bounds.
+     */
+    .edv-layout-admin .edv-main__inner,
+    .edv-pagetype-message-index .edv-main__inner {
+        min-width: 0;
+        padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .edv-layout-admin #page-header,
+    .edv-pagetype-message-index #page-header {
+        width: 100%;
+        max-width: none;
+    }
+
+    .edv-layout-admin #region-main,
+    .edv-pagetype-message-index #region-main {
+        min-width: 0;
+    }
+
+    /* Administration: Core owns forms and settings data; Edvorya contains them. */
+    .edv-layout-admin #adminsettings,
+    .edv-layout-admin .settingsform {
+        min-width: 0;
+    }
+
+    .edv-layout-admin .settingsform {
+        padding: clamp(1rem, 2vw, 1.5rem);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-layout-admin .settingsform > h2 {
+        margin-top: 0;
+        margin-bottom: var(--edv-space-6);
+        color: var(--edv-color-foreground);
+        font-size: 1.25rem;
+    }
+
+    .edv-layout-admin .settingsform fieldset,
+    .edv-layout-admin .adminsettings fieldset {
+        min-width: 0;
+        margin-bottom: var(--edv-space-4);
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-md);
+    }
+
+    .edv-layout-admin .generalbox,
+    .edv-layout-admin .box.py-3,
+    .edv-layout-admin .adminwarning,
+    .edv-layout-admin .continuebutton {
+        max-width: 100%;
+    }
+
+    /* Messaging: preserve the Core message-app/data-region contract and layout. */
+    .edv-pagetype-message-index .message-app[data-region="message-index"] {
+        width: 100%;
+        max-width: 100%;
+        min-height: min(42rem, calc(100dvh - 12rem));
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border) !important;
+        background: #ffffff !important;
+    }
+
+    .edv-pagetype-message-index .message-app > .container-fluid {
+        min-width: 0;
+        padding: 0;
+    }
+
+    .edv-pagetype-message-index .message-app > .container-fluid > .row {
+        min-width: 0;
+        min-height: inherit;
+        display: grid;
+        grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+    }
+
+    .edv-pagetype-message-index .message-app > .container-fluid > .row > [class*="col-"] {
+        width: auto;
+        max-width: none;
+        min-width: 0;
+        padding: 0;
+    }
+
+    .edv-pagetype-message-index .message-app .conversationcontainer {
+        border-inline-end: 1px solid var(--edv-color-border);
+    }
+
+    .edv-pagetype-message-index .message-app .conversationcontainer > .border-end {
+        border-inline-end: 0 !important;
+    }
+
+    .edv-pagetype-message-index .message-app [data-region="panel-header-container"],
+    .edv-pagetype-message-index .message-app [data-region="header-container"] {
+        border-bottom: 1px solid var(--edv-color-border);
+    }
+
+    .edv-pagetype-message-index .message-app [data-region="panel-body-container"],
+    .edv-pagetype-message-index .message-app [data-region="body-container"] {
+        min-width: 0;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-message-index .message-app [data-region="footer-container"] {
+        border-top: 1px solid var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .edv-pagetype-message-index .message-app input,
+    .edv-pagetype-message-index .message-app textarea {
+        max-width: 100%;
+        border-color: var(--edv-color-border);
+    }
+
+    /* Notification preferences: keep Core data attributes and contain wide processor columns. */
+    .edv-pagetype-message-notificationpreferences .preferences-page-container {
+        min-width: 0;
+        padding: clamp(1rem, 2vw, 1.5rem);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .edv-pagetype-message-notificationpreferences .preferences-page-container > h2 {
+        margin-top: 0;
+        color: var(--edv-color-foreground);
+        font-size: 1.25rem;
+    }
+
+    .edv-pagetype-message-notificationpreferences .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: var(--edv-space-2);
+        margin-block: var(--edv-space-4);
+        padding: var(--edv-space-3) var(--edv-space-4);
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-md);
+        background: var(--edv-color-background);
+    }
+
+    .edv-pagetype-message-notificationpreferences .preferences-container {
+        max-width: 100%;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+
+    .edv-pagetype-message-notificationpreferences .preference-table {
+        width: 100%;
+        min-width: 42rem;
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-message-notificationpreferences .preference-table thead th {
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .edv-pagetype-message-notificationpreferences .preference-table th,
+    .edv-pagetype-message-notificationpreferences .preference-table td {
+        border-color: var(--edv-color-border);
+        vertical-align: middle;
+    }
+
+    /* Global notification popover: Core owns state/focus/controllers; contain it within the viewport. */
+    .popover-region-notifications .popover-region-container {
+        max-width: min(26rem, calc(100vw - 1rem));
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .popover-region-notifications .popover-region-header-container {
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-background);
+    }
+
+    .popover-region-notifications .all-notifications {
+        background: #ffffff;
+    }
+
+    .popover-region-notifications .empty-message {
+        padding: var(--edv-space-6);
+        color: var(--edv-color-muted);
+        text-align: center;
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-layout-admin .settingsform,
+        .edv-pagetype-message-notificationpreferences .preferences-page-container {
+            padding: var(--edv-space-4);
+            border-radius: var(--edv-radius-md);
+        }
+
+        .edv-pagetype-message-index .message-app[data-region="message-index"] {
+            min-height: calc(100dvh - 10rem);
+        }
+
+        .edv-pagetype-message-index .message-app > .container-fluid > .row {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .edv-pagetype-message-index .message-app .conversationcontainer {
+            border-inline-end: 0;
+            border-bottom: 1px solid var(--edv-color-border);
+        }
+
+        .edv-pagetype-message-notificationpreferences .preferences-page-container {
+            overflow: hidden;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{{!
+    @template theme_edvorya/components/language_menu
+
+    Standalone Edvorya language selector. Moodle Core provides the language-menu
+    data; Edvorya owns the presentation and does not depend on Boost templates or
+    Bootstrap dropdown JavaScript.
+}}
+<details class="edv-language-menu">
+    <summary class="edv-language-menu__toggle" aria-label="{{#str}}language{{/str}}">
+        <span class="edv-language-menu__label">{{title}}</span>
+    </summary>
+
+    <div class="edv-language-menu__panel" role="menu">
+        {{#items}}
+            {{#link}}
+                <a href="{{{url}}}"
+                   class="edv-language-menu__item {{#isactive}}is-active{{/isactive}}"
+                   role="menuitem"
+                   {{#isactive}}aria-current="true"{{/isactive}}
+                   {{#attributes}}{{key}}="{{value}}" {{/attributes}}>
+                    {{text}}
+                </a>
+            {{/link}}
+        {{/items}}
+    </div>
+</details>

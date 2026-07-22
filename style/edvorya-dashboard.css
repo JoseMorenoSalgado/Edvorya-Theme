@@ -1,0 +1,259 @@
+/* Edvorya role-aware dashboard experience.
+ *
+ * The dashboard answers the same product questions as Edvorya LMS while Moodle
+ * Core remains the source of course, timeline, completion and calendar data.
+ */
+
+/* The PageShell identity is supplied by src/styles/identity.css. */
+.edv-layout-mydashboard .edv-content-header {
+    overflow: visible;
+}
+
+.edv-dashboard-focus {
+    width: min(100%, var(--edv-content-max-width));
+    margin: 0 auto var(--edv-space-6);
+}
+
+.edv-dashboard-focus__intro {
+    max-width: 46rem;
+}
+
+.edv-dashboard-focus__eyebrow {
+    margin: 0;
+    color: var(--edv-color-primary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.edv-dashboard-focus__title {
+    margin: 0.35rem 0 0;
+    color: var(--edv-color-foreground);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+}
+
+.edv-dashboard-focus__description {
+    max-width: 42rem;
+    margin: 0.4rem 0 0;
+    color: var(--edv-color-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+}
+
+/* Compact decision cards mirror Edvorya LMS SummaryCard surfaces. */
+.edv-dashboard-focus__questions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.edv-dashboard-focus__question {
+    min-width: 0;
+    min-height: 6rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1rem;
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-xl);
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+    box-shadow: var(--edv-shadow-sm);
+    text-decoration: none;
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.edv-dashboard-focus__question:hover,
+.edv-dashboard-focus__question:focus-visible {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+    box-shadow: var(--edv-shadow-md);
+}
+
+.edv-dashboard-focus__question:active {
+    transform: translateY(1px);
+}
+
+.edv-dashboard-focus__question--primary {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 18%, var(--edv-color-border));
+}
+
+.edv-dashboard-focus__icon {
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: var(--edv-radius-lg);
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
+    color: var(--edv-color-primary);
+}
+
+.edv-dashboard-focus__question--primary .edv-dashboard-focus__icon {
+    background: color-mix(in srgb, var(--edv-color-primary) 10%, #ffffff);
+    color: var(--edv-color-primary);
+}
+
+.edv-dashboard-focus__icon-svg.icon {
+    width: 1.125rem;
+    max-width: 1.125rem;
+    height: 1.125rem;
+    max-height: 1.125rem;
+    margin: 0;
+}
+
+.edv-dashboard-focus__question-copy {
+    min-width: 0;
+    display: grid;
+    gap: 0.25rem;
+    padding-top: 0.1rem;
+}
+
+.edv-dashboard-focus__question-copy strong {
+    color: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.edv-dashboard-focus__question-copy > span {
+    color: var(--edv-color-muted);
+    font-size: 0.75rem;
+    line-height: 1.45;
+}
+
+/* Native Moodle blocks answer the questions in priority order. No block is hidden. */
+.edv-layout-mydashboard #block-region-content,
+.edv-layout-mydashboard #region-main .block-region {
+    display: flex;
+    flex-direction: column;
+    gap: var(--edv-space-4);
+}
+
+.edv-layout-mydashboard #block-region-content > .block,
+.edv-layout-mydashboard #region-main .block-region > .block {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.edv-dashboard-persona-student .block_myoverview {
+    order: 1;
+}
+
+.edv-dashboard-persona-student .block_timeline {
+    order: 2;
+}
+
+.edv-dashboard-persona-student .block_calendar_upcoming {
+    order: 3;
+}
+
+.edv-dashboard-persona-student .block_recentlyaccessedcourses,
+.edv-dashboard-persona-student .block_recentlyaccesseditems {
+    order: 4;
+}
+
+.edv-dashboard-persona-teacher .block_timeline {
+    order: 1;
+}
+
+.edv-dashboard-persona-teacher .block_myoverview {
+    order: 2;
+}
+
+.edv-dashboard-persona-teacher .block_calendar_upcoming {
+    order: 3;
+}
+
+.edv-layout-mydashboard #block-region-content > .block:not(.block_myoverview):not(.block_timeline):not(.block_calendar_upcoming):not(.block_recentlyaccessedcourses):not(.block_recentlyaccesseditems),
+.edv-layout-mydashboard #region-main .block-region > .block:not(.block_myoverview):not(.block_timeline):not(.block_calendar_upcoming):not(.block_recentlyaccessedcourses):not(.block_recentlyaccesseditems) {
+    order: 10;
+}
+
+/* My overview already contains course cards: avoid a redundant nested surface. */
+.edv-layout-mydashboard .block_myoverview.card,
+.edv-layout-mydashboard .block_myoverview.block,
+.edv-layout-mydashboard .block_recentlyaccessedcourses.card,
+.edv-layout-mydashboard .block_recentlyaccessedcourses.block {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+}
+
+.edv-layout-mydashboard .block_myoverview > .card-header,
+.edv-layout-mydashboard .block_recentlyaccessedcourses > .card-header {
+    padding-inline: 0;
+    border-bottom: 0;
+    background: transparent;
+}
+
+.edv-layout-mydashboard .block_myoverview > .card-body,
+.edv-layout-mydashboard .block_recentlyaccessedcourses > .card-body {
+    padding-inline: 0;
+}
+
+.edv-layout-mydashboard .block_myoverview .course-card {
+    box-shadow: var(--edv-shadow-sm);
+}
+
+.edv-layout-mydashboard .block_myoverview .course-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--edv-shadow-md);
+}
+
+/* Timeline and calendar are secondary information surfaces. */
+.edv-layout-mydashboard .block_timeline,
+.edv-layout-mydashboard .block_calendar_upcoming {
+    box-shadow: var(--edv-shadow-sm) !important;
+}
+
+@media (max-width: 61.999rem) {
+    .edv-dashboard-focus__questions {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+
+    .edv-dashboard-focus__question {
+        min-height: 4.5rem;
+        align-items: center;
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .edv-dashboard-focus {
+        margin-bottom: var(--edv-space-4);
+    }
+
+    .edv-dashboard-focus__description {
+        font-size: 0.8125rem;
+    }
+
+    .edv-dashboard-focus__questions {
+        margin-top: 1rem;
+    }
+
+    .edv-dashboard-focus__question {
+        padding: 0.75rem;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    .edv-dashboard-focus__question-copy > span {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edv-dashboard-focus__question {
+        transition: none;
+    }
+
+    .edv-dashboard-focus__question:active,
+    .edv-layout-mydashboard .block_myoverview .course-card:hover {
+        transform: none;
+    }
+}

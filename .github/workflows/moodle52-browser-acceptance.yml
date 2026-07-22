@@ -1,0 +1,302 @@
+name: Moodle 5.2 browser acceptance
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/moodle52-browser-acceptance.yml'
+      - 'classes/**'
+      - 'config.php'
+      - 'lang/**'
+      - 'layout/**'
+      - 'lib.php'
+      - 'pix/**'
+      - 'settings.php'
+      - 'src/styles/**'
+      - 'style/**'
+      - 'templates/**'
+      - 'version.php'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: edvorya-theme-moodle52-browser-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-acceptance:
+    name: Moodle 5.2 + MariaDB 10.11 + Chrome
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+
+    env:
+      MOODLE_DOCKER_DB: mariadb
+      MOODLE_DOCKER_DB_VERSION: '10.11'
+      MOODLE_DOCKER_PHP_VERSION: '8.3'
+      MOODLE_DOCKER_BROWSER: chrome
+      MOODLE_DOCKER_TIMEOUT_FACTOR: '2'
+      MOODLE_DOCKER_WEB_HOST: localhost
+      MOODLE_DOCKER_WEB_PORT: '127.0.0.1:18052'
+
+    steps:
+      - name: Checkout Edvorya Theme
+        uses: actions/checkout@v4
+        with:
+          path: theme-source
+
+      - name: Checkout Moodle 5.2
+        uses: actions/checkout@v4
+        with:
+          repository: moodle/moodle
+          ref: MOODLE_502_STABLE
+          path: moodle
+
+      - name: Checkout Moodle Docker
+        uses: actions/checkout@v4
+        with:
+          repository: moodlehq/moodle-docker
+          path: moodle-docker
+
+      - name: Configure isolated Moodle Docker environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "MOODLE_DOCKER_WWWROOT=${GITHUB_WORKSPACE}/moodle" >> "$GITHUB_ENV"
+          echo "MOODLE_DOCKER_BEHAT_FAILDUMP=${GITHUB_WORKSPACE}/behat-faildumps" >> "$GITHUB_ENV"
+          echo "COMPOSE_PROJECT_NAME=edvorya-theme-browser-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
+
+          mkdir -p "${GITHUB_WORKSPACE}/behat-faildumps"
+          chmod 0777 "${GITHUB_WORKSPACE}/behat-faildumps"
+          docker version
+          docker compose version
+
+      - name: Install theme into Moodle 5.2 codebase
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf moodle/public/theme/edvorya
+          mkdir -p moodle/public/theme/edvorya
+          rsync -a --delete --exclude='.git' theme-source/ moodle/public/theme/edvorya/
+
+          test -f moodle/public/theme/edvorya/version.php
+          test -f moodle/public/theme/edvorya/config.php
+          test -f moodle/public/theme/edvorya/style/edvorya.css
+
+      - name: Prepare Moodle configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp moodle-docker/config.docker-template.php moodle/config.php
+
+          # Force the ephemeral test site, including Behat, to render theme_edvorya.
+          sed -i "/require_once(__DIR__ . '\/lib\/setup.php');/i\\\$CFG->theme = 'edvorya';" moodle/config.php
+
+          cat > moodle-docker/moodle52-runtime.ini <<'INI'
+          max_input_vars=5000
+          INI
+
+          cat > moodle-docker/local.yml <<'YAML'
+          services:
+            webserver:
+              volumes:
+                - ./moodle52-runtime.ini:/usr/local/etc/php/conf.d/zz-moodle52-runtime.ini:ro
+          YAML
+
+      - name: Start Moodle, MariaDB and Selenium
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose up -d
+          bin/moodle-docker-wait-for-db
+
+      - name: Verify runtime versions
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver php -r 'echo "PHP=" . PHP_VERSION . PHP_EOL; if (version_compare(PHP_VERSION, "8.3.0", "<")) {exit(1);}'
+          bin/moodle-docker-compose exec -T db mariadb --version
+          bin/moodle-docker-compose exec -T webserver php -r 'if ((int) ini_get("max_input_vars") < 5000) {fwrite(STDERR, "max_input_vars must be >= 5000\n"); exit(1);} echo "max_input_vars=" . ini_get("max_input_vars") . PHP_EOL;'
+
+      - name: Initialize Moodle Behat site with Edvorya
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T webserver \
+            php public/admin/tool/behat/cli/init.php --disable-composer --no-axe \
+            2>&1 | tee "${GITHUB_WORKSPACE}/behat-init.log"
+
+      - name: Assignment file submission acceptance
+        id: assignment
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Submit a file and update the submission with another file' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/assignment.log"
+
+      - name: Quiz attempt review acceptance
+        id: quiz
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Review the quiz attempt' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/quiz.log"
+
+      - name: Forum inline reply acceptance
+        id: forum
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Confirm inpage replies work' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/forum.log"
+
+      - name: H5P activity iframe acceptance
+        id: h5p
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Add an h5pactivity to a course' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/h5p.log"
+
+      - name: Block editing and configuration acceptance
+        id: blocks
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Configuring the Text block with Javascript on' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/blocks.log"
+
+      - name: TinyMCE File Picker dialogue acceptance
+        id: tinyfilepicker
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Browsing repositories in the TinyMCE editor opens the image dialog and shows the FilePicker' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/tiny-filepicker.log"
+
+      - name: TinyMCE nested File Picker focus acceptance
+        id: tinyfocus
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Focus returns to the correct location after closing a nested FilePicker' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/tiny-focus.log"
+
+      - name: TinyMCE File Picker upload acceptance
+        id: tinyupload
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Browsing repositories in the TinyMCE editor shows the FilePicker and upload url image' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/tiny-upload.log"
+
+      - name: Form autocomplete acceptance
+        id: autocomplete
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Use autocomplete element which accepts a single value' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/autocomplete.log"
+
+      - name: Messaging private conversation acceptance
+        id: messaging
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='Send a message to a private conversation via contact tab' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/messaging.log"
+
+      - name: Notification popover acceptance
+        id: notifications
+        continue-on-error: true
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin/moodle-docker-compose exec -T -u www-data webserver php public/admin/tool/behat/cli/run.php --name='User can disable notification preferences' --format=progress 2>&1 | tee "${GITHUB_WORKSPACE}/notifications.log"
+
+      - name: Enforce browser acceptance results
+        if: always()
+        shell: bash
+        env:
+          ASSIGNMENT_OUTCOME: ${{ steps.assignment.outcome }}
+          QUIZ_OUTCOME: ${{ steps.quiz.outcome }}
+          FORUM_OUTCOME: ${{ steps.forum.outcome }}
+          H5P_OUTCOME: ${{ steps.h5p.outcome }}
+          BLOCKS_OUTCOME: ${{ steps.blocks.outcome }}
+          TINY_FILEPICKER_OUTCOME: ${{ steps.tinyfilepicker.outcome }}
+          TINY_FOCUS_OUTCOME: ${{ steps.tinyfocus.outcome }}
+          TINY_UPLOAD_OUTCOME: ${{ steps.tinyupload.outcome }}
+          AUTOCOMPLETE_OUTCOME: ${{ steps.autocomplete.outcome }}
+          MESSAGING_OUTCOME: ${{ steps.messaging.outcome }}
+          NOTIFICATIONS_OUTCOME: ${{ steps.notifications.outcome }}
+        run: |
+          set -euo pipefail
+          printf 'Assignment: %s\nQuiz: %s\nForum: %s\nH5P: %s\nBlocks: %s\nTinyMCE File Picker: %s\nTinyMCE focus: %s\nTinyMCE upload: %s\nAutocomplete: %s\nMessaging: %s\nNotifications: %s\n' \
+            "$ASSIGNMENT_OUTCOME" "$QUIZ_OUTCOME" "$FORUM_OUTCOME" "$H5P_OUTCOME" \
+            "$BLOCKS_OUTCOME" "$TINY_FILEPICKER_OUTCOME" "$TINY_FOCUS_OUTCOME" \
+            "$TINY_UPLOAD_OUTCOME" "$AUTOCOMPLETE_OUTCOME" "$MESSAGING_OUTCOME" "$NOTIFICATIONS_OUTCOME"
+
+          outcomes=(
+            "$ASSIGNMENT_OUTCOME" "$QUIZ_OUTCOME" "$FORUM_OUTCOME" "$H5P_OUTCOME"
+            "$BLOCKS_OUTCOME" "$TINY_FILEPICKER_OUTCOME" "$TINY_FOCUS_OUTCOME"
+            "$TINY_UPLOAD_OUTCOME" "$AUTOCOMPLETE_OUTCOME" "$MESSAGING_OUTCOME" "$NOTIFICATIONS_OUTCOME"
+          )
+
+          for outcome in "${outcomes[@]}"; do
+            if [[ "$outcome" != 'success' ]]; then
+              exit 1
+            fi
+          done
+
+      - name: Upload Behat diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moodle52-edvorya-behat-diagnostics
+          path: |
+            behat-init.log
+            assignment.log
+            quiz.log
+            forum.log
+            h5p.log
+            blocks.log
+            tiny-filepicker.log
+            tiny-focus.log
+            tiny-upload.log
+            autocomplete.log
+            messaging.log
+            notifications.log
+            behat-faildumps
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Collect container logs on failure
+        if: failure()
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          bin/moodle-docker-compose ps || true
+          bin/moodle-docker-compose logs --no-color --tail=400 || true
+
+      - name: Destroy isolated Moodle test environment
+        if: always()
+        working-directory: moodle-docker
+        shell: bash
+        run: |
+          bin/moodle-docker-compose down --volumes --remove-orphans || true

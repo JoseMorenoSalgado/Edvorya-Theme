@@ -1,0 +1,49 @@
+{{!
+    @template theme_edvorya/components/desktop_navigation
+
+    Desktop sidebar navigation built from Moodle Core's exported primary navigation data.
+    Edvorya owns presentation only; Moodle keeps ownership of URLs, active state and hierarchy.
+}}
+<nav class="edv-desktop-nav" aria-label="{{#str}}primarynavigationlabel, theme_edvorya{{/str}}">
+    <ul class="edv-desktop-nav__list">
+        {{#desktopprimarynav}}
+            {{^divider}}
+                <li class="edv-desktop-nav__item" data-edv-nav-key="{{edvkey}}">
+                    {{#haschildren}}
+                        <details class="edv-desktop-nav__group" {{#isopen}}open{{/isopen}}>
+                            <summary class="edv-desktop-nav__link {{#isactive}}is-active{{/isactive}}">
+                                <span class="edv-desktop-nav__item-main">
+                                    <span class="edv-desktop-nav__item-icon" aria-hidden="true">{{{edviconhtml}}}</span>
+                                    <span class="edv-desktop-nav__item-text">{{{text}}}</span>
+                                </span>
+                                <span class="edv-desktop-nav__chevron" aria-hidden="true">
+                                    {{#pix}} icons/chevron-down, theme_edvorya {{/pix}}
+                                </span>
+                            </summary>
+                            <ul class="edv-desktop-nav__children">
+                                {{#children}}
+                                    {{^divider}}
+                                        <li>
+                                            <a href="{{{url}}}" class="edv-desktop-nav__child-link {{#isactive}}is-active{{/isactive}}" {{#isactive}}aria-current="page"{{/isactive}}>
+                                                <span class="edv-desktop-nav__item-icon edv-desktop-nav__item-icon--child" aria-hidden="true">{{{edviconhtml}}}</span>
+                                                <span class="edv-desktop-nav__item-text">{{{text}}}</span>
+                                            </a>
+                                        </li>
+                                    {{/divider}}
+                                {{/children}}
+                            </ul>
+                        </details>
+                    {{/haschildren}}
+                    {{^haschildren}}
+                        <a href="{{{url}}}" class="edv-desktop-nav__link {{#isactive}}is-active{{/isactive}}" {{#isactive}}aria-current="page"{{/isactive}}>
+                            <span class="edv-desktop-nav__item-main">
+                                <span class="edv-desktop-nav__item-icon" aria-hidden="true">{{{edviconhtml}}}</span>
+                                <span class="edv-desktop-nav__item-text">{{{text}}}</span>
+                            </span>
+                        </a>
+                    {{/haschildren}}
+                </li>
+            {{/divider}}
+        {{/desktopprimarynav}}
+    </ul>
+</nav>

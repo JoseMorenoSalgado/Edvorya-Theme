@@ -1,0 +1,173 @@
+@layer components {
+    /*
+     * Structural contracts for Calendar, user Grades and Profile pages.
+     * identity.css owns the final Edvorya LMS surface treatment; this module
+     * keeps containment, scrolling, dense-table geometry and responsive grids.
+     */
+    .edv-pagetype-calendar-view .edv-main__inner,
+    .edv-pagetype-grade-report-user-index .edv-main__inner,
+    .edv-pagetype-user-profile .edv-main__inner {
+        min-width: 0;
+        padding-block: clamp(1rem, 2vw, 2rem) clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .edv-pagetype-calendar-view #page-header,
+    .edv-pagetype-grade-report-user-index #page-header,
+    .edv-pagetype-user-profile #page-header {
+        width: 100%;
+        max-width: none;
+    }
+
+    .edv-pagetype-calendar-view #region-main,
+    .edv-pagetype-grade-report-user-index #region-main,
+    .edv-pagetype-user-profile #region-main {
+        min-width: 0;
+    }
+
+    /* Calendar: Core owns semantics and JS hooks; Edvorya contains the dense month grid. */
+    .edv-pagetype-calendar-view .heightcontainer[data-calendar-type="main-block"] {
+        min-width: 0;
+    }
+
+    .edv-pagetype-calendar-view .calendarwrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--edv-color-border);
+        background: #ffffff;
+        scrollbar-width: thin;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth {
+        width: 100%;
+        min-width: 44rem;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth thead th {
+        padding: var(--edv-space-3);
+        border-bottom: 1px solid var(--edv-color-border);
+        text-transform: uppercase;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth td.day,
+    .edv-pagetype-calendar-view .calendarmonth td.dayblank {
+        min-width: 6rem;
+        height: 7rem;
+        padding: var(--edv-space-2);
+        border-inline-end: 1px solid var(--edv-color-border);
+        border-bottom: 1px solid var(--edv-color-border);
+        vertical-align: top;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth .day-number-circle {
+        display: inline-grid;
+        place-items: center;
+        min-width: 2rem;
+        min-height: 2rem;
+        border-radius: var(--edv-radius-pill);
+        font-weight: 700;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth a[data-action="view-event"] {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--edv-space-2);
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .edv-pagetype-calendar-view .calendarmonth .eventname {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Grades: dense academic data remains tabular and scrolls inside the report surface. */
+    .edv-pagetype-grade-report-user-index .user-report-container {
+        max-width: 100%;
+        overflow-x: auto;
+        margin: var(--edv-space-4) 0 var(--edv-space-6);
+        padding: 0;
+        border: 1px solid var(--edv-color-border);
+        background: #ffffff;
+        scrollbar-width: thin;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade {
+        width: 100%;
+        min-width: 44rem;
+        margin: 0;
+        background: #ffffff;
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade td,
+    .edv-pagetype-grade-report-user-index .user-grade th {
+        border-color: var(--edv-color-border);
+    }
+
+    .edv-pagetype-grade-report-user-index .user-grade td.item,
+    .edv-pagetype-grade-report-user-index .user-grade th.column-itemname,
+    .edv-pagetype-grade-report-user-index .user-grade th.category {
+        background: #ffffff;
+    }
+
+    .edv-pagetype-grade-report-user-index .edv-tertiary-navigation,
+    .edv-pagetype-grade-report-user-index .tertiary-navigation {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Profile: preserve Core output while providing a responsive information grid. */
+    .edv-pagetype-user-profile .userprofile {
+        min-width: 0;
+        display: grid;
+    }
+
+    .edv-pagetype-user-profile .userprofile .description {
+        border: 1px solid var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .edv-pagetype-user-profile .profile_tree {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    }
+
+    .edv-pagetype-user-profile .profile_tree section {
+        min-width: 0;
+        overflow: hidden;
+        margin: 0;
+        border: 1px solid var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .edv-pagetype-user-profile .profile_tree section h3 {
+        margin: 0;
+        border-bottom: 1px solid var(--edv-color-border);
+        color: var(--edv-color-foreground);
+    }
+
+    .edv-pagetype-user-profile .profile_tree section ul {
+        margin: 0;
+    }
+
+    .edv-pagetype-user-profile #region-main > .block,
+    .edv-pagetype-user-profile #region-main .block.card {
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-lg);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-pagetype-user-profile .profile_tree {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}

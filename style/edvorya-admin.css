@@ -1,0 +1,416 @@
+/*
+ * Edvorya administration and desktop navigation experience.
+ * Boost owns generic mechanics; this file owns the Edvorya presentation.
+ */
+
+/* Desktop navigation follows the compact Edvorya LMS sidebar language. */
+.edv-desktop-nav,
+.edv-desktop-nav__list,
+.edv-desktop-nav__children {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edv-desktop-nav {
+    display: none;
+}
+
+.edv-desktop-nav__list {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.edv-desktop-nav__link,
+.edv-desktop-nav__child-link {
+    width: 100%;
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.625rem;
+    border: 0;
+    border-radius: var(--edv-radius-md);
+    background: transparent;
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+
+.edv-desktop-nav__group > .edv-desktop-nav__link {
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+}
+
+.edv-desktop-nav__group > .edv-desktop-nav__link::-webkit-details-marker {
+    display: none;
+}
+
+.edv-desktop-nav__item-main {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.edv-desktop-nav__item-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.edv-desktop-nav__item-icon {
+    flex: 0 0 auto;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: grid;
+    place-items: center;
+    color: currentColor;
+}
+
+.edv-desktop-nav__item-icon .icon,
+.edv-desktop-nav__item-icon svg {
+    width: 1.125rem;
+    max-width: 1.125rem;
+    height: 1.125rem;
+    max-height: 1.125rem;
+    margin: 0;
+}
+
+.edv-desktop-nav__link:hover,
+.edv-desktop-nav__child-link:hover,
+.edv-desktop-nav__link:focus-visible,
+.edv-desktop-nav__child-link:focus-visible {
+    background: #f1f5f9;
+    color: var(--edv-color-foreground);
+}
+
+.edv-desktop-nav__link.is-active,
+.edv-desktop-nav__child-link.is-active {
+    background: color-mix(in srgb, var(--edv-color-primary) 8%, #ffffff);
+    color: var(--edv-color-foreground);
+    font-weight: 600;
+}
+
+.edv-desktop-nav__children {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.25rem 0 0.25rem 2rem;
+}
+
+.edv-desktop-nav__child-link {
+    min-height: 2.25rem;
+    font-size: 0.8125rem;
+}
+
+.edv-desktop-nav__item-icon--child {
+    width: 1rem;
+    height: 1rem;
+}
+
+.edv-desktop-nav__chevron {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    color: var(--edv-color-muted);
+}
+
+.edv-desktop-nav__chevron .icon,
+.edv-desktop-nav__chevron svg {
+    width: 0.875rem;
+    max-width: 0.875rem;
+    height: 0.875rem;
+    max-height: 0.875rem;
+    margin: 0;
+    transition: transform 160ms ease;
+}
+
+.edv-desktop-nav__group[open] > summary .edv-desktop-nav__chevron svg {
+    transform: rotate(180deg);
+}
+
+/* Site administration category navigation. Moodle Core intentionally delegates
+ * these categories to secondary navigation on admin/search.php. Keep them visible,
+ * tactile and horizontally scrollable instead of allowing them to disappear on tablet.
+ */
+.edv-pagetype-admin-search .edv-secondary-nav--admin {
+    margin-bottom: 1.25rem;
+    padding: 0.375rem;
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-xl);
+    background: var(--edv-color-subtle);
+    box-shadow: none;
+}
+
+.edv-pagetype-admin-search .edv-secondary-nav--admin .nav,
+.edv-pagetype-admin-search .edv-secondary-nav--admin .more-nav {
+    gap: 0.25rem;
+    border: 0;
+}
+
+.edv-pagetype-admin-search .edv-secondary-nav--admin .nav-link {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.625rem 0.875rem;
+    border: 0;
+    border-radius: var(--edv-radius-lg);
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.edv-pagetype-admin-search .edv-secondary-nav--admin .nav-link:hover,
+.edv-pagetype-admin-search .edv-secondary-nav--admin .nav-link:focus-visible {
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+}
+
+.edv-pagetype-admin-search .edv-secondary-nav--admin .nav-link.active,
+.edv-pagetype-admin-search .edv-secondary-nav--admin .nav-link[aria-current="page"] {
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+    box-shadow: var(--edv-shadow-sm);
+}
+
+/* Site administration directory: category surfaces are scannable cards, while
+ * individual settings remain normal Core links with Edvorya touch density.
+ */
+.edv-pagetype-admin-search .tab-content {
+    margin-top: 0.75rem !important;
+}
+
+.edv-pagetype-admin-search .tab-content > .tab-pane > .container-fluid {
+    padding: 0;
+}
+
+.edv-pagetype-admin-search .tab-content .container-fluid > .row {
+    display: grid;
+    grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr);
+    gap: 1rem 1.25rem;
+    align-items: start;
+    margin: 0 0 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-xl);
+    background: #ffffff;
+    box-shadow: var(--edv-shadow-sm);
+}
+
+.edv-pagetype-admin-search .tab-content .container-fluid > .row > [class*="col"] {
+    width: auto;
+    min-width: 0;
+    flex: none;
+    padding: 0;
+}
+
+.edv-pagetype-admin-search .tab-content .container-fluid > .row > .col-sm-3:empty {
+    display: none;
+}
+
+.edv-pagetype-admin-search .tab-content .container-fluid > .row > .col-sm-3:empty + .col,
+.edv-pagetype-admin-search .tab-content .container-fluid > .row > .col-sm-3:empty + .col-sm-9 {
+    grid-column: 1 / -1;
+}
+
+.edv-pagetype-admin-search .tab-content hr {
+    display: none;
+}
+
+.edv-pagetype-admin-search .tab-content h4 {
+    margin: 0;
+    padding: 0.625rem 0;
+    color: var(--edv-color-foreground);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.edv-pagetype-admin-search .tab-content h4 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.edv-pagetype-admin-search .tab-content h4 a:hover {
+    color: var(--edv-color-primary);
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: 0.375rem 0.5rem;
+    margin: 0;
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li {
+    min-width: 0;
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: var(--edv-radius-md);
+    background: var(--edv-color-subtle);
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.35;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a::after {
+    content: none;
+}
+
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a:hover,
+.edv-pagetype-admin-search .tab-content .list-unstyled li > a:focus-visible {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 14%, var(--edv-color-border));
+    background: #ffffff;
+    color: var(--edv-color-foreground);
+}
+
+/* Keep the administration search/header tools usable at tablet widths instead of
+ * compressing the title and search control into a desktop-only single line.
+ */
+@media (max-width: 63.999rem) {
+    .edv-pagetype-admin-search .edv-content-header #page-header {
+        min-width: 0;
+    }
+
+    .edv-pagetype-admin-search .edv-secondary-nav--admin {
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .edv-pagetype-admin-search .edv-secondary-nav--admin .nav,
+    .edv-pagetype-admin-search .edv-secondary-nav--admin .more-nav {
+        width: max-content;
+        min-width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    .edv-pagetype-admin-search .tab-content .container-fluid > .row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.5rem;
+        padding: 0.875rem;
+    }
+
+    .edv-pagetype-admin-search .tab-content h4 {
+        padding: 0.25rem 0 0.5rem;
+        font-size: 1rem;
+    }
+
+    .edv-pagetype-admin-search .tab-content .list-unstyled {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Plugin installer: preserve Moodle forms while using Edvorya surfaces. */
+.edv-pagetype-admin-tool-installaddon-index #region-main > h2,
+.edv-pagetype-admin-tool-installaddon-index #region-main > .h2 {
+    margin-bottom: 1.25rem;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromrepobox,
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox {
+    width: min(100%, 58rem);
+    margin: 0 auto 1rem;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-xl);
+    background: #ffffff;
+    box-shadow: var(--edv-shadow-sm);
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromrepobox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromrepobox .singlebutton,
+.edv-pagetype-admin-tool-installaddon-index #installfromrepobox form {
+    margin: 0;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox .mform,
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox form {
+    max-width: none;
+    margin: 0;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox legend,
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox .ftoggler {
+    margin-bottom: 0.75rem;
+    color: var(--edv-color-foreground);
+    font-size: 1rem;
+    font-weight: 650;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox .fitem {
+    padding-block: 0.625rem;
+}
+
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox .fdescription,
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox .form-text,
+.edv-pagetype-admin-tool-installaddon-index #installfromzipbox .text-muted {
+    color: var(--edv-color-muted) !important;
+    font-size: 0.875rem;
+}
+
+@media (min-width: 64rem) {
+    .edv-desktop-nav {
+        display: block;
+    }
+}
+
+@media (max-width: 47.999rem) {
+    .edv-pagetype-admin-search .tab-content .list-unstyled {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .edv-pagetype-admin-search .tab-content .container-fluid > .row {
+        padding: 0.75rem;
+        border-radius: var(--edv-radius-lg);
+    }
+
+    .edv-pagetype-admin-search .tab-content .list-unstyled li > a {
+        min-height: 3rem;
+        font-size: 0.9375rem;
+    }
+
+    .edv-pagetype-admin-tool-installaddon-index #installfromrepobox,
+    .edv-pagetype-admin-tool-installaddon-index #installfromzipbox {
+        padding: 1rem;
+        border-radius: var(--edv-radius-xl);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edv-desktop-nav__chevron .icon,
+    .edv-desktop-nav__chevron svg {
+        transition: none;
+    }
+}

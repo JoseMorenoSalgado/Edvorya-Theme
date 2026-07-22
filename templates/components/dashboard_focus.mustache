@@ -1,0 +1,25 @@
+{{!
+    @template theme_edvorya/components/dashboard_focus
+
+    Intent-first dashboard guidance inspired by Edvorya LMS. Moodle Core remains
+    responsible for actual course, timeline, calendar, completion and messaging data.
+}}
+<section class="edv-dashboard-focus edv-dashboard-focus--{{persona}}" aria-labelledby="edv-dashboard-focus-title">
+    <div class="edv-dashboard-focus__intro">
+        <p class="edv-dashboard-focus__eyebrow">{{eyebrow}}</p>
+        <h2 id="edv-dashboard-focus-title" class="edv-dashboard-focus__title">{{title}}</h2>
+        <p class="edv-dashboard-focus__description">{{description}}</p>
+    </div>
+
+    <nav class="edv-dashboard-focus__questions" aria-label="{{title}}">
+        {{#questions}}
+            <a class="edv-dashboard-focus__question {{#primary}}edv-dashboard-focus__question--primary{{/primary}}" href="{{{url}}}">
+                <span class="edv-dashboard-focus__icon" aria-hidden="true">{{{iconhtml}}}</span>
+                <span class="edv-dashboard-focus__question-copy">
+                    <strong>{{title}}</strong>
+                    <span>{{description}}</span>
+                </span>
+            </a>
+        {{/questions}}
+    </nav>
+</section>

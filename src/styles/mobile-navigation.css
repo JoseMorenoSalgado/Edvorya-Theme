@@ -1,0 +1,69 @@
+/*
+ * Responsive shell structure for Edvorya navigation.
+ * Visual drawer styling lives in style/edvorya-shell.css.
+ */
+@layer components {
+    .edv-page {
+        grid-template-areas:
+            "main"
+            "sidebar";
+    }
+
+    .edv-main {
+        grid-area: main;
+    }
+
+    .edv-sidebar {
+        grid-area: sidebar;
+        border-top: 1px solid var(--edv-color-border);
+        border-bottom: 0;
+    }
+
+    .edv-sidebar--navigation-only,
+    .edv-primary-nav {
+        display: none;
+    }
+
+    /* Tablet widths keep the product name but remove secondary institution metadata
+     * from the topbar. The drawer always retains the complete two-level lockup.
+     */
+    @media (max-width: 63.999rem) {
+        .edv-topbar__inner > .edv-brand .edv-brand__meta {
+            display: none;
+        }
+
+        .edv-mobile-nav__panel-brand .edv-brand__meta {
+            display: block;
+        }
+    }
+
+    @media (max-width: 47.999rem) {
+        .edv-topbar__inner > .edv-brand .edv-brand__name {
+            display: none;
+        }
+
+        .edv-mobile-nav__panel-brand .edv-brand__name {
+            display: block;
+        }
+    }
+
+    @media (min-width: 64rem) {
+        .edv-mobile-nav {
+            display: none;
+        }
+
+        .edv-page {
+            grid-template-areas: "sidebar main";
+        }
+
+        .edv-sidebar,
+        .edv-sidebar--navigation-only,
+        .edv-primary-nav {
+            display: block;
+        }
+
+        .edv-sidebar {
+            border-top: 0;
+        }
+    }
+}

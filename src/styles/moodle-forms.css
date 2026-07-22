@@ -1,0 +1,202 @@
+@layer components {
+    /*
+     * Boost owns Moodle form mechanics and Bootstrap form structure. Edvorya
+     * only applies product typography, density, states and viewport-safe skin.
+     */
+
+    .mform {
+        min-width: 0;
+    }
+
+    .mform fieldset {
+        min-width: 0;
+        padding-bottom: var(--edv-space-4);
+        border-bottom-color: var(--edv-color-border);
+    }
+
+    .mform legend {
+        color: var(--edv-color-foreground);
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .mform .fitem {
+        min-width: 0;
+        margin-bottom: var(--edv-space-3);
+    }
+
+    .form-label,
+    .col-form-label,
+    .mform .form-label {
+        color: var(--edv-color-foreground);
+        font-size: 0.9rem;
+        font-weight: 650;
+        line-height: 1.35;
+    }
+
+    .form-control,
+    .form-select {
+        min-width: 0;
+        min-height: 2.5rem;
+        max-width: 100%;
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background-color: #ffffff;
+        color: var(--edv-color-foreground);
+        font-size: 0.925rem;
+        transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+    }
+
+    textarea.form-control {
+        min-height: 7rem;
+    }
+
+    .form-control::placeholder {
+        color: var(--edv-color-muted);
+        opacity: 0.8;
+    }
+
+    .form-control:hover:not(:disabled):not([readonly]),
+    .form-select:hover:not(:disabled) {
+        border-color: color-mix(in srgb, var(--edv-color-primary) 45%, var(--edv-color-border));
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--edv-color-primary);
+        box-shadow: var(--edv-focus-ring);
+    }
+
+    .form-control-sm,
+    .form-select-sm {
+        min-height: 2rem;
+    }
+
+    .form-control-lg,
+    .form-select-lg {
+        min-height: 3rem;
+        border-radius: var(--edv-radius-md);
+    }
+
+    .form-text,
+    .form-defaultinfo,
+    .form-label .form-shortname,
+    .no-felement.fstatic {
+        color: var(--edv-color-muted);
+    }
+
+    .form-label .form-shortname {
+        font-weight: 500;
+    }
+
+    .input-group-text {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+    }
+
+    .form-check-input {
+        accent-color: var(--edv-color-primary);
+    }
+
+    .form-check-input:focus-visible {
+        outline: 3px solid var(--edv-color-primary);
+        outline-offset: 2px;
+    }
+
+    .form-control[readonly],
+    .form-control:disabled,
+    .form-select:disabled {
+        opacity: 1;
+        border-color: var(--edv-color-border);
+        background: var(--edv-color-background);
+        color: var(--edv-color-muted);
+    }
+
+    .form-check-input:disabled,
+    .form-check-input:disabled + .form-check-label {
+        opacity: var(--edv-disabled-opacity);
+    }
+
+    .invalid-feedback,
+    .form-control-feedback.invalid-feedback {
+        color: var(--edv-color-danger);
+    }
+
+    .valid-feedback {
+        color: var(--edv-color-success);
+    }
+
+    .is-invalid,
+    .has-danger .form-control,
+    .has-danger .form-select {
+        border-color: var(--edv-color-danger);
+    }
+
+    .is-invalid:focus,
+    .has-danger .form-control:focus,
+    .has-danger .form-select:focus {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--edv-color-danger) 24%, transparent);
+    }
+
+    .is-valid,
+    .has-success .form-control,
+    .has-success .form-select {
+        border-color: var(--edv-color-success);
+    }
+
+    .is-valid:focus,
+    .has-success .form-control:focus,
+    .has-success .form-select:focus {
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--edv-color-success) 24%, transparent);
+    }
+
+    input[type="file"].form-control::file-selector-button {
+        border-inline-end-color: var(--edv-color-border);
+        background: var(--edv-color-background);
+        color: var(--edv-color-foreground);
+        font-weight: 600;
+    }
+
+    /* Boost owns autocomplete positioning/interaction; Edvorya skins the popup. */
+    .form-autocomplete-suggestions {
+        max-width: min(36rem, calc(100vw - 2rem));
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-md);
+    }
+
+    .form-autocomplete-suggestions li {
+        color: var(--edv-color-foreground);
+        overflow-wrap: anywhere;
+    }
+
+    .form-autocomplete-suggestions li:hover,
+    .form-autocomplete-suggestions li:focus,
+    .form-autocomplete-suggestions li[aria-selected="true"] {
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .form-autocomplete-suggestions li[aria-disabled="true"] {
+        opacity: var(--edv-disabled-opacity);
+    }
+
+    @media (max-width: 47.999rem) {
+        .form-control,
+        .form-select,
+        .singleselect {
+            max-width: 100%;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .form-control,
+        .form-select {
+            transition: none;
+        }
+    }
+}

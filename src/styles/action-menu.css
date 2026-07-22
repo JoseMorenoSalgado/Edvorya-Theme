@@ -1,0 +1,41 @@
+@layer components {
+    /* Boost owns Action Menu and dropdown mechanics; Edvorya styles the trigger and menu density. */
+    .action-menu .dropdown-toggle {
+        min-width: 2.25rem;
+        min-height: 2.25rem;
+        border-radius: var(--edv-radius-sm);
+        color: var(--edv-color-foreground);
+    }
+
+    .action-menu .dropdown-toggle:hover,
+    .action-menu .dropdown-toggle:focus-visible,
+    .action-menu .dropdown.show > .dropdown-toggle {
+        background: var(--edv-hover-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .action-menu .dropdown-menu {
+        min-width: 13rem;
+        max-width: min(22rem, calc(100vw - 2rem));
+    }
+
+    .action-menu .dropdown-item,
+    .action-menu .menu-action {
+        overflow-wrap: anywhere;
+    }
+
+    .action-menu .dropdown-item .icon,
+    .action-menu .menu-action .icon {
+        margin-inline-end: var(--edv-space-2);
+    }
+
+    .block-controls.header {
+        min-width: 0;
+    }
+
+    @media (max-width: 47.999rem) {
+        .action-menu .dropdown-menu {
+            max-width: calc(100vw - 1rem);
+        }
+    }
+}

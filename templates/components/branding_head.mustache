@@ -1,0 +1,9 @@
+{{!
+    @template theme_edvorya/components/branding_head
+
+    Head-level branding assets. Client colour tokens are injected into Moodle's
+    cached theme stylesheet through theme_edvorya_css_post_process().
+}}
+{{#faviconurl}}
+<link rel="icon" href="{{{ faviconurl }}}">
+{{/faviconurl}}

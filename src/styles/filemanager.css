@@ -1,0 +1,88 @@
+@layer components {
+    /*
+     * Boost owns File Picker/File Manager layout and interaction mechanics.
+     * Edvorya keeps only responsive containment and product surface styling.
+     */
+
+    .filepicker .moodle-dialogue-bd {
+        min-height: min(32.5rem, calc(100dvh - 6rem));
+    }
+
+    .file-picker,
+    .filemanager {
+        min-width: 0;
+        color: var(--edv-color-foreground);
+    }
+
+    .fp-navbar {
+        padding: var(--edv-space-2);
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-sm) var(--edv-radius-sm) 0 0;
+        background: #ffffff;
+    }
+
+    .file-picker .fp-content,
+    .filemanager .fp-content {
+        min-width: 0;
+        max-height: min(32rem, calc(100dvh - 10rem));
+        overflow: auto;
+        border-color: var(--edv-color-border);
+        background: #ffffff;
+    }
+
+    .file-picker .fp-list .fp-repo a {
+        color: var(--edv-color-foreground);
+        text-decoration: none;
+    }
+
+    .file-picker .fp-list .fp-repo a:hover,
+    .file-picker .fp-list .fp-repo.active a {
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .fp-viewbar:not(.disabled) a.checked {
+        border-color: var(--edv-color-primary);
+        background: var(--edv-active-overlay);
+        color: var(--edv-color-primary);
+    }
+
+    .fp-iconview .fp-thumbnail {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: #ffffff;
+        box-shadow: none;
+    }
+
+    .fp-iconview .fp-thumbnail:hover,
+    .fp-iconview .fp-file:focus .fp-thumbnail {
+        border-color: var(--edv-color-primary);
+        background: var(--edv-hover-overlay);
+    }
+
+    .fp-select .fp-thumbnail {
+        border-color: var(--edv-color-border);
+        border-radius: var(--edv-radius-sm);
+        background: var(--edv-color-background);
+    }
+
+    .fp-select .fp-select-buttons {
+        gap: var(--edv-space-2);
+    }
+
+    .filemanager-container,
+    .filemanager .fp-restrictions {
+        max-width: 100%;
+    }
+
+    @media (max-width: 47.999rem) {
+        .filepicker .moodle-dialogue-bd {
+            min-height: min(28rem, calc(100dvh - 4rem));
+        }
+
+        .file-picker .fp-content,
+        .filemanager .fp-content {
+            max-height: calc(100dvh - 8rem);
+        }
+    }
+}

@@ -1,0 +1,202 @@
+/* Edvorya contextual navigation.
+ * Primary navigation stays in the app drawer/sidebar. Context navigation is compact
+ * on phone/tablet when Edvorya can safely build it from Core navigation URLs.
+ * Core secondary navigation remains visible as a scrollable fallback when it cannot.
+ */
+
+.edv-context-nav {
+    display: block;
+    width: 100%;
+    margin: 0 0 var(--edv-space-4);
+    border: 1px solid var(--edv-color-border);
+    border-radius: var(--edv-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--edv-shadow-sm);
+    overflow: hidden;
+}
+
+.edv-context-nav__summary {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.15rem 0.75rem;
+    align-items: center;
+    min-height: 3.5rem;
+    padding: 0.7rem 3rem 0.7rem 1rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+.edv-context-nav__summary::-webkit-details-marker {
+    display: none;
+}
+
+.edv-context-nav__summary-label {
+    grid-column: 1;
+    color: var(--edv-color-muted);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.edv-context-nav__summary-current {
+    grid-column: 1;
+    min-width: 0;
+    color: var(--edv-color-foreground);
+    font-size: 1rem;
+    font-weight: 750;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.edv-context-nav__chevron {
+    position: absolute;
+    inset-inline-end: 1.1rem;
+    top: 50%;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    color: var(--edv-color-muted);
+    transform: translateY(-65%) rotate(45deg);
+    transition: transform 140ms ease;
+}
+
+.edv-context-nav[open] .edv-context-nav__chevron {
+    transform: translateY(-35%) rotate(225deg);
+}
+
+.edv-context-nav__summary:hover {
+    background: var(--edv-hover-overlay);
+}
+
+.edv-context-nav__summary:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--edv-color-primary) 28%, transparent);
+    outline-offset: -3px;
+}
+
+.edv-context-nav__panel {
+    border-top: 1px solid var(--edv-color-border);
+    padding: 0.5rem;
+}
+
+.edv-context-nav__list {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edv-context-nav__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: var(--edv-radius-md);
+    color: var(--edv-color-foreground);
+    font-weight: 650;
+    line-height: 1.3;
+    text-decoration: none;
+}
+
+.edv-context-nav__link:hover,
+.edv-context-nav__link:focus-visible {
+    border-color: color-mix(in srgb, var(--edv-color-primary) 14%, var(--edv-color-border));
+    background: color-mix(in srgb, var(--edv-color-primary) 6%, #ffffff);
+    color: var(--edv-color-foreground);
+}
+
+.edv-context-nav__link.is-active {
+    background: color-mix(in srgb, var(--edv-color-primary) 9%, #ffffff);
+    color: #1746b0;
+    font-weight: 750;
+}
+
+.edv-context-nav__active-dot {
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--edv-color-primary);
+}
+
+/* Phone/tablet: hide Core's tab bar only when a real Edvorya compact replacement exists. */
+@media (max-width: 63.999rem) {
+    .edv-secondary-nav--context-replaced {
+        display: none !important;
+    }
+
+    /* Fallback for Core pages whose secondary navigation cannot be converted into URL items.
+     * Site administration depends on this contract: core/settings_link_page deliberately
+     * omits its internal category tabs when Moodle reports secondary navigation as enabled.
+     */
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: var(--edv-space-4);
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.375rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-subtle);
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav,
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .more-nav {
+        width: max-content;
+        min-width: 100%;
+        flex-wrap: nowrap;
+        gap: 0.25rem;
+        border: 0;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-item {
+        flex: 0 0 auto;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link {
+        min-height: 2.75rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.625rem 0.875rem;
+        border: 0;
+        border-radius: var(--edv-radius-lg);
+        color: #475569;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link:hover,
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link:focus-visible {
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link.active,
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link[aria-current="page"] {
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+        box-shadow: var(--edv-shadow-sm);
+    }
+}
+
+/* Desktop keeps the established horizontal contextual navigation. */
+@media (min-width: 64rem) {
+    .edv-context-nav {
+        display: none;
+    }
+}
