@@ -23,7 +23,7 @@ The theme does not modify Moodle Core and does not depend on RemUI, Classic, Lam
 
 The current `Edvorya-LMS` product is the visual source of truth. Product decisions are translated into Moodle CSS, Mustache and PHP without importing React, shadcn, Radix or Tailwind runtime dependencies.
 
-The visual contract is documented in:
+The visual and learning-experience contract is documented in:
 
 ```text
 docs/VISUAL_IDENTITY.md
