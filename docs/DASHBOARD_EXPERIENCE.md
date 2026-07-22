@@ -35,25 +35,33 @@ Edvorya LMS also contains summary concepts such as enrolled courses, average pro
 The Edvorya LMS teacher experience establishes these primary questions:
 
 1. **What should I review?**
-   - Moodle mapping today: teacher courses and the relevant activity grading interfaces.
-   - Theme action: prioritise access to My courses without inventing an aggregate grading count.
+   - Moodle mapping today: teacher-visible courses and the relevant activity grading interfaces.
+   - Theme action: when exactly one teacher-visible course exists, link directly to its workspace; with multiple courses, use My courses so the theme does not invent a priority ranking.
    - Future `local_edvorya`: cached cross-course review queue using Moodle activity APIs.
 
 2. **Who needs follow-up?**
-   - Moodle mapping today: course completion and activity completion within each course.
+   - Moodle mapping today: Participants, course completion and activity completion within each course.
+   - Theme action: when exactly one teacher-visible course exists, link directly to its Participants page; with multiple courses, let the teacher choose the course first.
    - Future `local_edvorya`: intervention dashboard combining progress, inactivity and completion signals with explicit, documented risk rules.
 
 3. **Is there anything to answer?**
    - Moodle mapping: messaging and forum/activity communication surfaces.
    - Theme action: direct access to Moodle messaging while preserving Core notification and message controllers.
 
-Edvorya LMS also models assigned courses, submissions awaiting review, students at risk and forum questions requiring response. Only assigned-course access is suitable for the theme render path. Cross-course counts, risk detection and forum queues require `local_edvorya` or existing Moodle plugins and must be cached or loaded asynchronously.
+Edvorya LMS also models assigned courses, submissions awaiting review, students at risk and forum questions requiring response. Only course/workspace access is suitable for the theme render path. Cross-course counts, risk detection and forum queues require `local_edvorya` or existing Moodle plugins and must be cached or loaded asynchronously.
 
 ## Persona detection
 
-`theme_edvorya\output\dashboard_experience` uses Moodle Core capability data rather than role shortnames. A user is treated as a teacher persona when Core reports at least one course where the user has `moodle/course:manageactivities`.
+`theme_edvorya\output\dashboard_experience` uses Moodle Core capability data rather than role shortnames. A user is treated as a teacher persona when Core reports at least one course where the user has `moodle/grade:viewall`.
 
-The query is limited to one result because the theme only needs a boolean persona decision. Site administrators are not forced into either student or teacher dashboard guidance.
+Moodle Core grants this capability to both the default `teacher` and `editingteacher` archetypes. This lets Edvorya recognise non-editing teachers without granting any edit permission or relying on translated/custom role names.
+
+The capability lookup is bounded to two courses. Two results are sufficient to distinguish:
+
+- exactly one teacher-visible course, where direct course and Participants links are safe;
+- multiple teacher-visible courses, where the teacher is sent to My courses rather than an arbitrary course.
+
+Site administrators are not forced into either student or teacher dashboard guidance. Course-level workspace presentation uses the same `moodle/grade:viewall` capability, while Moodle Core continues to decide whether editing actions are available.
 
 ## Visual hierarchy
 
@@ -75,7 +83,7 @@ The dashboard follows these rules:
 Owns:
 
 - visual hierarchy;
-- role-aware presentation context;
+- capability-aware presentation context;
 - navigation prompts;
 - ordering/presentation of existing Core blocks;
 - responsive, accessible Design System treatment.
@@ -100,4 +108,4 @@ May own:
 - asynchronous dashboard APIs;
 - institutional dashboard configuration.
 
-This separation keeps Edvorya Theme fast and standalone while allowing the full Edvorya LMS dashboard philosophy to evolve without turning theme rendering into a database bottleneck.
+This separation keeps Edvorya Theme fast and maintainable while allowing the full Edvorya LMS dashboard philosophy to evolve without turning theme rendering into a database bottleneck.
