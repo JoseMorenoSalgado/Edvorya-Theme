@@ -153,11 +153,12 @@ if ($pagetypeclass !== '') {
 }
 
 // Expose a presentation-only teacher workspace context for the current course.
-// Capability checks are authoritative and language/role-name independent. The course
-// context is reused by Moodle's access API; no custom SQL or aggregate analytics are added.
+// Core grants moodle/grade:viewall to both teacher and editingteacher archetypes, so
+// this capability represents the broader teaching workspace without giving the user
+// editing privileges they do not already possess. No custom SQL or analytics are added.
 if ($authenticated && !empty($PAGE->course->id) && (int) $PAGE->course->id !== SITEID) {
     $coursecontext = \context_course::instance((int) $PAGE->course->id, IGNORE_MISSING);
-    if ($coursecontext && has_capability('moodle/course:manageactivities', $coursecontext)) {
+    if ($coursecontext && has_capability('moodle/grade:viewall', $coursecontext)) {
         $bodyclasses[] = 'edv-course-role-teacher';
     }
 }
