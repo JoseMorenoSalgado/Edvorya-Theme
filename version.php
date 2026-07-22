@@ -11,7 +11,8 @@
  *
  * Alpha.18 propagates the Edvorya LMS product identity across Moodle learning
  * experiences: My Courses, course view, calendar, grades, profile, messaging
- * and login. Boost remains responsible for Core mechanics and JavaScript.
+ * and login. Boost remains responsible for Core mechanics, JavaScript and
+ * compatibility behavior across Moodle 5.0, 5.1 and 5.2.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
