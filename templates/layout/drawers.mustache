@@ -70,7 +70,7 @@
                 {{/hascontextnavigation}}
 
                 {{#secondarymoremenu}}
-                    <nav class="edv-secondary-nav" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
+                    <nav class="edv-secondary-nav {{#hascontextnavigation}}edv-secondary-nav--context-replaced{{/hascontextnavigation}} {{#isadminsearch}}edv-secondary-nav--admin{{/isadminsearch}}" aria-label="{{#str}}secondarynavigationlabel, theme_edvorya{{/str}}">
                         {{> core/moremenu }}
                     </nav>
                 {{/secondarymoremenu}}
