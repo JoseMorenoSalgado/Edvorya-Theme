@@ -9,6 +9,7 @@ Feature: Edvorya intent-first role dashboards
       | username | firstname | lastname | email |
       | student1 | Elena | Student | student1@example.com |
       | teacher1 | Tomas | Teacher | teacher1@example.com |
+      | teacher2 | Nora | Teacher | teacher2@example.com |
     And the following "courses" exist:
       | fullname | shortname | category |
       | Edvorya Learning Course | ELC1 | 0 |
@@ -16,6 +17,7 @@ Feature: Edvorya intent-first role dashboards
       | user | course | role |
       | student1 | ELC1 | student |
       | teacher1 | ELC1 | editingteacher |
+      | teacher2 | ELC1 | teacher |
 
   Scenario: Student dashboard answers the three primary learning questions
     Given I log in as "student1"
@@ -37,6 +39,15 @@ Feature: Edvorya intent-first role dashboards
     And I should see "Is there anything to answer?" in the ".edv-dashboard-focus" "css_element"
     And ".edv-dashboard-focus--teacher a[href*='/course/view.php?id=']" "css_element" should exist
     And ".edv-dashboard-focus--teacher a[href*='/user/index.php?id=']" "css_element" should exist
+    And the Edvorya element ".edv-dashboard-focus" should fit within the viewport horizontally
+
+  Scenario: Non-editing teacher receives the teacher dashboard without edit privileges
+    Given I log in as "teacher2"
+    When I visit the Edvorya Core path "/my/"
+    Then "body.edv-dashboard-persona-teacher" "css_element" should exist
+    And ".edv-dashboard-focus--teacher" "css_element" should be visible
+    And I should see "What should I review?" in the ".edv-dashboard-focus" "css_element"
+    And I should see "Who needs follow-up?" in the ".edv-dashboard-focus" "css_element"
     And the Edvorya element ".edv-dashboard-focus" should fit within the viewport horizontally
 
   Scenario: Editing teacher with multiple courses chooses the workspace instead of an arbitrary course
