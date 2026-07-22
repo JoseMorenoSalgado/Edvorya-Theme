@@ -9,10 +9,9 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.17 translates the production Edvorya LMS visual language to Moodle:
- * compact shell actions, two-level product/institution branding, 18rem mobile
- * drawer, Lucide-style bare navigation icons, quiet slate surfaces and a
- * PageShell/dashboard hierarchy aligned with the main product.
+ * Alpha.18 propagates the Edvorya LMS product identity across Moodle learning
+ * experiences: My Courses, course view, calendar, grades, profile, messaging
+ * and login. Boost remains responsible for Core mechanics and JavaScript.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -22,8 +21,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072117;
+$plugin->version = 2026072118;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.17';
+$plugin->release = '0.1.0-alpha.18';
