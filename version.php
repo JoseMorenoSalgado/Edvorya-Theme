@@ -9,12 +9,12 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.28 makes configurable branding truthful and enforceable. A new static
- * audit verifies that every exposed colour setting is emitted through Moodle's
- * cached CSS pipeline, has a canonical default and has at least one semantic
- * CSS consumer. The obsolete accent setting/token is removed end-to-end and
- * cleaned from legacy alpha configuration during upgrade. This release marker
- * also anchors full regression validation to the final alpha.28 source state.
+ * Alpha.29 removes historical visual duplication from learning-support and
+ * operational experience modules. Those modules now focus on containment,
+ * scrolling, table geometry, administration forms and message-app layout,
+ * while identity.css remains the final Edvorya LMS visual composition layer.
+ * The cleanup removes 164 obsolete source CSS lines without replacing Core
+ * Moodle behavior or data-region contracts.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -24,8 +24,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072128;
+$plugin->version = 2026072129;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.28';
+$plugin->release = '0.1.0-alpha.29';
