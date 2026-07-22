@@ -1,27 +1,17 @@
-@layer base {
-    :root {
-        /* Minimal compatibility aliases used by Moodle/plugin CSS without importing Bootstrap. */
-        --bs-primary: var(--edv-color-primary);
-        --bs-secondary-bg: #f1f5f9;
-        --bs-border-color: var(--edv-color-border);
-    }
-}
-
 @layer components {
-    .justify-content-end {
-        justify-content: flex-end !important;
+    /* Boost owns utility classes and activity mechanics. Edvorya only keeps
+       cross-activity presentation and proven viewport containment. */
+    .path-mod .activity-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--edv-color-border);
     }
 
-    .d-inline-block {
-        display: inline-block !important;
-    }
-
-    .text-primary {
-        color: var(--edv-color-primary) !important;
-    }
-
-    .border-0 {
-        border: 0 !important;
+    .path-mod .activity-header .activity-description,
+    .path-mod .activity-header .activity-dates {
+        color: var(--edv-color-muted);
+        font-size: 0.875rem;
+        line-height: 1.6;
     }
 
     .path-mod-assign .table-responsive,
@@ -32,6 +22,13 @@
     .path-mod-forum .no-overflow {
         max-width: 100%;
         overflow-x: auto;
+        overscroll-behavior-inline: contain;
         -webkit-overflow-scrolling: touch;
+    }
+
+    .path-mod .activity-navigation {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--edv-color-border);
     }
 }
