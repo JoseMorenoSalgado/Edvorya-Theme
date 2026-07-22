@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.18`
+- Release: `0.1.0-alpha.22`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -27,9 +27,10 @@ The visual and learning-experience contract is documented in:
 
 ```text
 docs/VISUAL_IDENTITY.md
+docs/DASHBOARD_EXPERIENCE.md
 ```
 
-Alpha.17 established the shared shell and Design System language. Alpha.18 propagates that identity across the main Moodle learning experiences.
+Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts.
 
 Translated patterns include:
 
@@ -41,13 +42,27 @@ Translated patterns include:
 - two-level `Edvorya LMS + institution` brand lockup;
 - white/slate neutral canvas with one institutional primary accent;
 - restrained `shadow-sm` surfaces;
-- 12-16px normal surface radii;
+- 12–16px normal surface radii;
 - plain PageShell-style headings with a quiet divider;
 - compact student/teacher dashboard decision cards;
 - Edvorya-aligned My Courses cards and course navigation;
 - calendar and grade-report surfaces;
 - compact profile and messaging presentation;
-- unified login styling while Moodle Core retains authentication behavior.
+- unified login styling while Moodle Core retains authentication behavior;
+- capability-aware teacher presentation for course management, Participants, Gradebook and Assignment grading.
+
+## Teacher workspace
+
+Edvorya identifies the teacher presentation context with Moodle capabilities, not role shortnames.
+
+`moodle/grade:viewall` is used because Moodle Core grants it to both default `teacher` and `editingteacher` archetypes. This allows non-editing teachers to receive the academic workspace presentation without granting edit permissions.
+
+The dashboard uses a bounded two-course capability lookup:
+
+- exactly one teacher-visible course: direct course and Participants workspace links;
+- multiple teacher-visible courses: My courses is used so the theme does not choose an arbitrary priority course.
+
+Cross-course grading queues, risk scoring and recommendation logic remain outside the theme and belong in a future optional `local_edvorya` service layer.
 
 ## Compatibility boundary
 
@@ -100,6 +115,7 @@ The final compiled visual skin is defined by:
 
 ```text
 src/styles/identity.css
+src/styles/teacher-experience.css
 ```
 
 Focused runtime sheets:
@@ -109,9 +125,10 @@ style/edvorya-shell.css
 style/edvorya-dashboard.css
 style/edvorya-admin.css
 style/edvorya-context-nav.css
+style/edvorya-interactions.css
 ```
 
-`style/edvorya-shell.css` contains only Edvorya-owned shell refinements. Generic Moodle Core compatibility mechanics are inherited from Boost.
+`style/edvorya-shell.css` contains only Edvorya-owned shell refinements. `style/edvorya-interactions.css` contains narrow viewport/touch containment contracts. Generic Moodle Core compatibility mechanics are inherited from Boost.
 
 ## Development CSS build
 
@@ -120,7 +137,7 @@ npm install --ignore-scripts --no-audit --no-fund
 npm run build:css
 ```
 
-The quality workflow rebuilds CSS from the canonical source and synchronizes the committed production artifact when source CSS changes.
+The quality workflow rebuilds CSS from the canonical source and verifies that the committed production artifact is reproducible.
 
 ## Moodle installation paths
 
@@ -142,7 +159,7 @@ Always use the actual directory structure of the installed Moodle instance. Afte
 
 Automated compatibility is maintained for Moodle 5.0, 5.1 and 5.2 with PHP 8.3 and MariaDB 10.11 test runtimes, representative Moodle bundled activities/plugins, the required Google Drive `mod_videoplayer` integration, responsive Chrome/Selenium and Axe accessibility gates.
 
-Alpha.18 must pass the same gates after the identity propagation before the next activity-specific visual phase is considered stable.
+Alpha.22 must pass the same gates after the teacher-workspace and Participants selector corrections before the next visual phase is considered stable.
 
 Environment-specific acceptance still includes true Safari/iPhone validation, representative SCORM packages and a deterministic LTI provider.
 
