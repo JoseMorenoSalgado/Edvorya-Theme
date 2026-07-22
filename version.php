@@ -9,11 +9,12 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.21 refines the capability-aware teacher workflow introduced in
- * alpha.20. Teacher dashboard routing now distinguishes a single manageable
- * course from multiple courses with a bounded two-course lookup, avoiding an
- * arbitrary course being presented as the teacher's highest-priority target.
- * Moodle Core data, permissions and Boost interaction mechanics remain intact.
+ * Alpha.22 aligns the capability-aware teacher workspace with Moodle's real
+ * course contracts. Both editing and non-editing teachers are recognised via
+ * moodle/grade:viewall, multi-course dashboard routing avoids arbitrary course
+ * prioritisation, and Participants styling now targets Core's explicit
+ * course-view-participants page type. Core data, permissions and Boost
+ * interaction mechanics remain intact.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -23,8 +24,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072121;
+$plugin->version = 2026072122;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.21';
+$plugin->release = '0.1.0-alpha.22';
