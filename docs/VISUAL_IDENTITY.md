@@ -217,6 +217,8 @@ Authentication remains entirely Moodle Core-owned. Edvorya translates the unifie
 - institutional branding remains visible;
 - no external font, React or runtime UI dependency is introduced.
 
+Alpha.18 implements these visual contracts through the final `src/styles/identity.css` layer. Earlier page-experience modules keep containment and Core-specific structure; the identity layer owns the final product skin.
+
 ## Components
 
 ### Surfaces
