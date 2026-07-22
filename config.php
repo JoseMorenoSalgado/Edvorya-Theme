@@ -30,6 +30,7 @@ $THEME->parents = ['boost'];
 $THEME->sheets = [
     'edvorya',
     'edvorya-shell',
+    'edvorya-interactions',
     'edvorya-dashboard',
     'edvorya-admin',
     'edvorya-context-nav',
