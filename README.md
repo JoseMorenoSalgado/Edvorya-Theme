@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.22`
+- Release: `0.1.0-alpha.24`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -30,7 +30,7 @@ docs/VISUAL_IDENTITY.md
 docs/DASHBOARD_EXPERIENCE.md
 ```
 
-Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts.
+Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts. Alpha.23 restores type-safe student dashboard rendering across Moodle 5.0–5.2. Alpha.24 aligns persisted branding defaults with the current Edvorya LMS neutral palette.
 
 Translated patterns include:
 
@@ -50,6 +50,19 @@ Translated patterns include:
 - compact profile and messaging presentation;
 - unified login styling while Moodle Core retains authentication behavior;
 - capability-aware teacher presentation for course management, Participants, Gradebook and Assignment grading.
+
+## Branding defaults and upgrades
+
+Theme colour settings remain configurable per institution and are emitted through Moodle's cached CSS post-process callback.
+
+Alpha.24 changes the default neutral identity to match the current Edvorya LMS product:
+
+- background: `#ffffff`;
+- foreground: `#020617`;
+- sidebar: `#fafafa`;
+- topbar base: `#ffffff`, rendered with the translucent Edvorya shell treatment.
+
+`db/upgrade.php` migrates only values that exactly match the legacy alpha defaults. Existing institutional colour customisations are not rewritten.
 
 ## Teacher workspace
 
@@ -159,7 +172,7 @@ Always use the actual directory structure of the installed Moodle instance. Afte
 
 Automated compatibility is maintained for Moodle 5.0, 5.1 and 5.2 with PHP 8.3 and MariaDB 10.11 test runtimes, representative Moodle bundled activities/plugins, the required Google Drive `mod_videoplayer` integration, responsive Chrome/Selenium and Axe accessibility gates.
 
-Alpha.22 must pass the same gates after the teacher-workspace and Participants selector corrections before the next visual phase is considered stable.
+Alpha.24 must pass the same gates after the branding-default migration and translucent topbar correction before the next visual phase is considered stable.
 
 Environment-specific acceptance still includes true Safari/iPhone validation, representative SCORM packages and a deterministic LTI provider.
 
