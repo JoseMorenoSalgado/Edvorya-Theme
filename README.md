@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.25`
+- Release: `0.1.0-alpha.26`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -30,7 +30,7 @@ docs/VISUAL_IDENTITY.md
 docs/DASHBOARD_EXPERIENCE.md
 ```
 
-Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts. Alpha.23 restores type-safe student dashboard rendering across Moodle 5.0–5.2. Alpha.24 aligns persisted branding defaults with the current Edvorya LMS neutral palette. Alpha.25 consolidates Design System token ownership so visual composition no longer carries a second competing `:root` contract.
+Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts. Alpha.23 restores type-safe student dashboard rendering across Moodle 5.0–5.2. Alpha.24 aligns persisted branding defaults with the current Edvorya LMS neutral palette. Alpha.25 consolidates canonical token ownership. Alpha.26 consolidates reusable primitive ownership so buttons, cards and badges no longer receive a second global override from the identity layer.
 
 Translated patterns include:
 
@@ -64,6 +64,8 @@ Alpha.24 changes the default neutral identity to match the current Edvorya LMS p
 
 `db/upgrade.php` migrates only values that exactly match the legacy alpha defaults. Existing institutional colour customisations are not rewritten.
 
+The configurable `button` token is consumed by `.btn-primary`, so an institution may customize the primary action colour independently of the general primary accent.
+
 ## Teacher workspace
 
 Edvorya identifies the teacher presentation context with Moodle capabilities, not role shortnames.
@@ -86,7 +88,7 @@ Removed or delegated to Boost:
 - generic Core utility replicas;
 - modal/dropdown/popover mechanics;
 - duplicate technical layouts for popup, embedded, maintenance, print, redirect and secure contexts;
-- generic Bootstrap button/card/table/progress mechanics;
+- generic Bootstrap behavior already maintained by Boost;
 - Moodle form behavior and autocomplete mechanics;
 - File Picker/File Manager structural layout rules already maintained by Boost;
 - Action Menu/dropdown mechanics;
@@ -97,7 +99,7 @@ Retained by Edvorya because they define product identity or proven responsive be
 - custom application and login layouts;
 - Edvorya shell and navigation;
 - dashboard and page-specific experiences;
-- Design System colors, radii, shadows, density and focus treatment;
+- Design System visual primitives and tokens;
 - minimum touch targets;
 - table and File Picker viewport containment verified by browser tests;
 - branding settings and token pipeline.
@@ -118,13 +120,21 @@ Canonical build entrypoint:
 src/styles/index.css
 ```
 
-Canonical Design System token contract:
+Canonical Design System tokens:
 
 ```text
 src/styles/tailwind.css
 ```
 
-`src/styles/tailwind.css` owns the default Edvorya CSS custom properties, spacing, radii, shadows, shell dimensions and the Bootstrap variable bridge used by Boost. Institution-configurable colour tokens may be overridden later by Moodle's cached CSS post-process callback.
+`src/styles/tailwind.css` owns default CSS custom properties, typography stack, spacing, radii, shadows, shell dimensions and the Bootstrap variable bridge used by Boost. Institution-configurable colour tokens may be overridden later by Moodle's cached CSS post-process callback.
+
+Reusable Edvorya visual primitives:
+
+```text
+src/styles/design-system.css
+```
+
+`src/styles/design-system.css` owns global Edvorya skin for reusable buttons, cards, alerts, badges, tables and progress indicators. Boost continues to own their mechanics.
 
 Visual composition and experience skin:
 
@@ -133,7 +143,7 @@ src/styles/identity.css
 src/styles/teacher-experience.css
 ```
 
-`src/styles/identity.css` intentionally contains no root token contract. It consumes the canonical tokens and translates the Edvorya LMS language onto Moodle components and page experiences.
+`src/styles/identity.css` intentionally contains neither a root token contract nor competing global button/card/badge primitives. It consumes the Design System and translates the Edvorya LMS language onto specific Moodle surfaces and page experiences.
 
 Compiled production artifact:
 
@@ -158,10 +168,11 @@ style/edvorya-interactions.css
 ```bash
 npm install --ignore-scripts --no-audit --no-fund
 python3 tools/normalize_design_tokens.py --check
+python3 tools/normalize_design_primitives.py --check
 npm run build:css
 ```
 
-The quality workflow enforces canonical token ownership, rebuilds CSS from the canonical source and verifies that the committed production artifact is reproducible. Push builds may normalize token ownership before synchronizing generated CSS; pull requests fail if source files would require normalization.
+The quality workflow enforces canonical token and primitive ownership, rebuilds CSS from the canonical source and verifies that the committed production artifact is reproducible. Push builds may normalize source ownership before synchronizing generated CSS; pull requests fail if source files would require normalization.
 
 ## Moodle installation paths
 
@@ -183,7 +194,7 @@ Always use the actual directory structure of the installed Moodle instance. Afte
 
 Automated compatibility is maintained for Moodle 5.0, 5.1 and 5.2 with PHP 8.3 and MariaDB 10.11 test runtimes, representative Moodle bundled activities/plugins, the required Google Drive `mod_videoplayer` integration, responsive Chrome/Selenium and Axe accessibility gates.
 
-Alpha.25 must pass the same gates after canonical Design System token consolidation before the next visual phase is considered stable.
+Alpha.26 must pass the same gates after reusable Design System primitive consolidation before the next visual phase is considered stable.
 
 Environment-specific acceptance still includes true Safari/iPhone validation, representative SCORM packages and a deterministic LTI provider.
 
