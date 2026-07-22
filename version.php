@@ -14,7 +14,8 @@
  * scrolling, table geometry, administration forms and message-app layout,
  * while identity.css remains the final Edvorya LMS visual composition layer.
  * The cleanup removes 164 obsolete source CSS lines without replacing Core
- * Moodle behavior or data-region contracts.
+ * Moodle behavior or data-region contracts. This marker anchors the full
+ * regression suite to the final alpha.29 source state.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
