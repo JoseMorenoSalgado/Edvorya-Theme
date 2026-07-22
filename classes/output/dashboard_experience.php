@@ -5,6 +5,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 
 namespace theme_edvorya\output;
 
@@ -40,28 +45,31 @@ final class dashboard_experience implements renderable, templatable {
             return [];
         }
 
-        // Ask Core for at most one course where the user can manage activities.
-        // This avoids role-name assumptions and prevents an unbounded course query.
+        // Ask Core for at most two courses where the user can manage activities.
+        // Two is enough to distinguish a single-course teacher from a multi-course
+        // teacher without an unbounded query or pretending an arbitrary course is
+        // the user's highest-priority review target.
         $teachercourses = get_user_capability_course(
             'moodle/course:manageactivities',
             $USER->id,
             false,
             '',
             '',
-            1
+            2
         );
         $isteacher = !empty($teachercourses);
-        $teachercourseid = 0;
-        if ($isteacher) {
+        $singleteachercourseid = 0;
+
+        if (count($teachercourses) === 1) {
             $teachercourse = reset($teachercourses);
             if (is_object($teachercourse) && !empty($teachercourse->id)) {
-                $teachercourseid = (int) $teachercourse->id;
+                $singleteachercourseid = (int) $teachercourse->id;
             }
         }
 
         $persona = $isteacher ? 'teacher' : 'student';
         $questions = $isteacher
-            ? $this->teacher_questions($output, $teachercourseid)
+            ? $this->teacher_questions($output, $singleteachercourseid)
             : $this->student_questions($output);
 
         return [
@@ -111,20 +119,21 @@ final class dashboard_experience implements renderable, templatable {
     /**
      * Teacher dashboard intents, ordered by intervention priority.
      *
-     * The already-resolved teacher course is reused to make the first two
-     * actions concrete without introducing another course query. Aggregate
-     * cross-course queues remain the responsibility of local_edvorya.
+     * A direct course destination is used only when the bounded capability lookup
+     * proves that exactly one manageable course exists. With multiple courses the
+     * teacher chooses from My courses; the theme does not fabricate a cross-course
+     * priority queue. Aggregate review/risk ranking belongs in local_edvorya.
      *
      * @param renderer_base $output Renderer instance.
-     * @param int $courseid One course where the user can manage activities.
+     * @param int $singlecourseid The sole manageable course, or zero when there are multiple.
      * @return array<int, array<string, mixed>>
      */
-    private function teacher_questions(renderer_base $output, int $courseid): array {
-        $reviewurl = $courseid > 0
-            ? new moodle_url('/course/view.php', ['id' => $courseid])
+    private function teacher_questions(renderer_base $output, int $singlecourseid): array {
+        $reviewurl = $singlecourseid > 0
+            ? new moodle_url('/course/view.php', ['id' => $singlecourseid])
             : new moodle_url('/my/courses.php');
-        $followupurl = $courseid > 0
-            ? new moodle_url('/user/index.php', ['id' => $courseid])
+        $followupurl = $singlecourseid > 0
+            ? new moodle_url('/user/index.php', ['id' => $singlecourseid])
             : new moodle_url('/my/courses.php');
 
         return [
