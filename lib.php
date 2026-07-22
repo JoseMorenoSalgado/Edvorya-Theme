@@ -33,7 +33,6 @@ function theme_edvorya_css_post_process(string $css, \core\output\theme_config $
     $settingnames = [
         'primary',
         'secondary',
-        'accent',
         'background',
         'foreground',
         'muted',
