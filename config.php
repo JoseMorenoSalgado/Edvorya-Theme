@@ -33,6 +33,7 @@ $THEME->sheets = [
     'edvorya-interactions',
     'edvorya-dashboard',
     'edvorya-admin',
+    'edvorya-admin-tabs',
     'edvorya-context-nav',
 ];
 $THEME->csspostprocess = 'theme_edvorya_css_post_process';
