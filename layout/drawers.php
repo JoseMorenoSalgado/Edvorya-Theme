@@ -79,7 +79,6 @@ $isadminsearch = $PAGE->pagetype === 'admin-search';
 $secondarynavigation = false;
 $contextnavigationitems = [];
 $contextnavigationcurrent = '';
-$adminnavigationitems = [];
 $overflow = false;
 
 if ($PAGE->has_secondary_navigation()) {
@@ -120,71 +119,6 @@ if ($PAGE->has_secondary_navigation()) {
 
     if ($contextnavigationcurrent === '' && !empty($contextnavigationitems)) {
         $contextnavigationcurrent = $contextnavigationitems[0]['text'];
-    }
-
-    // Moodle's site-administration landing page is a special tab contract. Core
-    // intentionally gives these nodes an anchor target instead of a URL and expects
-    // Bootstrap's tab plugin to switch the matching #link... panel without reloading.
-    // Export that contract explicitly so Edvorya can style it without replacing it.
-    if ($isadminsearch && $tablistnav) {
-        $hasactiveadmintab = false;
-
-        foreach ($PAGE->secondarynav->children as $node) {
-            if (isset($node->display) && !$node->display) {
-                continue;
-            }
-
-            $tab = isset($node->tab) ? (string) $node->tab : '';
-            if ($tab === '' || !str_starts_with($tab, '#link')) {
-                continue;
-            }
-
-            $key = strtolower((string) ($node->key ?? 'admin'));
-            $icon = 'settings';
-
-            if (str_contains($key, 'user')) {
-                $icon = 'users';
-            } else if (str_contains($key, 'course')) {
-                $icon = 'book-open';
-            } else if (str_contains($key, 'grade')) {
-                $icon = 'graduation-cap';
-            } else if (str_contains($key, 'plugin')) {
-                $icon = 'link';
-            } else if (str_contains($key, 'appearance')) {
-                $icon = 'palette';
-            } else if (str_contains($key, 'server')) {
-                $icon = 'server';
-            } else if (str_contains($key, 'report')) {
-                $icon = 'chart-column';
-            } else if (str_contains($key, 'develop')) {
-                $icon = 'code-2';
-            }
-
-            $isactive = !empty($node->isactive) && !$hasactiveadmintab;
-            if ($isactive) {
-                $hasactiveadmintab = true;
-            }
-
-            $adminnavigationitems[] = [
-                'key' => preg_replace('/[^a-z0-9_-]+/', '-', $key ?: 'admin'),
-                'text' => (string) $node->get_title(),
-                'tab' => $tab,
-                'panelid' => ltrim($tab, '#'),
-                'isactive' => $isactive,
-                'edviconhtml' => $OUTPUT->pix_icon(
-                    'icons/' . $icon,
-                    '',
-                    'theme_edvorya',
-                    ['class' => 'edv-admin-tabs__icon-svg']
-                ),
-            ];
-        }
-
-        // Core's settings_link_page marks the first panel active on initial render.
-        // Mirror that state if the navigation tree does not expose an active tab yet.
-        if (!$hasactiveadmintab && !empty($adminnavigationitems)) {
-            $adminnavigationitems[0]['isactive'] = true;
-        }
     }
 
     $overflowdata = $PAGE->secondarynav->get_overflow_menu_data();
@@ -241,9 +175,8 @@ if ($authenticated && $PAGE->pagelayout === 'mydashboard') {
     }
 }
 
-$hasadminnavigation = !empty($adminnavigationitems);
-
-// Site administration uses the dedicated Core-compatible tab representation above.
+// Site administration must keep Core's tablist secondary navigation intact because
+// admin/search.php uses #link... targets and Bootstrap's tab mechanics without reloads.
 // Other phone/tablet contexts may use the compact disclosure when real URLs exist.
 $hascontextnavigation = !$isadminsearch && count($contextnavigationitems) > 1;
 
@@ -270,8 +203,6 @@ $templatecontext = [
     'contextnavigationitems' => $contextnavigationitems,
     'contextnavigationcurrent' => $contextnavigationcurrent,
     'hascontextnavigation' => $hascontextnavigation,
-    'adminnavigationitems' => $adminnavigationitems,
-    'hasadminnavigation' => $hasadminnavigation,
     'isadminsearch' => $isadminsearch,
     'overflow' => $overflow,
     'regionmainsettingsmenu' => $regionmainsettingsmenu,
