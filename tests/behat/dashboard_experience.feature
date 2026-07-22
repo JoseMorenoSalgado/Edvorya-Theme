@@ -35,4 +35,6 @@ Feature: Edvorya intent-first role dashboards
     And I should see "What should I review?" in the ".edv-dashboard-focus" "css_element"
     And I should see "Who needs follow-up?" in the ".edv-dashboard-focus" "css_element"
     And I should see "Is there anything to answer?" in the ".edv-dashboard-focus" "css_element"
+    And ".edv-dashboard-focus--teacher a[href*='/course/view.php?id=']" "css_element" should exist
+    And ".edv-dashboard-focus--teacher a[href*='/user/index.php?id=']" "css_element" should exist
     And the Edvorya element ".edv-dashboard-focus" should fit within the viewport horizontally
