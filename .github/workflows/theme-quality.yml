@@ -26,9 +26,17 @@ jobs:
         if: github.event_name == 'pull_request'
         run: python3 tools/normalize_design_tokens.py --check
 
+      - name: Validate Design System primitive ownership
+        if: github.event_name == 'pull_request'
+        run: python3 tools/normalize_design_primitives.py --check
+
       - name: Normalize canonical Design System tokens
         if: github.event_name == 'push'
         run: python3 tools/normalize_design_tokens.py --write
+
+      - name: Normalize Design System primitive ownership
+        if: github.event_name == 'push'
+        run: python3 tools/normalize_design_primitives.py --write
 
       - name: Validate PHP syntax
         shell: bash
@@ -59,6 +67,7 @@ jobs:
 
           - PHP syntax (`php -l`): PASS
           - Canonical Design System token ownership: PASS
+          - Design System primitive ownership: PASS
           - Tailwind production build from `src/styles/index.css`: PASS
           - Compiled CSS at `style/edvorya.css` is generated from the canonical source entrypoint: PASS
 
@@ -71,6 +80,7 @@ jobs:
         run: |
           git add \
             src/styles/tailwind.css \
+            src/styles/design-system.css \
             src/styles/identity.css \
             style/edvorya.css \
             docs/QUALITY_STATUS.md
