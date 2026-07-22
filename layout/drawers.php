@@ -152,6 +152,16 @@ if ($pagetypeclass !== '') {
     $bodyclasses[] = 'edv-pagetype-' . trim($pagetypeclass, '-');
 }
 
+// Expose a presentation-only teacher workspace context for the current course.
+// Capability checks are authoritative and language/role-name independent. The course
+// context is reused by Moodle's access API; no custom SQL or aggregate analytics are added.
+if ($authenticated && !empty($PAGE->course->id) && (int) $PAGE->course->id !== SITEID) {
+    $coursecontext = \context_course::instance((int) $PAGE->course->id, IGNORE_MISSING);
+    if ($coursecontext && has_capability('moodle/course:manageactivities', $coursecontext)) {
+        $bodyclasses[] = 'edv-course-role-teacher';
+    }
+}
+
 // The dashboard focus layer adds intent and hierarchy only. Moodle Core remains
 // responsible for all actual course, completion, timeline and calendar data.
 $dashboardexperience = [];
