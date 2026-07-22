@@ -38,6 +38,9 @@ jobs:
         if: github.event_name == 'push'
         run: python3 tools/normalize_design_primitives.py --write
 
+      - name: Audit configurable branding token consumers
+        run: python3 tools/audit_branding_tokens.py --check
+
       - name: Validate PHP syntax
         shell: bash
         run: |
@@ -68,6 +71,7 @@ jobs:
           - PHP syntax (`php -l`): PASS
           - Canonical Design System token ownership: PASS
           - Design System primitive ownership: PASS
+          - Configurable branding token consumer audit: PASS
           - Tailwind production build from `src/styles/index.css`: PASS
           - Compiled CSS at `style/edvorya.css` is generated from the canonical source entrypoint: PASS
 
