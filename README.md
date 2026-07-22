@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.17`
+- Release: `0.1.0-alpha.18`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -21,15 +21,17 @@ The theme does not modify Moodle Core and does not depend on RemUI, Classic, Lam
 
 ## Visual identity
 
-Alpha.17 begins the direct visual alignment with the current `Edvorya-LMS` product while preserving Moodle semantics and Boost compatibility.
+The current `Edvorya-LMS` product is the visual source of truth. Product decisions are translated into Moodle CSS, Mustache and PHP without importing React, shadcn, Radix or Tailwind runtime dependencies.
 
-The visual source of truth is documented in:
+The visual contract is documented in:
 
 ```text
 docs/VISUAL_IDENTITY.md
 ```
 
-Key translated patterns include:
+Alpha.17 established the shared shell and Design System language. Alpha.18 propagates that identity across the main Moodle learning experiences.
+
+Translated patterns include:
 
 - 64px sticky translucent topbar;
 - compact 36px ghost shell actions;
@@ -40,10 +42,12 @@ Key translated patterns include:
 - white/slate neutral canvas with one institutional primary accent;
 - restrained `shadow-sm` surfaces;
 - 12-16px normal surface radii;
-- plain PageShell-style headings with a quiet divider instead of large hero cards;
-- compact dashboard decision cards aligned with Edvorya LMS summary surfaces.
-
-The theme does not import React, shadcn, Radix or Tailwind runtime code from Edvorya-LMS. Product decisions are translated into Moodle CSS, Mustache and PHP components.
+- plain PageShell-style headings with a quiet divider;
+- compact student/teacher dashboard decision cards;
+- Edvorya-aligned My Courses cards and course navigation;
+- calendar and grade-report surfaces;
+- compact profile and messaging presentation;
+- unified login styling while Moodle Core retains authentication behavior.
 
 ## Compatibility boundary
 
