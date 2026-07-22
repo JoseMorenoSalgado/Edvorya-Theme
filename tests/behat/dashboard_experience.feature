@@ -27,7 +27,7 @@ Feature: Edvorya intent-first role dashboards
     And I should see "How am I doing?" in the ".edv-dashboard-focus" "css_element"
     And the Edvorya element ".edv-dashboard-focus" should fit within the viewport horizontally
 
-  Scenario: Editing teacher dashboard prioritises review follow-up and communication
+  Scenario: Editing teacher with one course gets direct workspace destinations
     Given I log in as "teacher1"
     When I visit the Edvorya Core path "/my/"
     Then "body.edv-dashboard-persona-teacher" "css_element" should exist
@@ -37,4 +37,19 @@ Feature: Edvorya intent-first role dashboards
     And I should see "Is there anything to answer?" in the ".edv-dashboard-focus" "css_element"
     And ".edv-dashboard-focus--teacher a[href*='/course/view.php?id=']" "css_element" should exist
     And ".edv-dashboard-focus--teacher a[href*='/user/index.php?id=']" "css_element" should exist
+    And the Edvorya element ".edv-dashboard-focus" should fit within the viewport horizontally
+
+  Scenario: Editing teacher with multiple courses chooses the workspace instead of an arbitrary course
+    Given the following "courses" exist:
+      | fullname | shortname | category |
+      | Edvorya Second Teaching Course | ELC2 | 0 |
+    And the following "course enrolments" exist:
+      | user | course | role |
+      | teacher1 | ELC2 | editingteacher |
+    And I log in as "teacher1"
+    When I visit the Edvorya Core path "/my/"
+    Then "body.edv-dashboard-persona-teacher" "css_element" should exist
+    And ".edv-dashboard-focus--teacher a[href*='/course/view.php?id=']" "css_element" should not exist
+    And ".edv-dashboard-focus--teacher a[href*='/user/index.php?id=']" "css_element" should not exist
+    And ".edv-dashboard-focus--teacher a[href*='/my/courses.php']" "css_element" should exist
     And the Edvorya element ".edv-dashboard-focus" should fit within the viewport horizontally
