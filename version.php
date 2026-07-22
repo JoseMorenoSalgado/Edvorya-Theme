@@ -9,11 +9,11 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.27 removes historical visual duplication from page-experiences.css.
- * That module now owns layout, grid, scrolling and responsive containment for
- * Dashboard, My courses and Course pages, while identity.css remains the final
- * Edvorya LMS visual composition layer. The refactor removes 133 obsolete CSS
- * lines without changing Moodle Core mechanics or the final product identity.
+ * Alpha.28 makes configurable branding truthful and enforceable. A new static
+ * audit verifies that every exposed colour setting is emitted through Moodle's
+ * cached CSS pipeline, has a canonical default and has at least one semantic
+ * CSS consumer. The obsolete accent setting/token is removed end-to-end and
+ * cleaned from legacy alpha configuration during upgrade.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -23,8 +23,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072127;
+$plugin->version = 2026072128;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.27';
+$plugin->release = '0.1.0-alpha.28';
