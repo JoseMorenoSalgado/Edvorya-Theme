@@ -9,11 +9,10 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.23 fixes the student dashboard render regression found by the Moodle
- * 5.0-5.2 compatibility matrix. Moodle Core may return false from
- * get_user_capability_course() when no matching teacher capability course
- * exists; the result is now normalised before count()/reset(). Alpha.22's
- * teacher workspace and Participants page-type corrections remain intact.
+ * Alpha.24 aligns persisted branding defaults with the Edvorya LMS identity.
+ * Legacy alpha installations migrate only exact old neutral defaults, keeping
+ * real institutional colour customisations untouched. The configurable topbar
+ * colour now retains the translucent Edvorya shell treatment.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -23,8 +22,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072123;
+$plugin->version = 2026072124;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.23';
+$plugin->release = '0.1.0-alpha.24';
