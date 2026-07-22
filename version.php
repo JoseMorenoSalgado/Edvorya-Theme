@@ -9,13 +9,12 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.29 removes historical visual duplication from learning-support and
- * operational experience modules. Those modules now focus on containment,
- * scrolling, table geometry, administration forms and message-app layout,
- * while identity.css remains the final Edvorya LMS visual composition layer.
- * The cleanup removes 164 obsolete source CSS lines without replacing Core
- * Moodle behavior or data-region contracts. This marker anchors the full
- * regression suite to the final alpha.29 source state.
+ * Alpha.30 restores Moodle Core site-administration category navigation on
+ * phone/tablet layouts and refines the administration directory for real mobile
+ * use. Core secondary navigation remains visible whenever Edvorya cannot safely
+ * replace it with its compact context disclosure. Tablet topbar controls are
+ * compacted without reducing touch targets, and administration category/link
+ * surfaces now adapt through the full drawer breakpoint up to 1024px.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -25,8 +24,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072129;
+$plugin->version = 2026072130;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.29';
+$plugin->release = '0.1.0-alpha.30';
