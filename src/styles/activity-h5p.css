@@ -6,18 +6,40 @@
         max-width: 100%;
     }
 
+    .h5p-iframe-wrapper {
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
     .h5p-player,
     .h5p-iframe {
         display: block;
         border: 0;
-    }
-
-    .h5p-iframe-wrapper {
-        min-width: 0;
+        background: #ffffff;
     }
 
     .h5p-iframe-wrapper > iframe,
     iframe.h5p-player {
         min-width: 100%;
+    }
+
+    .path-mod-h5pactivity .activity-header,
+    .path-mod-h5pactivity .h5pactivity {
+        min-width: 0;
+    }
+
+    .path-mod-h5pactivity .h5pactivity > .generalbox,
+    .path-mod-h5pactivity .h5p-player {
+        border-radius: var(--edv-radius-xl);
+    }
+
+    @media (max-width: 47.999rem) {
+        .h5p-iframe-wrapper {
+            border-radius: var(--edv-radius-lg);
+        }
     }
 }
