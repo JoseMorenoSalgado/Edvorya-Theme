@@ -9,11 +9,12 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.24 aligns persisted branding defaults with the Edvorya LMS identity.
- * Legacy alpha installations migrate only exact old neutral defaults, keeping
- * real institutional colour customisations untouched. The configurable topbar
- * colour now retains the translucent Edvorya shell treatment. This metadata
- * revision also anchors the full compatibility gates to the final alpha.24 HEAD.
+ * Alpha.25 consolidates Edvorya Design System token ownership. Canonical CSS
+ * custom-property defaults now live only in src/styles/tailwind.css, while
+ * src/styles/identity.css contains visual composition without a competing
+ * root token contract. CI normalizes the working branch and rejects pull
+ * requests that reintroduce token drift. Alpha.24's safe branding migration
+ * and translucent institutional topbar remain intact.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -23,8 +24,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072124;
+$plugin->version = 2026072125;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.24';
+$plugin->release = '0.1.0-alpha.25';
