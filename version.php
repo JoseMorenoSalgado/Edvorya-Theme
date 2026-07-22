@@ -13,7 +13,8 @@
  * audit verifies that every exposed colour setting is emitted through Moodle's
  * cached CSS pipeline, has a canonical default and has at least one semantic
  * CSS consumer. The obsolete accent setting/token is removed end-to-end and
- * cleaned from legacy alpha configuration during upgrade.
+ * cleaned from legacy alpha configuration during upgrade. This release marker
+ * also anchors full regression validation to the final alpha.28 source state.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
