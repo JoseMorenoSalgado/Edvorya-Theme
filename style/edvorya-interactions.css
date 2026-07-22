@@ -47,6 +47,50 @@
     background-color: var(--edv-color-subtle, #f8fafc);
 }
 
+/* Tablet and narrow desktop layouts use the drawer navigation. Keep the topbar
+ * at normal touch-target scale while removing verbose labels that otherwise
+ * compress Moodle's notification, edit-mode and account controls.
+ */
+@media (max-width: 63.999rem) {
+    .edv-topbar__inner {
+        width: 100%;
+        min-width: 0;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        padding-inline: 0.75rem;
+    }
+
+    .edv-topbar__actions {
+        min-width: 0;
+        margin-inline-start: auto;
+        gap: 0.125rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .edv-topbar__actions .usermenu .usertext,
+    .edv-topbar__actions .usertext,
+    .edv-topbar__actions .editmode-switch-form label,
+    .edv-topbar__actions .form-switch > label,
+    .edv-topbar__actions .form-switch .form-check-label {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+
+    .edv-topbar__actions .usermenu .userbutton {
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        padding: 0.125rem;
+    }
+}
+
 @media (max-width: 47.999rem) {
     /* Core positions notification popovers relative to their trigger. On narrow
      * screens Edvorya promotes the open panel to a viewport-contained sheet. */
