@@ -12,7 +12,8 @@
  * Alpha.24 aligns persisted branding defaults with the Edvorya LMS identity.
  * Legacy alpha installations migrate only exact old neutral defaults, keeping
  * real institutional colour customisations untouched. The configurable topbar
- * colour now retains the translucent Edvorya shell treatment.
+ * colour now retains the translucent Edvorya shell treatment. This metadata
+ * revision also anchors the full compatibility gates to the final alpha.24 HEAD.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
