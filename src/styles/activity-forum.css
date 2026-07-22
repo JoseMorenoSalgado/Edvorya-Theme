@@ -1,9 +1,22 @@
 @layer components {
     .path-mod-forum .forumpost {
-        border-color: var(--edv-color-border);
-        border-radius: var(--edv-radius-md);
-        background: #ffffff;
         overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .path-mod-forum .forumpost .header,
+    .path-mod-forum .forumpost .row.header {
+        border-bottom: 1px solid var(--edv-color-border);
+        background: var(--edv-color-subtle);
+    }
+
+    .path-mod-forum .forumpost .picture img,
+    .path-mod-forum .author-groups-container img,
+    .path-mod-forum .userpicture {
+        border-radius: 999px;
     }
 
     .path-mod-forum .forumpost .content .posting,
@@ -11,14 +24,39 @@
     .path-mod-forum .forumpost .content .attachedimages {
         max-width: 100%;
         overflow-wrap: anywhere;
+        color: var(--edv-color-foreground);
+        line-height: 1.65;
+    }
+
+    .path-mod-forum .forumpost .commands,
+    .path-mod-forum .forumpost .options {
+        color: var(--edv-color-muted);
+        font-size: 0.8125rem;
     }
 
     .path-mod-forum .discussioncontrols .controlscontainer {
         max-width: 100%;
+        gap: 0.5rem;
     }
 
     .path-mod-forum .forumheaderlist {
         max-width: 100%;
+        overflow: hidden;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: #ffffff;
+        box-shadow: var(--edv-shadow-sm);
+    }
+
+    .path-mod-forum .forumheaderlist thead th {
+        background: var(--edv-color-subtle);
+        color: var(--edv-color-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .path-mod-forum .forumheaderlist tbody tr:hover > * {
+        background: var(--edv-color-subtle);
     }
 
     @media (max-width: 47.999rem) {
