@@ -9,12 +9,11 @@
 /**
  * Version details for theme_edvorya.
  *
- * Alpha.26 consolidates reusable Edvorya Design System primitive ownership.
- * Buttons, cards and badges now live in src/styles/design-system.css, while
- * src/styles/identity.css is limited to page and product composition. Primary
- * buttons consume the configurable --edv-color-button token, and Tailwind's
- * font-sans token is aligned with the canonical Geist/Inter Edvorya stack.
- * CI rejects future primitive or token ownership drift.
+ * Alpha.27 removes historical visual duplication from page-experiences.css.
+ * That module now owns layout, grid, scrolling and responsive containment for
+ * Dashboard, My courses and Course pages, while identity.css remains the final
+ * Edvorya LMS visual composition layer. The refactor removes 133 obsolete CSS
+ * lines without changing Moodle Core mechanics or the final product identity.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -24,8 +23,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_edvorya';
-$plugin->version = 2026072126;
+$plugin->version = 2026072127;
 $plugin->requires = 2025041400; // Moodle 5.0.0.
 $plugin->supported = [500, 502]; // Moodle 5.0 through Moodle 5.2, inclusive.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.1.0-alpha.26';
+$plugin->release = '0.1.0-alpha.27';
