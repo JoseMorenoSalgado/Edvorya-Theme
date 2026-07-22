@@ -22,10 +22,10 @@ use templatable;
  * Exports a lightweight role-aware dashboard experience.
  *
  * The theme deliberately does not calculate aggregate learning analytics. It
- * identifies whether the current user can manage activities in at least one
- * course and then exposes a small set of intent-based navigation prompts. Core
- * Moodle blocks remain the source of course, timeline, calendar and progress
- * data. Rich aggregate teacher analytics belong in local_edvorya.
+ * identifies whether the current user has teacher-level grade visibility in at
+ * least one course and then exposes a small set of intent-based navigation
+ * prompts. Core Moodle blocks remain the source of course, timeline, calendar
+ * and progress data. Rich aggregate teacher analytics belong in local_edvorya.
  *
  * @package    theme_edvorya
  * @copyright  2026 Elearning Cloud
@@ -45,12 +45,12 @@ final class dashboard_experience implements renderable, templatable {
             return [];
         }
 
-        // Ask Core for at most two courses where the user can manage activities.
-        // Two is enough to distinguish a single-course teacher from a multi-course
-        // teacher without an unbounded query or pretending an arbitrary course is
-        // the user's highest-priority review target.
+        // moodle/grade:viewall is granted by Core to both teacher and editingteacher
+        // archetypes. A bounded two-course lookup identifies the teacher persona and
+        // distinguishes a single-course teacher from a multi-course teacher without
+        // role-name assumptions, an unbounded query, or a fabricated priority ranking.
         $teachercourses = get_user_capability_course(
-            'moodle/course:manageactivities',
+            'moodle/grade:viewall',
             $USER->id,
             false,
             '',
@@ -120,12 +120,12 @@ final class dashboard_experience implements renderable, templatable {
      * Teacher dashboard intents, ordered by intervention priority.
      *
      * A direct course destination is used only when the bounded capability lookup
-     * proves that exactly one manageable course exists. With multiple courses the
-     * teacher chooses from My courses; the theme does not fabricate a cross-course
+     * proves that exactly one teacher-visible course exists. With multiple courses
+     * the teacher chooses from My courses; the theme does not fabricate a cross-course
      * priority queue. Aggregate review/risk ranking belongs in local_edvorya.
      *
      * @param renderer_base $output Renderer instance.
-     * @param int $singlecourseid The sole manageable course, or zero when there are multiple.
+     * @param int $singlecourseid The sole teacher-visible course, or zero when there are multiple.
      * @return array<int, array<string, mixed>>
      */
     private function teacher_questions(renderer_base $output, int $singlecourseid): array {
