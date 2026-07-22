@@ -1,6 +1,6 @@
 {
   "name": "moodle-theme-edvorya",
-  "version": "0.1.0-alpha.26",
+  "version": "0.1.0-alpha.27",
   "private": true,
   "description": "Build tooling for the Edvorya Moodle theme with Boost compatibility parent",
   "scripts": {
