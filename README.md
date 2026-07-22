@@ -5,7 +5,7 @@
 ## Current release
 
 - Component: `theme_edvorya`
-- Release: `0.1.0-alpha.24`
+- Release: `0.1.0-alpha.25`
 - Supported Moodle branches: 5.0, 5.1 and 5.2
 - Minimum Moodle version: `2025041400`
 - Parent theme: Boost (`$THEME->parents = ['boost']`)
@@ -30,7 +30,7 @@ docs/VISUAL_IDENTITY.md
 docs/DASHBOARD_EXPERIENCE.md
 ```
 
-Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts. Alpha.23 restores type-safe student dashboard rendering across Moodle 5.0–5.2. Alpha.24 aligns persisted branding defaults with the current Edvorya LMS neutral palette.
+Alpha.17 established the shared shell and Design System language. Alpha.18 propagated that identity across the main Moodle learning experiences. Alpha.19 extended it to Assignment, Quiz, Forum and H5P while closing responsive interaction regressions. Alpha.20–alpha.22 deepen the capability-aware teacher workspace and align it with Moodle's real course, Participants and Gradebook contracts. Alpha.23 restores type-safe student dashboard rendering across Moodle 5.0–5.2. Alpha.24 aligns persisted branding defaults with the current Edvorya LMS neutral palette. Alpha.25 consolidates Design System token ownership so visual composition no longer carries a second competing `:root` contract.
 
 Translated patterns include:
 
@@ -118,17 +118,27 @@ Canonical build entrypoint:
 src/styles/index.css
 ```
 
-Compiled production artifact:
+Canonical Design System token contract:
 
 ```text
-style/edvorya.css
+src/styles/tailwind.css
 ```
 
-The final compiled visual skin is defined by:
+`src/styles/tailwind.css` owns the default Edvorya CSS custom properties, spacing, radii, shadows, shell dimensions and the Bootstrap variable bridge used by Boost. Institution-configurable colour tokens may be overridden later by Moodle's cached CSS post-process callback.
+
+Visual composition and experience skin:
 
 ```text
 src/styles/identity.css
 src/styles/teacher-experience.css
+```
+
+`src/styles/identity.css` intentionally contains no root token contract. It consumes the canonical tokens and translates the Edvorya LMS language onto Moodle components and page experiences.
+
+Compiled production artifact:
+
+```text
+style/edvorya.css
 ```
 
 Focused runtime sheets:
@@ -147,10 +157,11 @@ style/edvorya-interactions.css
 
 ```bash
 npm install --ignore-scripts --no-audit --no-fund
+python3 tools/normalize_design_tokens.py --check
 npm run build:css
 ```
 
-The quality workflow rebuilds CSS from the canonical source and verifies that the committed production artifact is reproducible.
+The quality workflow enforces canonical token ownership, rebuilds CSS from the canonical source and verifies that the committed production artifact is reproducible. Push builds may normalize token ownership before synchronizing generated CSS; pull requests fail if source files would require normalization.
 
 ## Moodle installation paths
 
@@ -172,7 +183,7 @@ Always use the actual directory structure of the installed Moodle instance. Afte
 
 Automated compatibility is maintained for Moodle 5.0, 5.1 and 5.2 with PHP 8.3 and MariaDB 10.11 test runtimes, representative Moodle bundled activities/plugins, the required Google Drive `mod_videoplayer` integration, responsive Chrome/Selenium and Axe accessibility gates.
 
-Alpha.24 must pass the same gates after the branding-default migration and translucent topbar correction before the next visual phase is considered stable.
+Alpha.25 must pass the same gates after canonical Design System token consolidation before the next visual phase is considered stable.
 
 Environment-specific acceptance still includes true Safari/iPhone validation, representative SCORM packages and a deterministic LTI provider.
 
