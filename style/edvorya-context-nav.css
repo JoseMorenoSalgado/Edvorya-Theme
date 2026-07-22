@@ -1,6 +1,7 @@
 /* Edvorya contextual navigation.
  * Primary navigation stays in the app drawer/sidebar. Context navigation is compact
- * on phone/tablet and horizontal on desktop, avoiding two full menus at once.
+ * on phone/tablet when Edvorya can safely build it from Core navigation URLs.
+ * Core secondary navigation remains visible as a scrollable fallback when it cannot.
  */
 
 .edv-context-nav {
@@ -127,10 +128,69 @@
     background: var(--edv-color-primary);
 }
 
-/* On phone/tablet, do not show a second full horizontal menu. */
+/* Phone/tablet: hide Core's tab bar only when a real Edvorya compact replacement exists. */
 @media (max-width: 63.999rem) {
-    .edv-secondary-nav {
+    .edv-secondary-nav--context-replaced {
         display: none !important;
+    }
+
+    /* Fallback for Core pages whose secondary navigation cannot be converted into URL items.
+     * Site administration depends on this contract: core/settings_link_page deliberately
+     * omits its internal category tabs when Moodle reports secondary navigation as enabled.
+     */
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: var(--edv-space-4);
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.375rem;
+        border: 1px solid var(--edv-color-border);
+        border-radius: var(--edv-radius-xl);
+        background: var(--edv-color-subtle);
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav,
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .more-nav {
+        width: max-content;
+        min-width: 100%;
+        flex-wrap: nowrap;
+        gap: 0.25rem;
+        border: 0;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-item {
+        flex: 0 0 auto;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link {
+        min-height: 2.75rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.625rem 0.875rem;
+        border: 0;
+        border-radius: var(--edv-radius-lg);
+        color: #475569;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link:hover,
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link:focus-visible {
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+    }
+
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link.active,
+    .edv-secondary-nav:not(.edv-secondary-nav--context-replaced) .nav-link[aria-current="page"] {
+        background: #ffffff;
+        color: var(--edv-color-foreground);
+        box-shadow: var(--edv-shadow-sm);
     }
 }
 
