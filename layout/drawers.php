@@ -138,6 +138,7 @@ $headercontent = $PAGE->activityheader->export_for_template($corerenderer);
 $branding = (new \theme_edvorya\output\branding())->export_for_template($OUTPUT);
 
 $authenticated = isloggedin() && !isguestuser();
+$isadminsearch = $PAGE->pagetype === 'admin-search';
 $bodyclasses = [$authenticated ? 'edv-context-authenticated' : 'edv-context-public'];
 
 // Add stable Edvorya-owned context classes without depending on Core body-class naming conventions.
@@ -173,6 +174,12 @@ if ($authenticated && $PAGE->pagelayout === 'mydashboard') {
     }
 }
 
+// Site administration search is a special Core contract: core/settings_link_page
+// deliberately omits its internal category tabs when secondary navigation is enabled.
+// Keep Core's more-menu visible for this page instead of replacing it with the compact
+// disclosure, otherwise administration categories disappear on phone/tablet layouts.
+$hascontextnavigation = !$isadminsearch && count($contextnavigationitems) > 1;
+
 $templatecontext = [
     'output' => $OUTPUT,
     'bodyattributes' => $OUTPUT->body_attributes($bodyclasses),
@@ -195,7 +202,8 @@ $templatecontext = [
     'secondarymoremenu' => $secondarynavigation,
     'contextnavigationitems' => $contextnavigationitems,
     'contextnavigationcurrent' => $contextnavigationcurrent,
-    'hascontextnavigation' => count($contextnavigationitems) > 1,
+    'hascontextnavigation' => $hascontextnavigation,
+    'isadminsearch' => $isadminsearch,
     'overflow' => $overflow,
     'regionmainsettingsmenu' => $regionmainsettingsmenu,
     'hasregionmainsettingsmenu' => !empty($regionmainsettingsmenu),
